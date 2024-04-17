@@ -1,0 +1,44 @@
+package ${packageName}.vo.model;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Date;
+#if($table.sub || $table.tree)
+import java.util.List;
+#end
+
+/**
+ * ${functionName}对象 ${tableName}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+@ApiModel(value = "${functionName}对象", description = "${moduleName}-${functionName}信息表")
+public class ${ClassName}Model {
+
+#foreach ($column in $columns)
+    #if($column.logicDeleteField != -1 && $column.javaField == "isDelete")
+    #else
+    @ApiModelProperty(value = "$column.columnComment")
+    private $column.javaType $column.javaField;
+    #end
+
+#end
+#if($table.sub)
+    @ApiModelProperty(value = "$table.subTable.functionName")
+    private List<${subClassName}> ${subclassName}ModelList;
+#end
+#if($table.tree)
+    @ApiModelProperty(value = "子节点信息")
+    List<${ClassName}Model> children;
+#end
+}

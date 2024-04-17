@@ -1,0 +1,58 @@
+import request from '/@/utils/request';
+
+/**
+ * ${functionName}api接口集合
+ */
+export function use${ClassName}Api() {
+  return {
+#if($table.crud || $table.sub)
+    // 分页获取${functionName}
+    getPageList(data: object) {
+      return request({
+        url: '/${moduleName}/${className}/getPageList',
+        method: 'post',
+        data: data
+      })
+    },
+#elseif($table.tree)
+    // 获取树形组件数据${functionName}
+    getTreeList(data: object) {
+      return request({
+        url: '/${moduleName}/${className}/getTreeList',
+        method: 'post',
+        data: data
+      })
+    },
+#end
+    // 查询${functionName}详细
+    get${ClassName}ById(id: number) {
+      return request({
+        url: '/${moduleName}/${className}/' + id,
+        method: 'get'
+      })
+    },
+    // 新增${functionName}
+    create${ClassName}(data: object) {
+      return request({
+        url: '/${moduleName}/${className}/create${ClassName}',
+        method: 'post',
+        data: data
+      })
+    },
+    // 修改${functionName}
+    update${ClassName}(data: object) {
+      return request({
+        url: '/${moduleName}/${className}/update${ClassName}',
+        method: 'post',
+        data: data
+      })
+    },
+    // 删除${functionName}
+    delete${ClassName}(id: number) {
+      return request({
+        url: '/${moduleName}/${className}/' + id,
+        method: 'delete'
+      })
+    },
+  }
+}

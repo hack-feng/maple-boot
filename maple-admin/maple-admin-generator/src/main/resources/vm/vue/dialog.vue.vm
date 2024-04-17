@@ -1,0 +1,482 @@
+<template>
+  <div class="${moduleName}-${className}-dialog-container">
+    <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="60%">
+#if($table.sub)
+      <el-collapse v-model="activeNames">
+        <el-collapse-item title="${functionName}基础信息" name="info">
+#end
+          <el-form ref="${className}DialogFormRef" :model="state.ruleForm" :rules="state.rules" size="default" label-width="90px">
+            <el-row :gutter="35">
+#if($table.tree)       
+              <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+                <el-form-item label="父节点" prop="ancestorsArray">
+                  <el-cascader
+                      :options="props.${className}Options"
+                      :props="{ checkStrictly: true, value: 'id', label: '${treeName}' }"
+                      placeholder="请选择节点"
+                      filterable
+                      clearable
+                      class="w100"
+                      v-model="state.ruleForm.ancestorsArray"
+                  >
+                    <template #default="{ node, data }">
+                      <span>{{ data.${treeName} }}</span>
+                      <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                    </template>
+                  </el-cascader>
+                </el-form-item>
+              </el-col>
+#end
+#set($exsitImage=false)
+#set($exsitMarkdowm=false)
+#foreach($column in $columns)
+  #if($column.isInsert)
+    #set($dictType=$column.dictType)
+    #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+    #set($parentheseIndex=$column.columnComment.indexOf("（"))
+    #if($parentheseIndex != -1)
+      #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+    #else
+      #set($comment=$column.columnComment)
+    #end
+
+    #if($column.htmlType == "input")
+        #if($column.javaField == "sortNum")
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-input-number v-model="state.ruleForm.${column.javaField}" placeholder="请输入${comment}"  />
+                </el-form-item>
+              </el-col>
+        #else
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-input v-model="state.ruleForm.${column.javaField}" placeholder="请输入${comment}" clearable></el-input>
+                </el-form-item>
+              </el-col>
+        #end
+    #elseif($column.htmlType == "textarea")
+              <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-input type="textarea" :rows="3"  v-model="state.ruleForm.${column.javaField}" placeholder="请输入${comment}" clearable></el-input>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "switch")
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-switch v-model="state.ruleForm.${column.javaField}" inline-prompt active-text="是" inactive-text="否"></el-switch>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "radio" && "" != $dictType)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-radio-group v-model="state.ruleForm.${column.javaField}">
+                    <el-radio
+                        v-for="dict in $dictType"
+                        #if($column.javaType == "Long" || $column.javaType == "Integer" || $column.javaType == "Boolean")
+                        :label="Number(dict.value)"
+                        #else
+                        :label="dict.value"
+                        #end
+                    >{{ dict.label }}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "radio" && "" == $dictType)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-radio-group v-model="state.ruleForm.${column.javaField}">
+                    <el-radio value="">请选择字典</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "checkbox" && "" != $dictType)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-checkbox-group v-model="state.ruleForm.${column.javaField}">
+                    <el-checkbox
+                        v-for="dict in $dictType"
+                        #if($column.javaType == "Long" || $column.javaType == "Integer" || $column.javaType == "Boolean")
+                        :value="Number(dict.value)"
+                        #else
+                        :value="dict.value"
+                        #end
+                        :label="dict.label" />
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "checkbox" && "" == $dictType)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-checkbox-group v-model="state.ruleForm.${column.javaField}">
+                    <el-checkbox label="请选择字典" value="" />
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "select" && "" != $dictType)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-select v-model="state.ruleForm.${column.javaField}" placeholder="请选择${comment}" clearable class="w100">
+                    <el-option
+                        v-for="dict in $dictType"
+                        #if($column.javaType == "Long" || $column.javaType == "Integer" || $column.javaType == "Boolean")
+                        :key="Number(dict.value)"
+                        #else
+                        :key="dict.value"
+                        #end
+                        :label="dict.label"
+                        #if($column.javaType == "Long" || $column.javaType == "Integer" || $column.javaType == "Boolean")
+                        :value="Number(dict.value)"
+                        #else
+                        :value="dict.value"
+                        #end
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "select" && "" == $dictType)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-select v-model="state.ruleForm.${column.javaField}" placeholder="请选择${comment}" clearable class="w100">
+                    <el-option label="请选择字典生成" value="" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-date-picker clearable
+                                  v-model="state.ruleForm.${column.javaField}"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="选择${comment}">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "imageUpload")
+              #set($exsitImage=true)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <el-upload
+                      class="img-uploader"
+                      action="/manageApi/file/uploadImage"
+                      :headers="{Authorization: `${Session.get('token')}`}"
+                      :show-file-list="false"
+                      :on-success="handleImageSuccess"
+                      :on-change="beforeImageUpload"
+                  >
+                    <img v-if="state.ruleForm.${column.javaField}" :src="state.ruleForm.${column.javaField}" class="img" />
+                    <el-icon v-else class="img-uploader-icon"><ele-Plus /></el-icon>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+    #elseif($column.htmlType == "mdEditor")
+              #set($exsitMarkdowm=true)
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="${comment}" prop="${column.javaField}">
+                  <MdEditor v-model="state.ruleForm.${column.javaField}" @onUploadImg="onUploadImg"/>
+                </el-form-item>
+              </el-col>
+    #end
+  #end
+#end
+            </el-row>
+          </el-form>
+        
+#if($table.sub)
+        </el-collapse-item>
+        <el-collapse-item title="${functionName}明细信息" name="detail">
+          <SubDicDialog ref="sub${subClassName}DialogRef" :columns="state.ruleForm.${subclassName}ModelList"/>
+        </el-collapse-item>
+      </el-collapse>
+#end
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="onCancel" size="default">取 消</el-button>
+          <el-button type="primary" @click="onSubmit" size="default">{{ state.dialog.submitTxt }}</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup lang="ts" name="dictDialog">
+  import { defineAsyncComponent, nextTick, reactive, ref, getCurrentInstance, defineProps, defineEmits } from 'vue';
+  import { use${ClassName}Api } from '/@/api/${moduleName}/${className}';
+  import { ElMessage } from "element-plus";
+#if($exsitMarkdowm || $exsitImage)
+  import { Session } from "/@/utils/storage";
+#end
+#if($exsitMarkdowm)
+  import { MdEditor } from 'md-editor-v3';
+  // preview.css相比style.css少了编辑器那部分样式
+  import 'md-editor-v3/lib/style.css';
+  import axios from "axios";
+#end
+  
+#if($table.sub)
+  
+  // 引入组件
+  const Sub${subClassName}Dialog = defineAsyncComponent(() => import('./subDialog.vue'));
+  
+#end
+#if($table.tree)
+    // 定义父组件传过来的值
+    const props = defineProps({
+      ${className}Options: {
+        type: Array,
+        default: () => [],
+      }
+    });
+#end  
+  
+  // 定义子组件向父组件传值/事件
+  const emit = defineEmits(['refresh']);
+
+#if(${dictTypeKey} != "")
+  // 获取字典
+  const { proxy } = getCurrentInstance();
+  const { ${dictTypeKey} } = proxy.parseDict(${dictTypeValue});
+
+#end
+
+  // 定义变量内容
+  const use${ClassName} = use${ClassName}Api();
+  const ${className}DialogFormRef = ref();
+#if($table.sub)
+  const sub${subClassName}DialogRef = ref();
+  const activeNames = ref(['info'#if($table.sub), 'detail'#end]);
+#end
+  const state = reactive({
+    ruleForm: {
+#foreach ($column in $columns)
+  #if($column.isInsert)
+      $column.javaField: #if($column.htmlType == 'radio')true#else''#end,
+  #end
+#end
+#if($table.sub)
+    ${subclassName}ModelList: [],
+#end
+#if($table.tree)
+      parentId: '',
+      ancestors: '',
+      ancestorsArray: [],
+#end
+    },
+    dialog: {
+      isShowDialog: false,
+      type: '',
+      title: '',
+      submitTxt: '',
+    },
+    rules: {
+#if($table.tree)
+      ancestorsArray: { required: true, message: '请选择父部门', trigger: 'blur' },
+#end
+#foreach($column in $columns)
+  #set($parentheseIndex=$column.columnComment.indexOf("（"))
+  #if($parentheseIndex != -1)
+    #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+  #else
+    #set($comment=$column.columnComment)
+  #end
+  #if($column.isInsert)
+    #if($column.isRequired)
+      ${column.javaField}: { required: true, message: '请输入${comment}', trigger: 'blur' },
+    #end
+  #end
+#end
+    },
+  });
+
+  // 打开弹窗
+  const openDialog = (type: string, row) => {
+    resetForm();
+    if (type === 'edit') {
+      use${ClassName}.get${ClassName}ById(row.id).then(res => {
+        state.ruleForm = res;
+#if($table.tree)
+        state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
+#end
+        state.dialog.title = '修改${functionName}';
+        state.dialog.submitTxt = '修 改';
+      });
+    } else {
+#if($table.tree)
+      if(row) {
+        if(row.ancestors) {
+          state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
+        }
+        state.ruleForm.ancestorsArray.push(row.${treeCode})
+      }
+#end
+      state.dialog.title = '新增${functionName}';
+      state.dialog.submitTxt = '新 增';
+    }
+    state.dialog.type = type;
+    state.dialog.isShowDialog = true;
+  };
+  // 关闭弹窗
+  const closeDialog = () => {
+    state.dialog.isShowDialog = false;
+  };
+  // 取消
+  const onCancel = () => {
+    closeDialog();
+  };
+
+  // 提交
+  const onSubmit = () => {
+    // 验证表单
+    Promise.all([
+#if($table.sub)
+      formRulesValidate(sub${subClassName}DialogRef, 'sub${subClassName}DialogRef'),
+#end
+      currentValidate(${className}DialogFormRef),
+    ]).then(res => {
+      const validateResult = res.every(item => !!item);
+      if (validateResult) {
+#if($table.tree)
+        state.ruleForm.${treeParentCode} = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1]
+        state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+#end
+        if(state.dialog.type == 'add'){
+          use${ClassName}.create${ClassName}(state.ruleForm).then(() => {
+            ElMessage.success('创建成功');
+            closeDialog();
+            emit('refresh');
+          });
+        } else {
+          use${ClassName}.update${ClassName}(state.ruleForm).then(() => {
+            ElMessage.success('修改成功');
+            closeDialog();
+            emit('refresh');
+          });
+        }
+      } else {
+        ElMessage.error("表单校验未通过，请重新检查提交内容");
+      }
+    });
+  };
+
+  // 主表-表单组件验证
+  const currentValidate = (pageRef) => {
+    return new Promise((resolve) => {
+      pageRef.value.validate((valid: boolean) => {
+        if (valid) resolve(valid);
+      });
+    });
+  };
+
+#if($table.sub)
+  // 子表-表单组件验证
+  const formRulesValidate = (pageRef, sonRef: string) => {
+    return new Promise((resolve) => {
+#set($validate = 'pageRef.value.$refs[sonRef].validate')
+      $validate((valid: boolean) => {
+        if (valid) resolve(valid);
+      });
+    });
+  };
+#end
+
+#if($exsitMarkdowm)
+  // 图片上传事件
+  const onUploadImg = async (files, callback) => {
+    const res = await Promise.all(
+        files.map((file) => {
+          return new Promise((rev, rej) => {
+            const form = new FormData();
+            form.append('file', file);
+            axios.post('/manageApi/file/uploadImage', form, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': Session.get("token")
+              }
+            })
+                .then((res) => {
+                  rev(res.data.data)
+                })
+                .catch((error) => rej(error));
+          });
+        })
+    );
+    callback(res.map((item) => item));
+  };
+#end
+  
+#if($exsitImage)      
+  const beforeImageUpload = (rawFile) => {
+    if (rawFile.raw.type !== 'image/jpeg' && rawFile.raw.type !== 'image/png') {
+      ElMessage.error('图片只支持jpg或png格式')
+      return false
+    } else if(rawFile.size / 1024 / 1024 > 3) {
+      ElMessage.error("图片大小不能超过3MB");
+      return false;
+    }
+    return true;
+  }
+
+  const handleImageSuccess = (response) => {
+    if(response.code === '0000') {
+      state.ruleForm.${column.javaField} = response.data;
+    } else {
+      ElMessage.error(response.msg);
+    }
+  }
+  
+#end
+  const resetForm = () => {
+    state.ruleForm = {
+#foreach ($column in $columns)
+    #if($column.isInsert)
+      $column.javaField: #if($column.htmlType == 'radio')true#else''#end,
+    #end
+#end
+#if($table.sub)
+      ${subclassName}ModelList: [],
+#end
+#if($table.tree)
+      parentId: '',
+      ancestors: '',
+      ancestorsArray: [],
+#end
+    }
+  }
+  // 暴露变量
+  defineExpose({
+    openDialog,
+  });
+</script>
+
+#if($exsitImage)
+<style scoped>
+  .img-uploader .avatar {
+    width: 350px;
+    height: 160px;
+    display: block;
+  }
+</style>
+
+<style>
+  .img-uploader .el-upload {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+  }
+
+  .img-uploader .el-upload:hover {
+    border-color: var(--el-color-primary);
+  }
+
+  .el-icon.img-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 350px;
+    height: 160px;
+    text-align: center;
+  }
+</style>
+#end

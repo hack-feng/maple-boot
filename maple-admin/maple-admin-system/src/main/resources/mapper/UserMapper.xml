@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.system.mapper.UserMapper">
+
+    <sql id="selectUserVo">
+        select id, open_id, dept_id, account, user_name, nick_name, user_type, email, phone, sex, avatar, salt, password, status, login_ip, login_date, create_id, create_time, update_id, update_time, is_delete, remark from usc_user
+    </sql>
+
+    <select id="getPageList" resultType="com.maple.system.vo.model.UserModel">
+        <include refid="selectUserVo"/>
+        <where>
+            is_delete = 0
+            <if test="user.openId != null  and user.openId != ''">
+                and open_id = #{user.openId}
+            </if>
+            <if test="user.account != null  and user.account != ''">
+                and account = #{user.account}
+            </if>
+            <if test="user.userName != null  and user.userName != ''">
+                and user_name like concat('%', #{user.userName}, '%')
+            </if>
+            <if test="user.nickName != null  and user.nickName != ''">
+                and nick_name like concat('%', #{user.nickName}, '%')
+            </if>
+            <if test="user.userType != null  and user.userType != ''">
+                and user_type = #{user.userType}
+            </if>
+            <if test="user.phone != null  and user.phone != ''">
+                and phone = #{user.phone}
+            </if>
+            <if test="user.sex != null  and user.sex != ''">
+                and sex = #{user.sex}
+            </if>
+            <if test="user.status != null  and user.status != ''">
+                and status = #{user.status}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,8 @@
+server:
+  port: 6666
+  
+spring:
+  application:
+    name: maple-admin
+  profiles:
+    active: pro

@@ -1,0 +1,54 @@
+package ${packageName}.bean;
+
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * ${subTable.functionName}对象 ${subTableName}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($subTable.crud || $subTable.sub)
+#set($Entity="BaseEntity")
+#elseif($subTable.tree)
+#set($Entity="TreeEntity")
+#end
+@Data
+@EqualsAndHashCode(callSuper = false)
+@TableName("${subTableName}")
+@ApiModel(value = "${subTable.functionName}对象", description = "${moduleName}-${functionName}信息表")
+public class ${subClassName} extends Model<${subClassName}> {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $subTable.columns)
+#if($column.isPk)
+    @TableId(value = "$column.columnName", type = IdType.AUTO)
+#end
+#if($column.javaField == "createId" || $column.javaField == "createTime" || $column.javaField == 'isDelete')
+    @TableField(fill = FieldFill.INSERT)
+#end
+#if($column.javaField == "updateId" || $column.javaField == "updateTime")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+#end
+#if($column.logicDeleteField != -1 && $column.javaField == "isDelete")
+    @TableLogic
+#end
+    @ApiModelProperty(value = "$column.columnComment")
+    private $column.javaType $column.javaField;
+
+#end
+
+    @Override
+    public Serializable pkVal() {
+        return this.id;
+    }
+}

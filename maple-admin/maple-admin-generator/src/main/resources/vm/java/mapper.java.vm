@@ -1,0 +1,43 @@
+package ${packageName}.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+#if($table.crud || $table.sub)
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+#end
+import ${packageName}.bean.${ClassName};
+import ${packageName}.vo.model.${ClassName}Model;
+#if($table.sub)
+import ${packageName}.bean.${subClassName};
+#end
+import org.apache.ibatis.annotations.Param;
+#if($table.tree)
+import java.util.List;
+#end
+
+/**
+ * ${functionName}Mapper接口
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Mapper extends BaseMapper<${ClassName}>{
+#if($table.crud || $table.sub)
+    /**
+     * 查询${functionName}列表
+     * 
+     * @param page 分页信息
+     * @param ${className} ${functionName}
+     * @return ${functionName}集合
+     */
+    IPage<${ClassName}Model> getPageList(@Param("page") Page<${ClassName}Model> page, @Param("${className}") ${ClassName}Model ${className});
+#elseif($table.tree)
+    /**
+     * 查询${functionName}列表
+     *
+     * @param ${className} ${functionName}
+     * @return ${functionName}集合
+     */
+    List<${ClassName}Model> getTreeList(@Param("${className}") ${ClassName}Model ${className});
+#end
+}

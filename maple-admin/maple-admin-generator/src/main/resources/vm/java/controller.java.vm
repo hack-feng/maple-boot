@@ -1,0 +1,67 @@
+package ${packageName}.controller;
+
+#if($table.crud || $table.sub)
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import ${packageName}.vo.query.${ClassName}PageQuery;
+#elseif($table.tree)
+import java.util.List;
+#end
+import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.vo.model.${ClassName}Model;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * ${functionName}  前端控制器
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Api(tags = "${functionName}")
+@RestController
+@RequestMapping("/${moduleName}/${className}")
+@AllArgsConstructor
+public class ${ClassName}Controller {
+    
+    private final I${ClassName}Service ${className}Service;
+
+#if($table.crud || $table.sub)
+    @ApiOperation(value = "分页查询${functionName}列表", notes="${functionName}-分页查询列表", nickname = "${author}")
+    @PostMapping("/getPageList")
+    public IPage<${ClassName}Model> getPageList(@RequestBody ${ClassName}PageQuery query) {
+        return ${className}Service.getPageList(query);
+    }
+#elseif($table.tree)
+    @ApiOperation(value = "查询${functionName}树结构", notes="${functionName}-查询树结构", nickname = "${author}")
+    @PostMapping("/getTreeList")
+    public List<${ClassName}Model> getTreeList(@RequestBody ${ClassName}Model model) {
+        return ${className}Service.getTreeList(model);
+    }
+#end
+
+    @ApiOperation(value = "根据id查询${functionName}信息", notes="${functionName}-根据id查询数据信息", nickname = "${author}")
+    @GetMapping(value = "/{${pkColumn.javaField}}")
+    public ${ClassName}Model get${ClassName}ById(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Service.get${ClassName}ById(${pkColumn.javaField});
+    }
+
+    @ApiOperation(value = "新增${functionName}数据", notes="${functionName}-新增数据", nickname = "${author}")
+    @PostMapping("/create${ClassName}")
+    public ${pkColumn.javaType} create${ClassName}(@RequestBody ${ClassName}Model model) {
+        return ${className}Service.create${ClassName}(model);
+    }
+
+    @ApiOperation(value = "/修改${functionName}数据", notes="${functionName}-修改数据", nickname = "${author}")
+    @PostMapping("/update${ClassName}")
+    public void update${ClassName}(@RequestBody ${ClassName}Model model) {
+        ${className}Service.update${ClassName}(model);
+    }
+
+    @ApiOperation(value = "删除${functionName}", notes="${functionName}-根据id删除数据信息", nickname = "${author}")
+    @DeleteMapping("/{${pkColumn.javaField}}")
+    public Integer delete${ClassName}(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Service.delete${ClassName}(${pkColumn.javaField});
+    }
+}

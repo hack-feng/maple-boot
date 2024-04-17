@@ -1,0 +1,31 @@
+package ${packageName}.vo.query;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${packageName}.vo.model.${ClassName}Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * ${functionName}分页请求对象 ${tableName}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+@ApiModel(value = "${functionName}分页请求对象", description = "${moduleName}-${functionName}分页请求对象")
+public class ${ClassName}PageQuery {
+
+    @ApiModelProperty(value = "分页信息")
+    private Page<${ClassName}Model> page;
+
+    @ApiModelProperty(value = "请求信息")
+    private ${ClassName}Model query;
+
+}

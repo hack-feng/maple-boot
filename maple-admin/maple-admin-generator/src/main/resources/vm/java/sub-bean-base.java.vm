@@ -1,0 +1,46 @@
+package ${packageName}.bean;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.maple.common.config.bean.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.Date;
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+    #set($Entity="BaseEntity")
+#elseif($table.tree)
+    #set($Entity="TreeEntity")
+#end
+@Data
+@EqualsAndHashCode(callSuper = false)
+@TableName("${tableName}")
+@ApiModel(value = "${functionName}对象", description = "${moduleName}-${functionName}信息表")
+public class ${ClassName} extends BaseEntity {
+
+private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+    #if($column.logicDeleteField != -1 && $column.javaField == "isDelete")
+    @TableLogic
+    #end
+    #if($column.isPk
+    || $column.javaField == "createId"
+    || $column.javaField == "createTime"
+    || $column.javaField == "updateId"
+    || $column.javaField == "updateTime")
+    #else
+    @ApiModelProperty(value = "$column.columnComment")
+    private $column.javaType $column.javaField;
+    
+    #end
+#end
+}

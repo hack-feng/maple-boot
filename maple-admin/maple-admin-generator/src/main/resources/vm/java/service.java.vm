@@ -1,0 +1,67 @@
+package ${packageName}.service;
+
+#if($table.crud || $table.sub)
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import ${packageName}.vo.query.${ClassName}PageQuery;
+#elseif($table.tree)
+import java.util.List;
+#end
+import ${packageName}.vo.model.${ClassName}Model;
+
+/**
+ * ${functionName}Service接口
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface I${ClassName}Service {
+   
+#if($table.crud || $table.sub)
+    /**
+     * 分页查询${functionName}列表
+     *
+     * @param query 请求参数
+     * @return ${functionName}集合
+     */
+    IPage<${ClassName}Model> getPageList(${ClassName}PageQuery query);
+#elseif($table.tree)
+    /**
+     * 查询${functionName}树结构
+     *
+     * @param model 请求参数
+     * @return ${functionName}集合
+     */
+    List<${ClassName}Model> getTreeList(${ClassName}Model model);
+#end
+
+    /**
+     * 根据id查询${functionName}详情
+     *
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    ${ClassName}Model get${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 新增${functionName}信息
+     *
+     * @param model ${functionName}信息
+     * @return 新增后的ID
+     */
+    ${pkColumn.javaType} create${ClassName}(${ClassName}Model model);
+    
+    /**
+     * 修改${functionName}信息
+     *
+     * @param model ${functionName}信息
+     */
+    void update${ClassName}(${ClassName}Model model);
+
+    /**
+     * 删除${functionName}信息
+     * 
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return 删除数量
+     */
+    Integer delete${ClassName}(${pkColumn.javaType} ${pkColumn.javaField});
+}

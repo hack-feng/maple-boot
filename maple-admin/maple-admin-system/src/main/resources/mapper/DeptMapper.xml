@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.system.mapper.DeptMapper">
+
+    <sql id="selectDeptVo">
+        select id, parent_id, ancestors, dept_name, sort_num, leader, phone, email, status, create_id, create_time, update_id, update_time, is_delete from usc_dept
+    </sql>
+    <select id="getTreeList" resultType="com.maple.system.vo.model.DeptModel">
+        <include refid="selectDeptVo"/>
+        <where>
+            is_delete = 0
+            <if test="dept.deptName != null and dept.deptName != ''">
+                and dept_name like concat('%', #{dept.deptName}, '%')
+            </if>
+            <if test="dept.status != null and dept.status != ''">
+                and status = #{dept.status}
+            </if>
+        </where>
+        order by sort_num
+    </select>
+</mapper>

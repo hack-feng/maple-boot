@@ -1,0 +1,184 @@
+package ${packageName}.service.impl;
+
+#if($table.sub)
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+#end
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+#if($table.crud || $table.sub)
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import ${packageName}.vo.query.${ClassName}PageQuery;
+#end
+import ${packageName}.bean.${ClassName};
+import ${packageName}.vo.model.${ClassName}Model;
+import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.service.I${ClassName}Service;
+#if($table.sub)
+import ${packageName}.bean.${subClassName};
+import ${packageName}.mapper.${subClassName}Mapper;
+import ${packageName}.service.I${subClassName}Service;
+#end
+import com.maple.common.util.TransformUtils;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+#if($table.sub)
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+#end
+#if($table.tree)
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+#end
+
+/**
+ * ${functionName}Service业务层处理
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+@AllArgsConstructor
+public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service {
+    
+    private final ${ClassName}Mapper ${className}Mapper;
+
+#if($table.sub)
+    private final ${subClassName}Mapper ${subclassName}Mapper;
+
+    private final I${subClassName}Service ${subclassName}Service;
+    
+#end
+#if($table.crud || $table.sub)
+    @Override
+    public IPage<${ClassName}Model> getPageList(${ClassName}PageQuery query) {
+        return ${className}Mapper.getPageList(query.getPage(), query.getQuery());
+    }
+#elseif($table.tree)
+    @Override
+    public List<${ClassName}Model> getTreeList(${ClassName}Model ${className}) {
+        List<${ClassName}Model> list = ${className}Mapper.getTreeList(${className});
+        return getChildPerms(list, 0L);
+    }
+#end
+
+    @Override
+    public ${ClassName}Model get${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField}) {
+#if($table.sub)
+        ${ClassName}Model model = TransformUtils.map(${className}Mapper.selectById(${pkColumn.javaField}), ${ClassName}Model.class);
+        model.set${subClassName}ModelList(
+                TransformUtils.mapList(${subclassName}Mapper.selectList(Wrappers.lambdaQuery(${subClassName}.class)
+                                .eq(${subClassName}::get${subTableFkClassName}, ${pkColumn.javaField})),
+                    ${subClassName}Model.class));
+        return model;
+#else
+        return TransformUtils.map(${className}Mapper.selectById(${pkColumn.javaField}), ${ClassName}Model.class);
+#end
+    }
+
+    @Override
+#if($table.sub)
+    @Transactional(rollbackFor = Exception.class)
+#end
+    public Long create${ClassName}(${ClassName}Model model) {
+        ${ClassName} ${className} = TransformUtils.map(model, ${ClassName}.class);
+        ${className}Mapper.insert(${className});
+#if($table.sub)
+        insert${subClassName}(${className}.get${subClassName}ModelList(), ${className}.get${PkJavaField}());
+#end
+        return ${className}.get${PkJavaField}();
+    }
+
+    @Override
+#if($table.sub)
+    @Transactional(rollbackFor = Exception.class)
+#end
+    public void update${ClassName}(${ClassName}Model model) {
+        ${className}Mapper.updateById(TransformUtils.map(model, ${ClassName}.class));
+#if($table.sub)
+        ${subclassName}Mapper.delete(Wrappers.lambdaQuery(${subClassName}.class)
+                .eq(${subClassName}::get${subTableFkClassName}, model.get${PkJavaField}()));
+        insert${subClassName}(model.get${subClassName}ModelList(), ${className}.get${PkJavaField}());
+#end
+    }
+    
+    @Override
+#if($table.sub)
+    @Transactional(rollbackFor = Exception.class)
+#end
+    public Integer delete${ClassName}(${pkColumn.javaType} ${pkColumn.javaField}) {
+#if($table.sub)
+        ${subclassName}Mapper.delete(Wrappers.lambdaQuery(${subClassName}.class)
+                .eq(${subClassName}::get${subTableFkClassName}, ${pkColumn.javaField}));
+#end
+        return ${className}Mapper.deleteById(${pkColumn.javaField});
+    }
+#if($table.sub)
+
+    /**
+     * 新增${subTable.functionName}信息
+     *
+     * @param model ${functionName}对象
+     */
+    public void insert${subClassName}(List<${subClassName}Model> models, ${pkColumn.javaType} ${pkColumn.javaField}) {
+        if (CollectionUtils.isEmpty(models)) {
+            return;
+        }
+        List<${subClassName}> ${subclassName}List = TransformUtils.mapList(models, ${subClassName}.class);
+        ${subclassName}List.forEach(data -> data.set${subTableFkClassName}(${pkColumn.javaField}));
+        ${subclassName}Service.saveBatch(${subclassName}List);
+    }
+#end
+
+#if($table.tree)
+
+    /**
+ * 根据父节点的ID获取所有子节点
+ *
+ * @param list     分类表
+ * @param parentId 传入的父节点ID
+ * @return String
+ */
+    public List<${ClassName}Model> getChildPerms(List<${ClassName}Model> list, Long parentId) {
+        List<${ClassName}Model> returnList = new ArrayList<>();
+        for (${ClassName}Model model : list) {
+            // 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
+            if (model.getParentId().equals(parentId)) {
+                recursionFn(list, model);
+                returnList.add(model);
+            }
+        }
+        return returnList;
+    }
+
+    /**
+     * 递归列表
+     */
+    private void recursionFn(List<${ClassName}Model> list, ${ClassName}Model model) {
+        // 得到子节点列表
+        List<${ClassName}Model> childList = getChildList(list, model);
+        model.setChildrenList(childList);
+        for (${ClassName}Model child : childList) {
+            // 判断是否有子节点
+            if (!CollectionUtils.isEmpty(getChildList(list, model))) {
+                recursionFn(list, child);
+            }
+        }
+    }
+
+    /**
+     * 得到子节点列表
+     */
+    private List<${ClassName}Model> getChildList(List<${ClassName}Model> list, ${ClassName}Model model) {
+        List<${ClassName}Model> modelList = new ArrayList<>();
+        for (${ClassName}Model n : list) {
+            if (n.getParentId().equals(model.getId())) {
+                modelList.add(n);
+            }
+        }
+        return modelList;
+    }
+#end
+}

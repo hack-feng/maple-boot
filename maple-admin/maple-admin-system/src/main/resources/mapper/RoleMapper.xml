@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.system.mapper.RoleMapper">
+
+    <sql id="selectRoleVo">
+        select id, role_name, role_key, sort_num, data_scope, menu_check_strictly, dept_check_strictly, status, remark, create_id, create_time, update_id, update_time, is_delete from usc_role
+    </sql>
+    <select id="getPageList" resultType="com.maple.system.vo.model.RoleModel">
+        <include refid="selectRoleVo"/>
+        <where>
+            is_delete = 0
+            <if test="role.roleName != null and role.roleName != ''">
+                and role_name like concat('%', #{role.roleName}, '%')
+            </if>
+            <if test="role.roleKey != null and role.roleKey != ''">
+                and role_key = #{role.roleKey}
+            </if>
+            <if test="role.status != null">
+                and status = #{role.status}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

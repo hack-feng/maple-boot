@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.system.mapper.MenuMapper">
+
+    <sql id="selectMenuVo">
+        select id, name, title, menu_type, parent_id, ancestors, sort_num, path, component, link_url, is_iframe, is_link, is_keep_alive, is_hide, is_affix, status, perms, icon, remark, create_id, create_time, update_id, update_time from usc_menu
+    </sql>
+    <select id="getTreeList" resultType="com.maple.system.vo.model.MenuModel">
+        <include refid="selectMenuVo"/>
+        <where>
+            <if test="menu.title != null and menu.title != ''">
+                and title like concat('%', #{menu.title}, '%')
+            </if>
+            <if test="menu.menuType != null and menu.menuType != ''">
+                and menu_type = #{menu.menuType}
+            </if>
+            <if test="menu.status != null">
+                and status = #{menu.status}
+            </if>
+        </where>
+        order by sort_num
+    </select>
+
+    <select id="selectMenuTreeByUserId" resultType="com.maple.system.vo.model.MenuModel">
+        select distinct t1.*
+        from usc_menu t1
+                 left join usc_role_menu t2 on t1.id = t2.menu_id
+                 left join usc_user_role t3 on t2.role_id = t3.role_id
+                 left join usc_role t4 on t3.role_id = t4.id
+        where t3.user_id = #{userId}
+          and t1.menu_type in ('M', 'C')
+          and t1.status = 1
+          AND t4.status = 1
+        order by t1.parent_id, t1.sort_num
+    </select>
+    <select id="selectMenuPermsByUserId" resultType="java.lang.String">
+        select distinct m.perms
+        from usc_menu m
+                 left join usc_role_menu rm on m.id = rm.menu_id
+                 left join usc_user_role ur on rm.role_id = ur.role_id
+                 left join usc_role r on r.id = ur.role_id
+        where m.status = 1
+          and r.status = 1
+          and ur.user_id = #{userId}
+    </select>
+</mapper>

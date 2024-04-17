@@ -1,0 +1,230 @@
+<template>
+  <div class="${moduleName}-${className}-container layout-padding">
+    <el-card shadow="hover" class="layout-padding-auto">
+      <div class="${moduleName}-${className}-search mb15">
+        <el-form :inline="true" ref="${className}SearchRef" :model="state.tableData.param" size="default">
+          <el-row>
+  #foreach($column in $columns)
+      #if($column.isQuery)
+          #set($dictType=$column.dictType)
+          #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+          #set($parentheseIndex=$column.columnComment.indexOf("（"))
+          #if($parentheseIndex != -1)
+              #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+          #else
+              #set($comment=$column.columnComment)
+          #end
+          #if($column.htmlType == "input")
+            <el-form-item label="${comment}" class="ml10" size="default">
+              <el-input v-model="state.tableData.param.${column.javaField}" placeholder="请输入${comment}" clearable
+                        style="max-width: 180px"></el-input>
+            </el-form-item>
+          #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
+            <el-form-item label="${comment}" class="ml10" prop="${column.javaField}">
+              <el-select v-model="state.tableData.param.${column.javaField}" placeholder="请选择${comment}" clearable>
+                <el-option
+                    v-for="dict in $dictType"
+                    #if($column.javaType == "Long" || $column.javaType == "Integer" || $column.javaType == "Boolean")
+                    :key="Number(dict.value)"
+                    #else
+                    :key="dict.value"
+                    #end
+                    :label="dict.label"
+                    #if($column.javaType == "Long" || $column.javaType == "Integer" || $column.javaType == "Boolean")
+                    :value="Number(dict.value)"
+                    #else
+                    :value="dict.value"
+                    #end
+                />
+              </el-select>
+            </el-form-item>
+          #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
+            <el-form-item label="${comment}" class="ml10"  prop="${column.javaField}">
+              <el-select v-model="state.tableData.param.${column.javaField}" placeholder="请选择${comment}" clearable>
+                <el-option label="请选择字典生成" value="" />
+              </el-select>
+            </el-form-item>
+          #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
+            <el-form-item label="${comment}" class="ml10" prop="${column.javaField}">
+              <el-date-picker clearable
+                              v-model="state.tableData.param.${column.javaField}"
+                              type="date"
+                              value-format="yyyy-MM-dd"
+                              placeholder="选择${comment}">
+              </el-date-picker>
+            </el-form-item>
+          #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+            <el-form-item label="${comment}" class="ml10" >
+              <el-date-picker
+                  clearable
+                  v-model="daterange${AttrName}"
+                  style="width: 240px"
+                  value-format="yyyy-MM-dd"
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+              ></el-date-picker>
+            </el-form-item>
+          #end
+      #end
+  #end
+            <el-button size="default" type="primary" class="ml10" @click="getTableData">
+              <el-icon><ele-Search /></el-icon> 查询
+            </el-button>
+            <el-button size="default" class="ml10" @click="resetQuery">
+              <el-icon><ele-Refresh /></el-icon> 重置
+            </el-button>
+          </el-row>
+        </el-form>
+      </div>
+      <el-row :gutter="35">
+        <el-button size="default" type="success" plain class="ml30" @click="onOpenAdd('add')">
+          <el-icon><ele-FolderAdd /></el-icon> 新增
+        </el-button>
+      </el-row>
+      <el-table
+          :data="state.tableData.data"
+          v-loading="state.tableData.loading"
+          style="width: 100%"
+          row-key="id"
+          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      >
+    #foreach($column in $columns)
+      #set($javaField=$column.javaField)
+      #set($parentheseIndex=$column.columnComment.indexOf("（"))
+      #if($parentheseIndex != -1)
+          #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+      #else
+          #set($comment=$column.columnComment)
+      #end
+      #if($column.isPk)
+        <el-table-column label="${comment}" prop="${javaField}" show-overflow-tooltip/>
+      #elseif($column.isList && $column.htmlType == "radio")
+        <el-table-column label="${comment}" prop="${javaField}" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.${javaField}">是</el-tag>
+            <el-tag type="info" v-else>否</el-tag>
+          </template>
+        </el-table-column>
+      #elseif($column.isList && $column.htmlType == "datetime")
+        <el-table-column label="${comment}" prop="${javaField}" show-overflow-tooltip>
+          <template #default="scope">
+            <span>{{ parseDateTime(scope.row.${javaField}) }}</span>
+          </template>
+        </el-table-column>
+      #elseif($column.isList && "" != $column.dictType)
+        <el-table-column label="${comment}" prop="${javaField}" show-overflow-tooltip>
+          <template #default="scope">
+              #set($flagStart = '[scope.row.')
+            <el-tag :type="$column.dictType$flagStart${javaField}].elTagType">{{ $column.dictType$flagStart${javaField}].label }}</el-tag>
+          </template>
+        </el-table-column>
+      #elseif($column.isList && "" != $javaField)
+        <el-table-column label="${comment}" prop="${javaField}" show-overflow-tooltip/>
+      #end
+    #end
+        <el-table-column label="操作" show-overflow-tooltip width="140">
+          <template #default="scope">
+            <el-button size="small" text type="primary" @click="onOpenAdd('add', scope.row)">新增</el-button>
+            <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>
+            <el-button size="small" text type="primary" @click="onTableRowDel(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+    <${ClassName}Dialog ref="${className}DialogRef" @refresh="getTableData()" :${className}Options="state.tableData.data"/>
+  </div>
+</template>
+
+<script setup lang="ts" name="${className}">
+  import { defineAsyncComponent, ref, reactive, nextTick, onMounted, getCurrentInstance } from 'vue';
+  import { ElMessageBox, ElMessage } from 'element-plus';
+  import { use${ClassName}Api } from '/@/api/${moduleName}/${className}';
+  import { parseDateTime } from '/@/utils/formatTime';
+
+#if(${dictTypeKey} != "")
+  // 获取字典
+  const { proxy } = getCurrentInstance();
+  const { ${dictTypeKey} } = proxy.parseDict(${dictTypeValue});
+
+#end
+  // 引入组件
+  const ${ClassName}Dialog = defineAsyncComponent(() => import('./dialog.vue'));
+
+  // 定义变量内容
+  const ${className}DialogRef = ref();
+  const ${className}SearchRef = ref();
+  const use${ClassName} = use${ClassName}Api();
+  const state = reactive({
+    tableData: {
+      data: [],
+      loading: false,
+      param: {
+#foreach($column in $columns)
+  #if($column.isQuery)
+          $column.javaField: '',
+  #end
+#end
+      }
+    },
+  });
+
+  // 初始化表格数据
+  const getTableData = () => {
+    state.tableData.loading = true;
+    state.tableData.data = [];
+    use${ClassName}.getTreeList(state.tableData.param).then(res => {
+      state.tableData.data = res;
+    });
+    setTimeout(() => {
+      state.tableData.loading = false;
+    }, 500);
+  };
+  // 打开新增菜单弹窗
+  const onOpenAdd = (type: string, row) => {
+      ${className}DialogRef.value.openDialog(type, row);
+  };
+  // 打开编辑菜单弹窗
+  const onOpenEdit = (type: string, row) => {
+    ${className}DialogRef.value.openDialog(type, row);
+  };
+  // 删除当前行
+  const onTableRowDel = (row) => {
+    ElMessageBox.confirm(`此操作将永久删除数据：${row.deptName}, 是否继续?`, '提示', {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+        .then(() => {
+          use${ClassName}.delete${ClassName}(row.id).then(() => {
+            getTableData();
+            ElMessage.success('删除成功');
+          });
+        })
+        .catch(() => {});
+  };
+  // 重置搜索框
+  const resetQuery = () => {
+    nextTick(() => {
+            ${className}SearchRef.value.resetFields();
+    });
+  }
+  // 页面加载时
+  onMounted(() => {
+    getTableData();
+  });
+</script>
+<style scoped lang="scss">
+    .${moduleName}-${className}-container {
+      :deep(.el-card__body) {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow: auto;
+        .el-table {
+          flex: 1;
+        }
+      }
+    }
+</style>
