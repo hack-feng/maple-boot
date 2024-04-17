@@ -98,3 +98,70 @@
 生成工具-生成代码预览
 
 ![image-20240417141614037](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141614.png?xxfjava)
+
+## 项目结构
+
+服务模块定义
+
+~~~ABAP
+maple-admin-system             ------------ 模块名称
+├─src
+│  └─main
+│      ├─java
+│      │  └─com.maple.system   ------------ 模块目录
+│      │     ├─bean          ------------ 实体类
+│      │     ├─mapper        ------------ mapper类
+│      │     ├─service       ------------ service接口类
+│      │     │  └─impl       ------------ service接口实现类
+│      │     └─vo
+│      │        ├─model      ------------ 对外实体Model类
+│      │        └─query      ------------ 请求参数对象
+│      └─resources
+│          └─mapper          ------------ mapper的xml文件
+└─pom.xml                    ------------ maven配置文件
+~~~
+
+Rest接口模块定义
+
+~~~ABAP
+maple-admin-rest                   ----------- 模块名称
+├─src
+│  └─main
+│      ├─java
+│      │  └─com.maple.rest         ----------- 模块目录
+│      │     ├─aop                 ----------- AOP切面配置
+│      │     ├─config              ----------- 启动项配置
+│      │     ├─controller          ----------- Controller接口
+│      │     │  ├─common           ----------- 通用接口
+│      │     │  └─manage           ----------- 管理模块接口
+│      │     │     ├─system        ----------- 管理模块-系统设置接口
+│      │     │     ├─tool          ----------- 管理模块-工具类接口
+│      │     │     └─usc           ----------- 管理模块-系统用户接口
+│      │     ├─job                 ----------- 定时任务
+│      │     └─Application.java    ----------- 项目启动类
+│      └─resources                 ----------- 资源目录
+│          └─WEB-INF
+│              └─resources
+└─pom.xml                          ----------- Maven配置文件
+~~~
+
+前端模块定义
+
+~~~ABAP
+maple-web
+├─public             ---------- 公开文件
+└─src                           
+    ├─api            ---------- 接口地址
+    │  └─system      ---------- 系统管理接口
+    ├─assets         ---------- 应用程序使用的静态资源文件
+    ├─components     ---------- 应用程序的公共组件
+    ├─directive      ---------- Vue的自定义指令
+    ├─i18n           ---------- 放置国际化多语言配置文件
+    ├─layout         ---------- 项目的布局.vue模板
+    ├─router         ---------- 应用程序的路由配置
+    ├─stores         ---------- 应用程序的状态管理工具
+    ├─theme          ---------- 应用程序的主题配置
+    ├─types          ---------- 数据类型
+    ├─utils          ---------- 自己封装的一些全局性的js功能文件
+    └─views          ---------- 应用程序的页面
+~~~
