@@ -10,7 +10,7 @@
 		<a href="https://v3.vuejs.org/" target="_blank">
 			<img src="https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417134539.png?xxfjava" alt="vue">
 		</a>
-		<a href="https://gitee.com/lyt-top/vue-next-admin/blob/master/LICENSE" target="_blank">
+		<a href="https://github.com/hack-feng/maple-boot/blob/main/LICENSE" target="_blank">
 		  <img src="https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417134340.png?xxfjava" alt="license">
 		</a>
 	</p>
