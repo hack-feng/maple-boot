@@ -14,7 +14,6 @@
 		  <img src="https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417134340.png?xxfjava" alt="license">
 		</a>
 	</p>
-	<p>&nbsp;</p>
 </div>
 
 ## 🍁项目简介
@@ -35,7 +34,7 @@
 
 **后端项目**
 
-项目主要使用SpringBoot + Mybatis Plus开发
+项目主要使用SpringBoot + Mybatis Plus开发，代码生成模块参考[若依](https://gitee.com/y_project/RuoYi)框架进行改造。
 
 * JDK8
 * SpringBoot  v:2.7.12
@@ -70,5 +69,32 @@
 | 代码生成 | 生成SpringBoot+Vue代码。单表生成、树表结构生成、一对多模式生成 |    ✔     |
 | 更多功能 | 本项目只做最基础的功能，后续功能化集成会陆续开源其它项目，欢迎大家持续关注[笑小枫](https://www.xiaoxiaofeng.com) |    ❤     |
 
+## 功能欣赏
 
+登录页
 
+![image-20240417141408120](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141408.png?xxfjava)
+
+首页
+
+![image-20240417141854786](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141855.png?xxfjava)
+
+用户管理
+
+![image-20240417141432864](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141432.png?xxfjava)
+
+菜单管理
+
+![image-20240417141502304](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141502.png?xxfjava)
+
+字典编辑页面
+
+![image-20240417141537529](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141537.png?xxfjava)
+
+生成工具-生成代码配置
+
+![image-20240417141641747](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141641.png?xxfjava)
+
+生成工具-生成代码预览
+
+![image-20240417141614037](https://image.xiaoxiaofeng.site/blog/2024/04/17/xxf-20240417141614.png?xxfjava)
