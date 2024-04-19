@@ -1,4 +1,4 @@
-package com.maple.generator.model.model;
+package com.maple.generator.vo.model;
 
 import com.maple.generator.util.StringUtils;
 import io.swagger.annotations.ApiModelProperty;

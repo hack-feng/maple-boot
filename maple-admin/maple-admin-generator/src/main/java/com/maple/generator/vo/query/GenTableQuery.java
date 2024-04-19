@@ -1,4 +1,4 @@
-package com.maple.generator.model.query;
+package com.maple.generator.vo.query;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

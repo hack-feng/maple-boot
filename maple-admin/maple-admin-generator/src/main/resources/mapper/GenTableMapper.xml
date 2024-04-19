@@ -3,7 +3,7 @@
 <mapper namespace="com.maple.generator.mapper.GenTableMapper">
 
 
-    <resultMap type="com.maple.generator.model.model.GenTableModel" id="GenTableResult">
+    <resultMap type="com.maple.generator.vo.model.GenTableModel" id="GenTableResult">
         <id property="id" column="id"/>
         <result property="tableName" column="table_name"/>
         <result property="tableComment" column="table_comment"/>
@@ -27,7 +27,7 @@
         <collection property="columns" javaType="java.util.List" resultMap="GenTableColumnResult"/>
     </resultMap>
 
-    <resultMap type="com.maple.generator.model.model.GenTableColumnModel" id="GenTableColumnResult">
+    <resultMap type="com.maple.generator.vo.model.GenTableColumnModel" id="GenTableColumnResult">
         <result property="id" column="column_id"/>
         <result property="tableId" column="table_id"/>
         <result property="columnName" column="column_name"/>
@@ -52,7 +52,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <select id="selectDbTableList" resultType="com.maple.generator.model.model.GenTableModel">
+    <select id="selectDbTableList" resultType="com.maple.generator.vo.model.GenTableModel">
         select
         table_name,
         table_comment,
@@ -75,7 +75,7 @@
             AND lower(table_comment) like lower(concat('%', #{req.tableComment}, '%'))
         </if>
     </select>
-    <select id="getPageList" resultType="com.maple.generator.model.model.GenTableModel">
+    <select id="getPageList" resultType="com.maple.generator.vo.model.GenTableModel">
         select * from gen_table
         <where>
             <if test="req.tableName">

@@ -2,8 +2,8 @@ package com.maple.generator.util;
 
 import com.maple.generator.constant.GenConfig;
 import com.maple.generator.constant.GenConstants;
-import com.maple.generator.model.model.GenTableColumnModel;
-import com.maple.generator.model.model.GenTableModel;
+import com.maple.generator.vo.model.GenTableColumnModel;
+import com.maple.generator.vo.model.GenTableModel;
 import org.apache.velocity.VelocityContext;
 
 import java.util.ArrayList;
@@ -176,10 +176,10 @@ public class VelocityUtils {
             }
         }
 
-        if (template.contains("model.java.vm")) {
-            fileName = StringUtils.format("{}/vo/model/{}Model.java", javaPath, className);
-        } else if (template.contains("sub-model.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
-            fileName = StringUtils.format("{}/vo/model/{}Model.java", javaPath, genTable.getSubTable().getClassName());
+        if (template.contains("vo.java.vm")) {
+            fileName = StringUtils.format("{}/vo/vo/{}Model.java", javaPath, className);
+        } else if (template.contains("sub-vo.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
+            fileName = StringUtils.format("{}/vo/vo/{}Model.java", javaPath, genTable.getSubTable().getClassName());
         } else if (template.contains("pageQuery.java.vm")) {
             fileName = StringUtils.format("{}/vo/query/{}PageQuery.java", javaPath, className);
         } else if (template.contains("mapper.java.vm")) {

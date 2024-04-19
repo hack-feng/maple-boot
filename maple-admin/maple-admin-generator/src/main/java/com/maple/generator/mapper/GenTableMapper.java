@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.maple.generator.bean.GenTable;
-import com.maple.generator.model.model.GenTableModel;
-import com.maple.generator.model.query.GenTableQuery;
+import com.maple.generator.vo.model.GenTableModel;
+import com.maple.generator.vo.query.GenTableQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

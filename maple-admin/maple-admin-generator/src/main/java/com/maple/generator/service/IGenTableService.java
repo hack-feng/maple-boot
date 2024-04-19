@@ -3,9 +3,9 @@ package com.maple.generator.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.maple.generator.bean.GenTable;
-import com.maple.generator.model.model.GenTableModel;
-import com.maple.generator.model.query.GenTablePageQuery;
-import com.maple.generator.model.query.GenTableQuery;
+import com.maple.generator.vo.model.GenTableModel;
+import com.maple.generator.vo.query.GenTablePageQuery;
+import com.maple.generator.vo.query.GenTableQuery;
 
 import java.util.List;
 import java.util.Map;

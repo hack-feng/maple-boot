@@ -2,8 +2,8 @@ package com.maple.generator.util;
 
 import com.maple.generator.constant.GenConfig;
 import com.maple.generator.constant.GenConstants;
-import com.maple.generator.model.model.GenTableColumnModel;
-import com.maple.generator.model.model.GenTableModel;
+import com.maple.generator.vo.model.GenTableColumnModel;
+import com.maple.generator.vo.model.GenTableModel;
 import org.apache.commons.lang3.RegExUtils;
 
 import java.util.Arrays;

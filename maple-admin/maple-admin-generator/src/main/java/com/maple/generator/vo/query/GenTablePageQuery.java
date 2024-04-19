@@ -1,4 +1,4 @@
-package com.maple.generator.model.query;
+package com.maple.generator.vo.query;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.maple.generator.bean.GenTable;

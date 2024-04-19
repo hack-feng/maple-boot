@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maple.generator.mapper.GenTableColumnMapper">
 
-    <select id="selectDbTableColumnsByName" resultType="com.maple.generator.model.model.GenTableColumnModel">
+    <select id="selectDbTableColumnsByName" resultType="com.maple.generator.vo.model.GenTableColumnModel">
         select column_name,
                (case when (is_nullable = 'no' <![CDATA[ && ]]> column_key != 'PRI') then '1' else null end) as is_required,
                (case when column_key = 'PRI' then '1' else '0' end)                           as is_pk,

@@ -1,9 +1,9 @@
 package com.maple.rest.controller.manage.tool;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.maple.generator.model.model.GenTableModel;
-import com.maple.generator.model.query.GenTablePageQuery;
-import com.maple.generator.model.query.GenTableQuery;
+import com.maple.generator.vo.model.GenTableModel;
+import com.maple.generator.vo.query.GenTablePageQuery;
+import com.maple.generator.vo.query.GenTableQuery;
 import com.maple.generator.service.IGenTableService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
