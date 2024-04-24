@@ -1,4 +1,4 @@
-package com.maple.rest.controller.manage.usc;
+package com.maple.rest.controller.manage.system;
 
 import com.maple.system.service.IDeptService;
 import com.maple.system.vo.model.DeptModel;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author 笑小枫-www.xiaoxiaofeng.com
  * @date 2024-03-25
  */
-@Api(tags = "用户中心-部门")
+@Api(tags = "系统管理-部门管理接口")
 @RestController
 @RequestMapping("/manage/system/dept")
 @AllArgsConstructor
@@ -41,7 +41,7 @@ public class DeptController {
         return deptService.createDept(model);
     }
 
-    @ApiOperation(value = "/修改用户中心-部门数据", notes="用户中心-部门-修改数据", nickname = "笑小枫-www.xiaoxiaofeng.com")
+    @ApiOperation(value = "修改用户中心-部门数据", notes="用户中心-部门-修改数据", nickname = "笑小枫-www.xiaoxiaofeng.com")
     @PostMapping("/updateDept")
     public void updateDept(@RequestBody DeptModel model) {
         deptService.updateDept(model);

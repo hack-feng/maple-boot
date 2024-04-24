@@ -1,4 +1,4 @@
-package com.maple.rest.controller.manage.usc;
+package com.maple.rest.controller.manage.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.system.service.IUserService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @author 笑小枫-https://www.xiaoxiaofeng.com
  * @date 2021/12/28
  */
-@Api(tags = "管理系统-用户操作接口")
+@Api(tags = "系统管理-用户管理接口")
 @RestController
 @RequestMapping("/manage/user")
 @RequiredArgsConstructor

@@ -17,7 +17,7 @@ import java.util.List;
  * @author 笑小枫-https://www.xiaoxiaofeng.com
  * @date 2022/5/23
  */
-@Api(tags = "基础功能-字典管理")
+@Api(tags = "基础功能-字典管理接口")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/manage/dict")

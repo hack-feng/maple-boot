@@ -1,4 +1,4 @@
-package com.maple.rest.controller.manage.usc;
+package com.maple.rest.controller.manage.system;
 
 import com.maple.common.util.JwtUtil;
 import com.maple.system.service.IMenuService;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author 笑小枫-https://www.xiaoxiaofeng.com
  * @date 2022/1/11
  */
-@Api(tags = "管理系统-菜单操作接口")
+@Api(tags = "系统管理-菜单管理接口")
 @RestController
 @RequestMapping("/manage/system/menu")
 @AllArgsConstructor

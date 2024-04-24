@@ -1,4 +1,4 @@
-package com.maple.rest.controller.manage.usc;
+package com.maple.rest.controller.manage.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.system.service.IRoleService;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author 笑小枫-www.xiaoxiaofeng.com
  * @date 2024-03-27
  */
-@Api(tags = "用户中心-角色信息")
+@Api(tags = "系统管理-角色管理接口")
 @RestController
 @RequestMapping("/manage/system/role")
 @AllArgsConstructor
