@@ -68,6 +68,9 @@ public class VelocityUtils {
         velocityContext.put("dictTypeKey", StringUtils.join(set, ","));
         velocityContext.put("dictTypeValue", "\"" + StringUtils.join(set, "\",\"") + "\"");
         velocityContext.put("parentMenuId", genTable.getParentMenuId());
+
+        velocityContext.put("baseBeanPackage", GenConfig.getBaseBeanPackage());
+        velocityContext.put("transformUtilsPackage", GenConfig.getTransformUtilsPackage());
         if (GenConstants.TPL_TREE.equals(tplCategory)) {
             setTreeVelocityContext(velocityContext, genTable);
         }

@@ -39,6 +39,16 @@ public class GenConfig {
      */
     public static boolean extendsBaseBean;
 
+    /**
+     * BaseEntity路径
+     */
+    public static String baseBeanPackage;
+
+    /**
+     * 转换对象工具TransformUtils路径
+     */
+    public static String transformUtilsPackage;
+
     public static String getAuthor() {
         return author;
     }
@@ -82,5 +92,23 @@ public class GenConfig {
     @Value("${extendsBaseBean}")
     public void setExtendsBaseBean(boolean extendsBaseBean) {
         GenConfig.extendsBaseBean = extendsBaseBean;
+    }
+
+    public static String getBaseBeanPackage() {
+        return baseBeanPackage;
+    }
+
+    @Value("${baseBeanPackage}")
+    public void setBaseBeanPackage(String baseBeanPackage) {
+        GenConfig.baseBeanPackage = baseBeanPackage;
+    }
+
+    public static String getTransformUtilsPackage() {
+        return transformUtilsPackage;
+    }
+
+    @Value("${transformUtilsPackage}")
+    public void setTransformUtilsPackage(String transformUtilsPackage) {
+        GenConfig.transformUtilsPackage = transformUtilsPackage;
     }
 }

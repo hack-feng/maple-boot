@@ -17,7 +17,7 @@ import ${packageName}.bean.${subClassName};
 import ${packageName}.mapper.${subClassName}Mapper;
 import ${packageName}.service.I${subClassName}Service;
 #end
-import com.maple.common.util.TransformUtils;
+import ${transformUtilsPackage};
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 #if($table.sub)

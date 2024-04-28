@@ -10,3 +10,7 @@ gen:
   tablePrefix: sys_
   # 是否继承BaseEntity
   extendsBaseBean: true
+  # BaseEntity路径
+  baseBeanPackage: com.maple.common.config.bean.BaseEntity
+  # 转换对象工具TransformUtils路径
+  transformUtilsPackage: com.maple.common.util.TransformUtils
