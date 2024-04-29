@@ -3,7 +3,7 @@
 		<el-card shadow="hover" class="layout-padding-auto">
 			<div class="system-dept-search mb15">
 				<el-input size="default" placeholder="请输入部门名称" style="max-width: 180px"> </el-input>
-				<el-button size="default" type="primary" class="ml10">
+				<el-button size="default" type="primary" class="ml10"  @click="getTableData">
 					<el-icon>
 						<ele-Search />
 					</el-icon>

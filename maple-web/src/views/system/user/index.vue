@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template #default="scope">
-            <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>
+            <el-button v-if="auth('system:user:update')" size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>
             <el-button size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -106,6 +106,7 @@ import { defineAsyncComponent, reactive, onMounted, ref, nextTick, getCurrentIns
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useUserApi } from '/@/api/system/user';
 import { parseDateTime } from '/@/utils/formatTime';
+import { auth } from '/@/utils/authFunction';
 
 // 获取字典
 const { proxy } = getCurrentInstance();

@@ -11,7 +11,7 @@
             <el-input v-model="state.tableData.param.query.tableComment" placeholder="请输入表描述"
                       style="max-width: 180px"></el-input>
           </el-form-item>
-          <el-button size="default" type="primary" class="ml10">
+          <el-button size="default" type="primary" class="ml10" @click="getTableData">
             <el-icon>
               <ele-Search/>
             </el-icon>
