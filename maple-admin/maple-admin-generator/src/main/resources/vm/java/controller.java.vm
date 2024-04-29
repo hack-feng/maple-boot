@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "${functionName}")
 @RestController
-@RequestMapping("/${moduleName}/${className}")
+@RequestMapping("/manage/${moduleName}/${className}")
 @AllArgsConstructor
 public class ${ClassName}Controller {
     

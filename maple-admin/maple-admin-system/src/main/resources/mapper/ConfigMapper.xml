@@ -1,5 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maple.system.mapper.ConfigMapper">
-
+    
+    <sql id="selectConfigVo">
+        select id, config_name, config_key, config_value, config_type, create_id, create_time, update_id, update_time, remark from sys_config
+    </sql>
+    <select id="getPageList" resultType="com.maple.system.vo.model.ConfigModel">
+        <include refid="selectConfigVo"/>
+        <where>
+            <if test="config.configName != null and config.configName != ''"> 
+                and config_name like concat('%', #{config.configName}, '%')
+            </if>
+            <if test="config.configKey != null and config.configKey != ''"> 
+                and config_key = #{config.configKey}
+            </if>
+            <if test="config.configValue != null and config.configValue != ''"> 
+                and config_value = #{config.configValue}
+            </if>
+            <if test="config.configType != null"> 
+                and config_type = #{config.configType}
+            </if>
+        </where>
+        order by id desc
+    </select>
 </mapper>

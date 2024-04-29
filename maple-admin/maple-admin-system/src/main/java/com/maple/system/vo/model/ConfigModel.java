@@ -1,11 +1,13 @@
-package com.maple.system.bean;
+package com.maple.system.vo.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.maple.common.config.bean.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Date;
 
 /**
  * 系统管理-参数配置对象 sys_config
@@ -14,26 +16,40 @@ import lombok.EqualsAndHashCode;
  * @date 2024-04-29
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("sys_config")
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "系统管理-参数配置对象", description = "system-系统管理-参数配置信息表")
-public class Config extends BaseEntity {
+public class ConfigModel {
 
-    private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value = "参数主键")
+    private Long id;
 
     @ApiModelProperty(value = "参数名称")
     private String configName;
-    
+
     @ApiModelProperty(value = "参数键名")
     private String configKey;
-    
+
     @ApiModelProperty(value = "参数键值")
     private String configValue;
-    
+
     @ApiModelProperty(value = "是否内置")
     private Boolean configType;
-    
+
+    @ApiModelProperty(value = "创建人id")
+    private Long createId;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+
+    @ApiModelProperty(value = "修改人id")
+    private Long updateId;
+
+    @ApiModelProperty(value = "更新时间")
+    private Date updateTime;
+
     @ApiModelProperty(value = "备注")
     private String remark;
-    
+
 }
