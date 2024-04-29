@@ -250,7 +250,7 @@
     ruleForm: {
 #foreach ($column in $columns)
   #if($column.isInsert)
-      $column.javaField: #if($column.htmlType == 'radio')true#else''#end,
+      $column.javaField: #if($column.htmlType == 'switch')true#else''#end,
   #end
 #end
 #if($table.sub)
@@ -429,7 +429,7 @@
     state.ruleForm = {
 #foreach ($column in $columns)
     #if($column.isInsert)
-      $column.javaField: #if($column.htmlType == 'radio')true#else''#end,
+      $column.javaField: #if($column.htmlType == 'switch')true#else''#end,
     #end
 #end
 #if($table.sub)
