@@ -1,4 +1,3 @@
--- 导出  表 maple-boot.gen_table 结构
 CREATE TABLE IF NOT EXISTS `gen_table` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
     `table_name` varchar(200) DEFAULT '' COMMENT '表名称',
@@ -28,11 +27,9 @@ CREATE TABLE IF NOT EXISTS `gen_table` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=2 ROW_FORMAT=DYNAMIC COMMENT='代码生成-代码生成业务表';
 
--- 正在导出表  maple-boot.gen_table 的数据：~7 rows (大约)
 INSERT INTO `gen_table` (`id`, `table_name`, `table_comment`, `sub_table_name`, `sub_table_fk_name`, `class_name`, `tpl_category`, `package_name`, `module_name`, `business_name`, `function_name`, `function_author`, `gen_type`, `gen_path`, `tree_code`, `tree_parent_code`, `tree_name`, `parent_menu_id`, `parent_menu_name`, `options`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`) VALUES
 (1, 'sys_config', '系统管理-参数配置表', NULL, NULL, 'Config', 'crud', 'com.maple.system', 'system', 'config', '系统管理-参数配置', 'www.xiaoxiaofeng.com', '0', '/', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, '2024-04-11 15:48:09', 1, '2024-04-12 14:09:29');
 
--- 导出  表 maple-boot.gen_table_column 结构
 CREATE TABLE IF NOT EXISTS `gen_table_column` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
     `table_id` bigint(20) DEFAULT NULL COMMENT '归属表编号',
@@ -59,7 +56,6 @@ CREATE TABLE IF NOT EXISTS `gen_table_column` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=11 ROW_FORMAT=DYNAMIC COMMENT='代码生成-代码生成业务表字段';
 
--- 正在导出表  maple-boot.gen_table_column 的数据：~0 rows (大约)
 INSERT INTO `gen_table_column` (`id`, `table_id`, `column_name`, `column_comment`, `column_type`, `java_type`, `java_field`, `is_pk`, `is_increment`, `is_required`, `is_insert`, `is_edit`, `is_list`, `is_query`, `query_type`, `html_type`, `dict_type`, `sort`, `create_id`, `create_time`, `update_id`, `update_time`) VALUES
 (1, 1, 'id', '参数主键', 'bigint(20)', 'Long', 'id', 1, 1, 0, 0, 0, 0, 0, 'EQ', 'input', '', 1, 1, '2024-04-11 15:48:09', 1, '2024-04-12 14:09:29'),
 (2, 1, 'config_name', '参数名称', 'varchar(100)', 'String', 'configName', 0, 0, 0, 1, 1, 1, 1, 'EQ', 'editor', '', 2, 1, '2024-04-11 15:48:09', 1, '2024-04-12 14:09:29'),
@@ -72,7 +68,6 @@ INSERT INTO `gen_table_column` (`id`, `table_id`, `column_name`, `column_comment
 (9, 1, 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', 0, 0, 0, 0, 0, 0, 0, 'EQ', 'datetime', '', 9, 1, '2024-04-11 15:48:09', 1, '2024-04-12 14:09:29'),
 (10, 1, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'textarea', '', 10, 1, '2024-04-11 15:48:09', 1, '2024-04-12 14:09:29');
 
--- 导出  表 maple-boot.sys_config 结构
 CREATE TABLE IF NOT EXISTS `sys_config` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
     `config_name` varchar(100) DEFAULT '' COMMENT '参数名称',
@@ -87,9 +82,6 @@ CREATE TABLE IF NOT EXISTS `sys_config` (
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='系统管理-参数配置表';
 
--- 正在导出表  maple-boot.sys_config 的数据：~3 rows (大约)
-
--- 导出  表 maple-boot.sys_dict_data 结构
 CREATE TABLE IF NOT EXISTS `sys_dict_data` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
     `dict_sort` int(4) DEFAULT '0' COMMENT '字典排序',
@@ -108,7 +100,6 @@ CREATE TABLE IF NOT EXISTS `sys_dict_data` (
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=28 ROW_FORMAT=DYNAMIC COMMENT='系统管理-字典数据表';
 
--- 正在导出表  maple-boot.sys_dict_data 的数据：~31 rows (大约)
 INSERT INTO `sys_dict_data` (`id`, `dict_sort`, `dict_label`, `dict_value`, `dict_code`, `css_class`, `list_class`, `is_default`, `status`, `create_id`, `create_time`, `update_id`, `update_time`, `remark`) VALUES
 (1, 1, '男', '0', 'sys_user_sex', '', 'primary', 1, 1, 1, '2024-02-21 16:56:12', 1, '2024-02-21 16:56:12', '性别男'),
 (2, 2, '女', '1', 'sys_user_sex', '', 'primary', 0, 1, 1, '2024-02-21 16:56:12', 1, '2024-02-21 16:56:12', '性别女'),
@@ -138,7 +129,6 @@ INSERT INTO `sys_dict_data` (`id`, `dict_sort`, `dict_label`, `dict_value`, `dic
 (26, 2, '菜单', 'C', 'menu_type', '', 'warning', 0, 1, 1, '2024-03-27 14:24:51', 1, '2024-03-27 14:24:51', ''),
 (27, 3, '按钮', 'F', 'menu_type', '', 'danger', 0, 1, 1, '2024-03-27 14:24:51', 1, '2024-03-27 14:24:51', '');
 
--- 导出  表 maple-boot.sys_dict_type 结构
 CREATE TABLE IF NOT EXISTS `sys_dict_type` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典主键',
     `dict_name` varchar(100) DEFAULT '' COMMENT '字典名称',
@@ -153,7 +143,6 @@ CREATE TABLE IF NOT EXISTS `sys_dict_type` (
     UNIQUE KEY `dict_type` (`dict_code`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=9 ROW_FORMAT=DYNAMIC COMMENT='系统管理-字典类型表';
 
--- 正在导出表  maple-boot.sys_dict_type 的数据：~9 rows (大约)
 INSERT INTO `sys_dict_type` (`id`, `dict_name`, `dict_code`, `status`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`) VALUES
 (1, '性别', 'sys_user_sex', 1, '用户性别列表', NULL, '2021-05-17 17:52:08', 1, '2024-02-21 16:56:12'),
 (2, '菜单状态', 'sys_show_hide', 1, '菜单状态列表', NULL, '2021-05-17 17:52:08', NULL, NULL),
@@ -164,7 +153,6 @@ INSERT INTO `sys_dict_type` (`id`, `dict_name`, `dict_code`, `status`, `remark`,
 (7, '系统用户类型', 'system_user_type', 1, '系统用户类型，后台的为系统用户，只可登录管理系统；web端的为小程序用户，必须有openId', 1, '2024-03-25 13:29:55', 1, '2024-03-25 13:30:40'),
 (8, '菜单类型', 'menu_type', 1, '菜单类型（M目录 C菜单 F按钮）', 1, '2024-03-27 14:24:51', 1, '2024-03-27 14:24:51');
 
--- 导出  表 maple-boot.sys_notice 结构
 CREATE TABLE IF NOT EXISTS `sys_notice` (
     `id` int(4) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
     `notice_title` varchar(50) NOT NULL COMMENT '公告标题',
@@ -181,9 +169,7 @@ CREATE TABLE IF NOT EXISTS `sys_notice` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='系统管理-通知公告表';
 
--- 正在导出表  maple-boot.sys_notice 的数据：~2 rows (大约)
 
--- 导出  表 maple-boot.sys_operate_log 结构
 CREATE TABLE IF NOT EXISTS `sys_operate_log` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
     `title` varchar(50) DEFAULT '' COMMENT '模块标题',
@@ -207,9 +193,6 @@ CREATE TABLE IF NOT EXISTS `sys_operate_log` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='系统管理-操作日志记录';
 
--- 正在导出表  maple-boot.sys_operate_log 的数据：~0 rows (大约)
-
--- 导出  表 maple-boot.usc_dept 结构
 CREATE TABLE IF NOT EXISTS `usc_dept` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
     `parent_id` bigint(20) DEFAULT '0' COMMENT '父部门id',
@@ -228,12 +211,10 @@ CREATE TABLE IF NOT EXISTS `usc_dept` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=3 ROW_FORMAT=DYNAMIC COMMENT='用户中心-部门表';
 
--- 正在导出表  maple-boot.usc_dept 的数据：~15 rows (大约)
 INSERT INTO `usc_dept` (`id`, `parent_id`, `ancestors`, `dept_name`, `sort_num`, `leader`, `phone`, `email`, `status`, `create_id`, `create_time`, `update_id`, `update_time`, `is_delete`) VALUES
 (1, 0, '[]', '笑小枫', 0, '笑小枫', '18300000000', '1150640979@qq.com', 1, NULL, '2024-03-25 16:47:02', NULL, '2024-03-25 16:47:02', 0),
 (2, 1, '[1]', '管理部门', 1, '张三', '18888888888', NULL, 1, 1, '2024-04-11 11:06:16', 1, '2024-04-11 11:07:10', 0);
 
--- 导出  表 maple-boot.usc_menu 结构
 CREATE TABLE IF NOT EXISTS `usc_menu` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
     `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '路由名称',
@@ -262,7 +243,6 @@ CREATE TABLE IF NOT EXISTS `usc_menu` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=10 ROW_FORMAT=DYNAMIC COMMENT='用户中心-菜单权限表';
 
--- 正在导出表  maple-boot.usc_menu 的数据：~13 rows (大约)
 INSERT INTO `usc_menu` (`id`, `name`, `title`, `menu_type`, `parent_id`, `ancestors`, `sort_num`, `path`, `component`, `redirect`, `link_url`, `is_iframe`, `is_link`, `is_keep_alive`, `is_hide`, `is_affix`, `status`, `perms`, `icon`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`) VALUES
 (1, 'home', '首页', 'C', 0, '', 1, '/home', 'home/index', NULL, '', 0, 0, 1, 0, 1, 1, '', 'iconfont icon-shouye', '', 1, '2024-03-28 11:09:37', 1, '2024-03-28 13:04:26'),
 (2, 'system', '系统设置', 'M', 0, '', 2, '/system', 'system/user/index', NULL, '', 0, 0, 1, 0, 1, 1, '', 'iconfont icon-xitongshezhi', '', 1, '2024-03-28 13:06:21', 1, '2024-03-28 13:09:51'),
@@ -274,7 +254,6 @@ INSERT INTO `usc_menu` (`id`, `name`, `title`, `menu_type`, `parent_id`, `ancest
 (8, 'tool', '生成工具', 'M', 0, '', 3, '/tool', 'tool/gen/index', NULL, '', 0, 0, 1, 0, 1, 1, '', 'iconfont icon-shouye_dongtaihui', '', 1, '2024-03-28 13:06:21', 1, '2024-03-28 16:12:08'),
 (9, 'toolGen', '代码生成', 'C', 8, '[8]', 1, '/tool/gen', 'tool/gen/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-zujian', '', 1, '2024-03-28 13:19:11', 1, '2024-03-28 16:13:10');
 
--- 导出  表 maple-boot.usc_post 结构
 CREATE TABLE IF NOT EXISTS `usc_post` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
     `post_code` varchar(64) NOT NULL COMMENT '岗位编码',
@@ -289,14 +268,12 @@ CREATE TABLE IF NOT EXISTS `usc_post` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=5 ROW_FORMAT=DYNAMIC COMMENT='用户中心-岗位信息表';
 
--- 正在导出表  maple-boot.usc_post 的数据：~4 rows (大约)
 INSERT INTO `usc_post` (`id`, `post_code`, `post_name`, `sort_num`, `status`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`) VALUES
 (1, 'ceo', '董事长', 1, 1, '', NULL, NULL, 1, '2021-05-17 16:42:19'),
 (2, 'se', '部门经理', 2, 0, '', NULL, NULL, NULL, NULL),
 (3, 'hr', '人力资源', 3, 0, '', NULL, NULL, NULL, NULL),
 (4, 'user', '普通员工', 4, 0, '', NULL, NULL, NULL, NULL);
 
--- 导出  表 maple-boot.usc_role 结构
 CREATE TABLE IF NOT EXISTS `usc_role` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
     `role_name` varchar(30) NOT NULL COMMENT '角色名称',
@@ -315,12 +292,10 @@ CREATE TABLE IF NOT EXISTS `usc_role` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=3 ROW_FORMAT=DYNAMIC COMMENT='用户中心-角色信息表';
 
--- 正在导出表  maple-boot.usc_role 的数据：~2 rows (大约)
 INSERT INTO `usc_role` (`id`, `role_name`, `role_key`, `sort_num`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`, `is_delete`) VALUES
 (1, '超级管理员', 'admin', 1, '1', 1, 1, 1, '超级管理员', NULL, '2021-05-17 14:03:57', 1, '2024-04-11 16:45:08', 0),
 (2, '1', '1', 1, '1', 1, 1, 1, '1', 1, '2024-04-11 16:02:40', 1, '2024-04-11 16:02:40', 1);
 
--- 导出  表 maple-boot.usc_role_dept 结构
 CREATE TABLE IF NOT EXISTS `usc_role_dept` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `role_id` bigint(20) NOT NULL COMMENT '角色ID',
@@ -328,9 +303,7 @@ CREATE TABLE IF NOT EXISTS `usc_role_dept` (
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC COMMENT='用户中心-角色和部门关联表';
 
--- 正在导出表  maple-boot.usc_role_dept 的数据：~0 rows (大约)
 
--- 导出  表 maple-boot.usc_role_menu 结构
 CREATE TABLE IF NOT EXISTS `usc_role_menu` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `role_id` bigint(20) NOT NULL COMMENT '角色ID',
@@ -338,7 +311,6 @@ CREATE TABLE IF NOT EXISTS `usc_role_menu` (
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=10 ROW_FORMAT=DYNAMIC COMMENT='用户中心-角色和菜单关联表';
 
--- 正在导出表  maple-boot.usc_role_menu 的数据：~9 rows (大约)
 INSERT INTO `usc_role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (1, 1, 1),
 (2, 1, 2),
@@ -350,7 +322,6 @@ INSERT INTO `usc_role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (8, 1, 8),
 (9, 1, 9);
 
--- 导出  表 maple-boot.usc_user 结构
 CREATE TABLE IF NOT EXISTS `usc_user` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
     `open_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '小程序的openId',
@@ -377,11 +348,9 @@ CREATE TABLE IF NOT EXISTS `usc_user` (
     PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=2 ROW_FORMAT=DYNAMIC COMMENT='用户中心-用户信息表';
 
--- 正在导出表  maple-boot.usc_user 的数据：~2 rows (大约)
 INSERT INTO `usc_user` (`id`, `open_id`, `dept_id`, `account`, `user_name`, `nick_name`, `user_type`, `email`, `phone`, `sex`, `avatar`, `salt`, `password`, `status`, `login_ip`, `login_date`, `create_id`, `create_time`, `update_id`, `update_time`, `is_delete`, `remark`) VALUES
 (1, NULL, 2, 'admin', '管理员', '笑小枫', '1', '1150640979@qq.com', '18300000000', '0', 'https://image.xiaoxiaofeng.site/blog/2024/04/12/xxf-20240412102322.png?xxfjava', '439495', '27c3b87192fdaf6c54a0c3de1f339f1d', 1, '127.0.0.1', '2020-10-22 00:00:00', 1, '2020-10-22 14:27:04', 1, '2024-04-11 16:51:27', 0, '管理员');
 
--- 导出  表 maple-boot.usc_user_post 结构
 CREATE TABLE IF NOT EXISTS `usc_user_post` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `user_id` bigint(20) NOT NULL COMMENT '用户ID',
@@ -390,11 +359,9 @@ CREATE TABLE IF NOT EXISTS `usc_user_post` (
     UNIQUE KEY `UNI_USER_POST` (`user_id`,`post_id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=2 ROW_FORMAT=DYNAMIC COMMENT='用户中心-用户与岗位关联表';
 
--- 正在导出表  maple-boot.usc_user_post 的数据：~6 rows (大约)
 INSERT INTO `usc_user_post` (`id`, `user_id`, `post_id`) VALUES
 (1, 1, 1);
 
--- 导出  表 maple-boot.usc_user_role 结构
 CREATE TABLE IF NOT EXISTS `usc_user_role` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `user_id` bigint(20) NOT NULL COMMENT '用户ID',
@@ -403,6 +370,5 @@ CREATE TABLE IF NOT EXISTS `usc_user_role` (
     UNIQUE KEY `UNI_USER_ROLE` (`user_id`,`role_id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=5 ROW_FORMAT=DYNAMIC COMMENT='用户中心-用户和角色关联表';
 
--- 正在导出表  maple-boot.usc_user_role 的数据：~5 rows (大约)
 INSERT INTO `usc_user_role` (`id`, `user_id`, `role_id`) VALUES
 (4, 1, 1);
