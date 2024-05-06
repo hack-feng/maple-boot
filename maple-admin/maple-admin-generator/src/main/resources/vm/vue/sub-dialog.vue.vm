@@ -85,13 +85,6 @@ const state = reactive({
   #end
 #end
     ],
-    option: [
-      { value: 'primary', label: 'primary' },
-      { value: 'success', label: 'success' },
-      { value: 'info', label: 'info' },
-      { value: 'warning', label: 'warning' },
-      { value: 'danger', label: 'danger' },
-    ],
   },
 });
 

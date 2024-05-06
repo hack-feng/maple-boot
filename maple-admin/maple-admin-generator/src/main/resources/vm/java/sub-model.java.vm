@@ -27,6 +27,7 @@ public class ${subClassName}Model {
     #else
     @ApiModelProperty(value = "$column.columnComment")
     private $column.javaType $column.javaField;
+    
     #end
 #end
 

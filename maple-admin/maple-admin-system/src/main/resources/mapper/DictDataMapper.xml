@@ -2,17 +2,6 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.maple.system.mapper.DictTypeMapper">
+<mapper namespace="com.maple.system.mapper.DictDataMapper">
 
-
-    <sql id="selectDictTypeVo">
-        select id, dict_name, dict_code, status, remark, create_id, create_time, update_id, update_time from sys_dict_type
-    </sql>
-
-    <select id="getPageList" resultType="com.maple.system.vo.model.DictTypeModel">
-        <include refid="selectDictTypeVo"/>
-        <where>
-        </where>
-        order by id desc
-    </select>
 </mapper>

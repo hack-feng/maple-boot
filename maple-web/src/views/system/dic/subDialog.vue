@@ -71,9 +71,6 @@ const props = defineProps({
   },
 });
 
-
-console.log(111111111111111111, props.columns)
-
 // 定义变量内容
 const subDicDialogRef = ref<FormInstance>();
 const tableRef = ref();
