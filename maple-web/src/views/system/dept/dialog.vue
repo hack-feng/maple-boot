@@ -126,17 +126,20 @@ const openDialog = (type: string, row) => {
   if (type === 'edit') {
     useDept.getDeptById(row.id).then(res => {
       state.ruleForm = res;
-      state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
+      state.ruleForm.ancestorsArray = state.ruleForm.ancestors.split(",").map(item => Number(item));
+      console.log(state.ruleForm.ancestorsArray)
       state.dialog.title = '修改用户中心-部门';
       state.dialog.submitTxt = '修 改';
     });
   } else {
     if(row) {
+      console.log(row.ancestors)
       if(row.ancestors) {
-        state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
+        state.ruleForm.ancestorsArray = row.ancestors.split(",").map(item => Number(item));
       }
       state.ruleForm.ancestorsArray.push(row.id)
     }
+    console.log(state.ruleForm.ancestorsArray)
     state.dialog.title = '新增用户中心-部门';
     state.dialog.submitTxt = '新 增';
   }
@@ -161,7 +164,7 @@ const onSubmit = () => {
     const validateResult = res.every(item => !!item);
     if (validateResult) {
       state.ruleForm.parentId = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1]
-      state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+      state.ruleForm.ancestors = state.ruleForm.ancestorsArray.join(",");
       if(state.dialog.type == 'add') {
         useDept.createDept(state.ruleForm).then(() => {
           ElMessage.success('创建成功');

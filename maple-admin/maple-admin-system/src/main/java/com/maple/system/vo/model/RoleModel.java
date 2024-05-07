@@ -61,7 +61,10 @@ public class RoleModel {
 
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
-    
+
     @ApiModelProperty(value = "菜单列表")
     private List<Long> menuIds;
+
+    @ApiModelProperty(value = "自定义数据权限部门列表")
+    private List<Long> deptIds;
 }

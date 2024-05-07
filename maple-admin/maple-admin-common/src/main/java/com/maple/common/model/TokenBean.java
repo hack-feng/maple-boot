@@ -16,6 +16,11 @@ import lombok.RequiredArgsConstructor;
 public class TokenBean {
 
     /**
+     * 是否管理员用户，授予admin权限为管理员
+     */
+    private Boolean isAdmin;
+
+    /**
      * 用户ID
      */
     private Long userId;
@@ -46,7 +51,12 @@ public class TokenBean {
     private String userType;
 
     /**
-     * 角色拼接字符串
+     * 角色ID拼接字符串
+     */
+    private String roleIdList;
+
+    /**
+     * 角色信息拼接字符串
      */
     private String roleList;
 }

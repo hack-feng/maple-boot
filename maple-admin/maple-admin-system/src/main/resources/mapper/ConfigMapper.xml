@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="config.configType != null"> 
                 and config_type = #{config.configType}
             </if>
+            ${dataScope}
         </where>
         order by id desc
     </select>

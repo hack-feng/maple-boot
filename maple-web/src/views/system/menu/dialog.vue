@@ -223,7 +223,7 @@ const openDialog = (type: string, row) => {
     useMenu.getMenuById(row.id).then(res => {
       state.ruleForm = res;
       nextTick(()=> {
-        state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
+        state.ruleForm.ancestorsArray = state.ruleForm.ancestors.split(",").map(item => Number(item));
       });
       state.dialog.title = '修改用户中心-菜单权限';
       state.dialog.submitTxt = '修 改';
@@ -231,7 +231,7 @@ const openDialog = (type: string, row) => {
   } else {
     if(row) {
       if(row.ancestors) {
-        state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
+        state.ruleForm.ancestorsArray = row.ancestors.split(",").map(item => Number(item));
       }
       nextTick(()=> {
         state.ruleForm.ancestorsArray.push(row.id);
@@ -266,7 +266,7 @@ const onSubmit = () => {
     if (validateResult) {
       if(state.ruleForm.ancestorsArray) {
         state.ruleForm.parentId = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1];
-        state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+        state.ruleForm.ancestors = state.ruleForm.ancestorsArray.join(",");
       } else {
         state.ruleForm.parentId = 0;
         state.ruleForm.ancestors = '';

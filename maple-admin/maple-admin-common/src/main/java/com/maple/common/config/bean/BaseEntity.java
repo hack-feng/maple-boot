@@ -20,7 +20,7 @@ public class BaseEntity implements Serializable {
 
     @TableId(type = IdType.AUTO)
     protected Long id;
-
+    
     @ApiModelProperty("创建人id")
     @TableField(value = "create_id", fill = FieldFill.INSERT)
     private Long createId;

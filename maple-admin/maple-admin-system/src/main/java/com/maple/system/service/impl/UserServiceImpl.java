@@ -1,5 +1,6 @@
 package com.maple.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -14,8 +15,10 @@ import com.maple.common.util.JwtUtil;
 import com.maple.common.util.Md5Util;
 import com.maple.common.util.RedisUtil;
 import com.maple.common.util.TransformUtils;
+import com.maple.system.bean.Role;
 import com.maple.system.bean.User;
 import com.maple.system.bean.UserRole;
+import com.maple.system.mapper.RoleMapper;
 import com.maple.system.mapper.UserMapper;
 import com.maple.system.mapper.UserRoleMapper;
 import com.maple.system.service.IUserRoleService;
@@ -54,6 +57,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     private final RedisUtil redisUtil;
 
+    private final RoleMapper roleMapper;
+
     private final IUserRoleService userRoleService;
 
     @Override
@@ -79,7 +84,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .userType(user.getUserType())
                 .account(user.getAccount())
                 .deptId(user.getDeptId())
-                .roleList(StringUtils.join(userRoles, ","))
+                .roleIdList(StringUtils.join(userRoles, ","))
+                .roleList(JSON.toJSONString(roleMapper.selectList(Wrappers.lambdaQuery(Role.class).in(Role::getId, StringUtils.join(userRoles, ",")))))
                 .build();
 
         UserModel userModel = new UserModel();

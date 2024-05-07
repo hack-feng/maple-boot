@@ -21,5 +21,5 @@ public interface ConfigMapper extends BaseMapper<Config>{
      * @param config 系统管理-参数配置
      * @return 系统管理-参数配置集合
      */
-    IPage<ConfigModel> getPageList(@Param("page") Page<ConfigModel> page, @Param("config") ConfigModel config);
+    IPage<ConfigModel> getPageList(@Param("page") Page<ConfigModel> page, @Param("config") ConfigModel config, @Param("dataScope") String dataScope);
 }

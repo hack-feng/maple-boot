@@ -41,6 +41,7 @@ public class MybatisPlusConfig implements MetaObjectHandler {
         this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("updateId", JwtUtil.getUserId(), metaObject);
         this.setFieldValByName("updateTime", new Date(), metaObject);
+        this.setFieldValByName("belongDeptId", JwtUtil.getDeptId(), metaObject);
     }
 
     @Override

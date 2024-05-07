@@ -1,5 +1,7 @@
 package com.maple.system.bean;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.maple.common.config.bean.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -36,4 +38,7 @@ public class Config extends BaseEntity {
     @ApiModelProperty(value = "备注")
     private String remark;
     
+    @ApiModelProperty(value = "数据归属部门ID")
+    @TableField(value = "belong_dept_id", fill = FieldFill.INSERT)
+    private Long belongDeptId;
 }

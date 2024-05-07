@@ -2,6 +2,7 @@ package com.maple.rest.controller.manage.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.system.service.IConfigService;
+import com.maple.common.util.DataScope;
 import com.maple.system.vo.model.ConfigModel;
 import com.maple.system.vo.query.ConfigPageQuery;
 import io.swagger.annotations.Api;
@@ -25,6 +26,7 @@ public class ConfigController {
 
     @ApiOperation(value = "分页查询系统管理-参数配置列表", notes="系统管理-参数配置-分页查询列表", nickname = "www.xiaoxiaofeng.com")
     @PostMapping("/getPageList")
+    @DataScope
     public IPage<ConfigModel> getPageList(@RequestBody ConfigPageQuery query) {
         return configService.getPageList(query);
     }

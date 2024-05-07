@@ -50,7 +50,7 @@ public class LoginController {
         return UserInfo.builder()
                 .userModel(user)
                 .permissions(menuService.selectMenuPermsByUserId(JwtUtil.getUserId()))
-                .roles(new HashSet<>(JwtUtil.getRoleList()))
+                .roles(new HashSet<>(JwtUtil.getRoleIdList()))
                 .build();
     }
 

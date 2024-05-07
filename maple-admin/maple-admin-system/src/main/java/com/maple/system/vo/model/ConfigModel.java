@@ -52,4 +52,7 @@ public class ConfigModel {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @ApiModelProperty(value = "数据归属部门ID")
+    private Long belongDeptId;
+
 }

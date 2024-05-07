@@ -37,6 +37,34 @@
           </el-col>
 
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+            <el-form-item label="数据权限" prop="dataScope">
+              <el-select v-model="state.ruleForm.dataScope" placeholder="请选择数据权限" clearable class="w100">
+                <el-option
+                    v-for="dict in sys_role_data_scope"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20" v-if="state.ruleForm.dataScope === '2' ">
+            <el-form-item label="自定义权限" prop="deptIds">
+              <el-tree
+                  :data="state.deptData"
+                  :props="{ label: 'deptName' }"
+                  show-checkbox
+                  node-key="id"
+                  ref="deptRef"
+                  check-strictly
+                  v-model="state.ruleForm.deptIds"
+                  class="menu-data-tree" >
+              </el-tree>
+            </el-form-item>
+          </el-col>
+
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item label="菜单权限" prop="menuIds">
               <el-tree 
                   :data="state.menuData"
@@ -63,9 +91,10 @@
 </template>
 
 <script setup lang="ts" name="dictDialog">
-import { nextTick, reactive, ref, getCurrentInstance, onMounted, defineEmits } from 'vue';
+import { reactive, ref, getCurrentInstance, onMounted, defineEmits } from 'vue';
 import { useRoleApi } from '/@/api/system/role';
 import { useMenuApi } from '/@/api/system/menu';
+import { useDeptApi } from '/@/api/system/dept';
 import { ElMessage } from "element-plus";
 
 // 定义子组件向父组件传值/事件
@@ -73,25 +102,28 @@ const emit = defineEmits(['refresh']);
 
 // 获取字典
 const { proxy } = getCurrentInstance();
-const { sys_status } = proxy.parseDict("sys_status");
+const { sys_status, sys_role_data_scope } = proxy.parseDict("sys_status", "sys_role_data_scope");
 
 
 // 定义变量内容
 const useRole = useRoleApi();
 const useMenu = useMenuApi();
+const useDept = useDeptApi();
 const roleDialogFormRef = ref();
 const menuRef = ref();
+const deptRef = ref();
 const state = reactive({
   ruleForm: {
     roleName: '',
     roleKey: '',
     sortNum: '',
-    dataScope: '',
+    dataScope: '1',
     menuCheckStrictly: true,
     deptCheckStrictly: true,
     status: 1,
     remark: '',
     menuIds:[],
+    deptIds:[],
   },
   dialog: {
     isShowDialog: false,
@@ -107,11 +139,18 @@ const state = reactive({
     status: { required: true, message: '请输入角色状态', trigger: 'blur' },
   },
   menuData:[],
+  deptData:[],
 });
 
 const getMenuData = () => {
   useMenu.getTreeList({}).then(res => {
     state.menuData = res;
+  })
+}
+
+const getDeptData = () => {
+  useDept.getTreeList({}).then(res => {
+    state.deptData = res;
   })
 }
 
@@ -121,15 +160,24 @@ const openDialog = (type: string, row) => {
   if (type === 'edit') {
     useRole.getRoleById(row.id).then(res => {
       state.ruleForm = res;
-        let checkedKeys = res.menuIds
-        checkedKeys.forEach((v) => {
-          menuRef.value.setChecked(v, true ,false);
-        })
+      let checkedKeys = res.menuIds
+      checkedKeys.forEach((v) => {
+        menuRef.value.setChecked(v, true ,false);
+      });
+      let deptCheckedKeys = res.deptIds
+      deptCheckedKeys.forEach((v) => {
+        deptRef.value.setChecked(v, true ,false);
+      });
       state.dialog.title = '修改用户中心-角色信息';
       state.dialog.submitTxt = '修 改';
     });
   } else {
-    menuRef.value.setCheckedKeys([]);
+    if(menuRef.value){
+      menuRef.value.setCheckedKeys([]);
+    }
+    if(deptRef.value){
+      deptRef.value.setCheckedKeys([]);
+    }
     state.dialog.title = '新增用户中心-角色信息';
     state.dialog.submitTxt = '新 增';
   }
@@ -181,12 +229,13 @@ const resetForm = () => {
     roleName: '',
     roleKey: '',
     sortNum: '',
-    dataScope: '',
+    dataScope: '1',
     menuCheckStrictly: true,
     deptCheckStrictly: true,
     status: 1,
     remark: '',
     menuIds:[],
+    deptIds:[],
   };
 }
 
@@ -202,6 +251,7 @@ const currentValidate = (pageRef) => {
 // 页面加载时
 onMounted(() => {
   getMenuData();
+  getDeptData();
 });
 // 暴露变量
 defineExpose({

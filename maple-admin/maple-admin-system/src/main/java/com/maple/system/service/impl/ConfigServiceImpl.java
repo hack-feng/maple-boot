@@ -25,7 +25,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
 
     @Override
     public IPage<ConfigModel> getPageList(ConfigPageQuery query) {
-        return configMapper.getPageList(query.getPage(), query.getQuery());
+        return configMapper.getPageList(query.getPage(), query.getQuery(), query.getDataScope());
     }
 
     @Override
