@@ -1,6 +1,6 @@
 {
-	"name": "maple-boot",
-	"version": "2.4.33",
+	"name": "maple-manage-web",
+	"version": "1.0.0",
 	"description": "vue3 vite next admin template",
 	"author": "xiaoxiaofeng",
 	"license": "MIT",
@@ -67,7 +67,7 @@
 		"not dead"
 	],
 	"bugs": {
-		"url": "https://gitee.com/lyt-top/vue-next-admin/issues"
+		"url": "https://github.com/hack-feng/maple-boot/issues"
 	},
 	"engines": {
 		"node": ">=16.0.0",
@@ -84,6 +84,6 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://gitee.com/lyt-top/vue-next-admin.git"
+		"url": "https://github.com/hack-feng/maple-boot.git"
 	}
 }
