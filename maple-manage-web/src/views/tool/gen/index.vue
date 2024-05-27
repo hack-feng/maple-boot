@@ -179,12 +179,12 @@ const onRowDel = (row) => {
 };
 // 分页改变
 const onHandleSizeChange = (val: number) => {
-  state.tableData.param.page.current = val;
+  state.tableData.param.page.size = val;
   getTableData();
 };
 // 分页改变
 const onHandleCurrentChange = (val: number) => {
-  state.tableData.param.page.size = val;
+  state.tableData.param.page.current = val;
   getTableData();
 };
 // 页面加载时

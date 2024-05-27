@@ -53,7 +53,7 @@ public class ${ClassName}Controller {
         return ${className}Service.create${ClassName}(model);
     }
 
-    @ApiOperation(value = "/修改${functionName}数据", notes="${functionName}-修改数据", nickname = "${author}")
+    @ApiOperation(value = "修改${functionName}数据", notes="${functionName}-修改数据", nickname = "${author}")
     @PostMapping("/update${ClassName}")
     public void update${ClassName}(@RequestBody ${ClassName}Model model) {
         ${className}Service.update${ClassName}(model);
