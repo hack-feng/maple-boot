@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebConfigMapper">
+    
+    <sql id="selectWebConfigVo">
+        select id, title, description, web_img, icp, create_id, create_time, update_id, update_time, version from web_config
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebConfigModel">
+        <include refid="selectWebConfigVo"/>
+        <where>
+            <if test="webConfig.title != null and webConfig.title != ''"> 
+                and title = #{webConfig.title}
+            </if>
+            <if test="webConfig.description != null and webConfig.description != ''"> 
+                and description = #{webConfig.description}
+            </if>
+            <if test="webConfig.webImg != null and webConfig.webImg != ''"> 
+                and web_img = #{webConfig.webImg}
+            </if>
+            <if test="webConfig.icp != null and webConfig.icp != ''"> 
+                and icp = #{webConfig.icp}
+            </if>
+            <if test="webConfig.version != null"> 
+                and version = #{webConfig.version}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

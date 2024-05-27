@@ -1,0 +1,87 @@
+.more-omit-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.more-omit-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal !important;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.more-omit-3 {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal !important;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.hr-1 {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 16px 0;
+}
+
+.hr-2 {
+  border: none;
+  border-top: 2px solid #ccc;
+  margin: 10px 0;
+}
+
+.hr-3 {
+  border: none;
+  border-top: 3px solid #ccc;
+  margin: 16px 0;
+}
+
+.img-130 {
+  width: 100%;
+  height: 120px;
+}
+
+.img-160 {
+  width: 100%;
+  height: 160px;
+}
+
+.sticky-10 {
+  position: sticky;
+  top: 10px;
+}
+
+.sticky-50 {
+  position: sticky;
+  top: 50px;
+}
+
+.sticky-100 {
+  position: sticky;
+  top: 100px;
+}
+
+$color-main: #409EFF;
+$color-success: #67C23A;
+$color-warning: #E6A23C;
+$color-danger: #F56C6C;
+$color-info: #909399;
+
+$text-main: #303133;
+$text-normal: #606266;
+$text-minor: #909399;  //次要文字
+$text-placeholder: #C0C4CC;
+$text-333: #333;
+
+$border-first: #DCDFE6;
+$border-second: #E4E7ED;
+$border-third: #EBEEF5;
+$border-fourth: #F2F6FC;
+
+$content-bg-color: #fff

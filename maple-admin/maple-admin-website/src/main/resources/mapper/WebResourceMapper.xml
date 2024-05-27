@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebResourceMapper">
+    
+    <sql id="selectWebResourceVo">
+        select id, resource_type, resource_name, resource_desc, resource_img, down_type, down_url, file_suffix, visit_url, sort_num, is_top, is_hot, status, download_num, collect_num, title_id, create_id, create_time, update_id, update_time from web_resource
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebResourceModel">
+        <include refid="selectWebResourceVo"/>
+        <where>
+            <if test="webResource.resourceType != null"> 
+                and resource_type = #{webResource.resourceType}
+            </if>
+            <if test="webResource.resourceName != null and webResource.resourceName != ''"> 
+                and resource_name like concat('%', #{webResource.resourceName}, '%')
+            </if>
+            <if test="webResource.resourceDesc != null and webResource.resourceDesc != ''"> 
+                and resource_desc = #{webResource.resourceDesc}
+            </if>
+            <if test="webResource.resourceImg != null and webResource.resourceImg != ''"> 
+                and resource_img = #{webResource.resourceImg}
+            </if>
+            <if test="webResource.downType != null"> 
+                and down_type = #{webResource.downType}
+            </if>
+            <if test="webResource.downUrl != null and webResource.downUrl != ''"> 
+                and down_url = #{webResource.downUrl}
+            </if>
+            <if test="webResource.fileSuffix != null and webResource.fileSuffix != ''"> 
+                and file_suffix = #{webResource.fileSuffix}
+            </if>
+            <if test="webResource.visitUrl != null and webResource.visitUrl != ''"> 
+                and visit_url = #{webResource.visitUrl}
+            </if>
+            <if test="webResource.isTop != null"> 
+                and is_top = #{webResource.isTop}
+            </if>
+            <if test="webResource.isHot != null"> 
+                and is_hot = #{webResource.isHot}
+            </if>
+            <if test="webResource.status != null"> 
+                and status = #{webResource.status}
+            </if>
+            <if test="webResource.downloadNum != null"> 
+                and download_num = #{webResource.downloadNum}
+            </if>
+            <if test="webResource.collectNum != null"> 
+                and collect_num = #{webResource.collectNum}
+            </if>
+            <if test="webResource.titleId != null"> 
+                and title_id = #{webResource.titleId}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

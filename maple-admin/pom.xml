@@ -21,6 +21,7 @@
         <module>maple-admin-system</module>
         <module>maple-admin-generator</module>
         <module>maple-admin-rest</module>
+        <module>maple-admin-website</module>
     </modules>
 
 
@@ -129,6 +130,11 @@
             <dependency>
                 <groupId>com.maple</groupId>
                 <artifactId>maple-admin-system</artifactId>
+                <version>${maple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.maple</groupId>
+                <artifactId>maple-admin-website</artifactId>
                 <version>${maple.version}</version>
             </dependency>
             <dependency>

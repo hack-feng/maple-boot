@@ -1,0 +1,44 @@
+{
+  "id": "4391387",
+  "name": "xiaoxiaofeng",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "579291",
+      "name": "赏",
+      "font_class": "shang",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "4546550",
+      "name": "csdn",
+      "font_class": "csdn",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "7617119",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "10905628",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "15559721",
+      "name": "知乎",
+      "font_class": "shejiaotubiao-46",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    }
+  ]
+}

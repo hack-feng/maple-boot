@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebContentMapper">
+    
+    <sql id="selectWebContentVo">
+        select id, article_id, content, original_content, create_id, create_time, update_id, update_time from web_content
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebContentModel">
+        <include refid="selectWebContentVo"/>
+        <where>
+            <if test="webContent.articleId != null"> 
+                and article_id = #{webContent.articleId}
+            </if>
+            <if test="webContent.content != null and webContent.content != ''"> 
+                and content = #{webContent.content}
+            </if>
+            <if test="webContent.originalContent != null and webContent.originalContent != ''"> 
+                and original_content = #{webContent.originalContent}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

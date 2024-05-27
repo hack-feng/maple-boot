@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebMenuMapper">
+    
+    <sql id="selectWebMenuVo">
+        select id, name, title, image, menu_type, parent_id, ancestors, sort_num, path, component, link_url, is_link, status, icon, remark, create_id, create_time, update_id, update_time from web_menu
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebMenuModel">
+        <include refid="selectWebMenuVo"/>
+        <where>
+            <if test="webMenu.name != null and webMenu.name != ''"> 
+                and name like concat('%', #{webMenu.name}, '%')
+            </if>
+            <if test="webMenu.title != null and webMenu.title != ''"> 
+                and title = #{webMenu.title}
+            </if>
+            <if test="webMenu.image != null and webMenu.image != ''"> 
+                and image = #{webMenu.image}
+            </if>
+            <if test="webMenu.menuType != null and webMenu.menuType != ''"> 
+                and menu_type = #{webMenu.menuType}
+            </if>
+            <if test="webMenu.path != null and webMenu.path != ''"> 
+                and path = #{webMenu.path}
+            </if>
+            <if test="webMenu.component != null and webMenu.component != ''"> 
+                and component = #{webMenu.component}
+            </if>
+            <if test="webMenu.linkUrl != null and webMenu.linkUrl != ''"> 
+                and link_url = #{webMenu.linkUrl}
+            </if>
+            <if test="webMenu.isLink != null"> 
+                and is_link = #{webMenu.isLink}
+            </if>
+            <if test="webMenu.status != null"> 
+                and status = #{webMenu.status}
+            </if>
+            <if test="webMenu.icon != null and webMenu.icon != ''"> 
+                and icon = #{webMenu.icon}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

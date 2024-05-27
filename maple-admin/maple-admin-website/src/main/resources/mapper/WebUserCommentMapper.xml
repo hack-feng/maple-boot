@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebUserCommentMapper">
+    
+    <sql id="selectWebUserCommentVo">
+        select id, data_id, top_id, parent_id, user_id, to_user_id, content, comment_type, status, like_num, comment_num, is_read, is_delete, create_id, create_time, update_id, update_time from web_user_comment
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebUserCommentModel">
+        <include refid="selectWebUserCommentVo"/>
+        <where>
+            <if test="webUserComment.dataId != null"> 
+                and data_id = #{webUserComment.dataId}
+            </if>
+            <if test="webUserComment.topId != null"> 
+                and top_id = #{webUserComment.topId}
+            </if>
+            <if test="webUserComment.userId != null"> 
+                and user_id = #{webUserComment.userId}
+            </if>
+            <if test="webUserComment.toUserId != null"> 
+                and to_user_id = #{webUserComment.toUserId}
+            </if>
+            <if test="webUserComment.content != null and webUserComment.content != ''"> 
+                and content = #{webUserComment.content}
+            </if>
+            <if test="webUserComment.commentType != null"> 
+                and comment_type = #{webUserComment.commentType}
+            </if>
+            <if test="webUserComment.status != null"> 
+                and status = #{webUserComment.status}
+            </if>
+            <if test="webUserComment.likeNum != null"> 
+                and like_num = #{webUserComment.likeNum}
+            </if>
+            <if test="webUserComment.commentNum != null"> 
+                and comment_num = #{webUserComment.commentNum}
+            </if>
+            <if test="webUserComment.isRead != null"> 
+                and is_read = #{webUserComment.isRead}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

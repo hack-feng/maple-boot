@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebCategoryMapper">
+    
+    <sql id="selectWebCategoryVo">
+        select id, icon, name, description, parent_id, ancestors, sort_num, is_top, is_hot, target, url, is_valid, create_id, create_time, update_id, update_time from web_category
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebCategoryModel">
+        <include refid="selectWebCategoryVo"/>
+        <where>
+            <if test="webCategory.icon != null and webCategory.icon != ''"> 
+                and icon = #{webCategory.icon}
+            </if>
+            <if test="webCategory.name != null and webCategory.name != ''"> 
+                and name like concat('%', #{webCategory.name}, '%')
+            </if>
+            <if test="webCategory.description != null and webCategory.description != ''"> 
+                and description = #{webCategory.description}
+            </if>
+            <if test="webCategory.isTop != null"> 
+                and is_top = #{webCategory.isTop}
+            </if>
+            <if test="webCategory.isHot != null"> 
+                and is_hot = #{webCategory.isHot}
+            </if>
+            <if test="webCategory.target != null and webCategory.target != ''"> 
+                and target = #{webCategory.target}
+            </if>
+            <if test="webCategory.url != null and webCategory.url != ''"> 
+                and url = #{webCategory.url}
+            </if>
+            <if test="webCategory.isValid != null"> 
+                and is_valid = #{webCategory.isValid}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

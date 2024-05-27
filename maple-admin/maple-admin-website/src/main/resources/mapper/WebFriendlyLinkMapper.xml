@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.website.mapper.WebFriendlyLinkMapper">
+    
+    <sql id="selectWebFriendlyLinkVo">
+        select id, link_type, name, logo, url, sort_num, is_top, is_hot, link_num, description, remark, is_delete, create_id, create_time, update_id, update_time from web_friendly_link
+    </sql>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebFriendlyLinkModel">
+        <include refid="selectWebFriendlyLinkVo"/>
+        <where>
+            <if test="webFriendlyLink.linkType != null"> 
+                and link_type = #{webFriendlyLink.linkType}
+            </if>
+            <if test="webFriendlyLink.name != null and webFriendlyLink.name != ''"> 
+                and name like concat('%', #{webFriendlyLink.name}, '%')
+            </if>
+            <if test="webFriendlyLink.logo != null and webFriendlyLink.logo != ''"> 
+                and logo = #{webFriendlyLink.logo}
+            </if>
+            <if test="webFriendlyLink.url != null and webFriendlyLink.url != ''"> 
+                and url = #{webFriendlyLink.url}
+            </if>
+            <if test="webFriendlyLink.isTop != null"> 
+                and is_top = #{webFriendlyLink.isTop}
+            </if>
+            <if test="webFriendlyLink.isHot != null"> 
+                and is_hot = #{webFriendlyLink.isHot}
+            </if>
+            <if test="webFriendlyLink.linkNum != null"> 
+                and link_num = #{webFriendlyLink.linkNum}
+            </if>
+            <if test="webFriendlyLink.description != null and webFriendlyLink.description != ''"> 
+                and description = #{webFriendlyLink.description}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>
