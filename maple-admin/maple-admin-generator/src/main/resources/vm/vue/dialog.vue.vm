@@ -28,6 +28,7 @@
               </el-col>
 #end
 #set($exsitImage=false)
+#set($nameImage="")
 #set($exsitMarkdowm=false)
 #foreach($column in $columns)
   #if($column.isInsert)
@@ -154,6 +155,7 @@
               </el-col>
     #elseif($column.htmlType == "imageUpload")
               #set($exsitImage=true)
+              #set($nameImage=${column.javaField})
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                 <el-form-item label="${comment}" prop="${column.javaField}">
                   <el-upload
@@ -201,7 +203,7 @@
 
 <script setup lang="ts" name="dictDialog">
   import { defineAsyncComponent, nextTick, reactive, ref, getCurrentInstance, defineProps, defineEmits } from 'vue';
-  import { use${ClassName}Api } from '/@/api/${moduleName}/${className}';
+  import { use${ClassName}Api } from '/@/api/${moduleName}/${businessName}';
   import { ElMessage } from "element-plus";
 #if($exsitMarkdowm || $exsitImage)
   import { Session } from "/@/utils/storage";
@@ -418,7 +420,7 @@
 
   const handleImageSuccess = (response) => {
     if(response.code === '0000') {
-      state.ruleForm.${column.javaField} = response.data;
+      state.ruleForm.$nameImage = response.data;
     } else {
       ElMessage.error(response.msg);
     }
