@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站资源")
 @RestController
-@RequestMapping("/manage/website/webResource")
+@RequestMapping("/website/webResource")
 @AllArgsConstructor
 public class WebResourceController {
     

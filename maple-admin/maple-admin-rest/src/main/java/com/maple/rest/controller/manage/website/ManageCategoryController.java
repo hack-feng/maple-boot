@@ -1,4 +1,4 @@
-package com.maple.website.controller;
+package com.maple.rest.controller.manage.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.query.WebCategoryPageQuery;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站类目")
 @RestController
-@RequestMapping("/manage/website/webCategory")
+@RequestMapping("/manage/manageCategory")
 @AllArgsConstructor
-public class WebCategoryController {
+public class ManageCategoryController {
     
     private final IWebCategoryService webCategoryService;
 

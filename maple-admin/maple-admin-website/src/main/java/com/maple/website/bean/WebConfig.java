@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("web_config")
-@ApiModel(value = "网站用户对象", description = "website-网站用户信息表")
+@ApiModel(value = "网站配置对象", description = "website-网站配置信息表")
 public class WebConfig extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站文章")
 @RestController
-@RequestMapping("/manage/website/webArticle")
+@RequestMapping("/website/webArticle")
 @AllArgsConstructor
 public class WebArticleController {
     

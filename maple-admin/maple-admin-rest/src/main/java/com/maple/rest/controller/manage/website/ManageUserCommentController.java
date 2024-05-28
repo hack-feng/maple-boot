@@ -1,4 +1,4 @@
-package com.maple.website.controller;
+package com.maple.rest.controller.manage.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.query.WebUserCommentPageQuery;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站用户评论")
 @RestController
-@RequestMapping("/manage/website/webUserComment")
+@RequestMapping("/manage/manageUserComment")
 @AllArgsConstructor
-public class WebUserCommentController {
+public class ManageUserCommentController {
     
     private final IWebUserCommentService webUserCommentService;
 

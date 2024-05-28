@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站类目")
 @RestController
-@RequestMapping("/manage/website/webCategory")
+@RequestMapping("/website/webCategory")
 @AllArgsConstructor
 public class WebCategoryController {
     

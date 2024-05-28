@@ -1,4 +1,4 @@
-package com.maple.website.controller;
+package com.maple.rest.controller.manage.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.query.WebResourcePageQuery;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站资源")
 @RestController
-@RequestMapping("/manage/website/webResource")
+@RequestMapping("/manage/manageResource")
 @AllArgsConstructor
-public class WebResourceController {
+public class ManageResourceController {
     
     private final IWebResourceService webResourceService;
 

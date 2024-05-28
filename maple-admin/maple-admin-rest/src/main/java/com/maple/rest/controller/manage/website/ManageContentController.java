@@ -1,4 +1,4 @@
-package com.maple.website.controller;
+package com.maple.rest.controller.manage.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.query.WebContentPageQuery;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站文章内容")
 @RestController
-@RequestMapping("/manage/website/webContent")
+@RequestMapping("/manage/manageContent")
 @AllArgsConstructor
-public class WebContentController {
+public class ManageContentController {
     
     private final IWebContentService webContentService;
 

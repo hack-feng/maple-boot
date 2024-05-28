@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站菜单")
 @RestController
-@RequestMapping("/manage/website/webMenu")
+@RequestMapping("/website/webMenu")
 @AllArgsConstructor
 public class WebMenuController {
     

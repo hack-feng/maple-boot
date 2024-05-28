@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站用户")
 @RestController
-@RequestMapping("/manage/website/webUser")
+@RequestMapping("/website/webUser")
 @AllArgsConstructor
 public class WebUserController {
     

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站链接")
 @RestController
-@RequestMapping("/manage/website/webFriendlyLink")
+@RequestMapping("/website/webFriendlyLink")
 @AllArgsConstructor
 public class WebFriendlyLinkController {
     

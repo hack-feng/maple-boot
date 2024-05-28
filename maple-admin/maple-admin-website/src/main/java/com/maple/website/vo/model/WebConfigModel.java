@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Date;
 
 /**
- * 网站用户对象 web_config
+ * 网站配置对象 web_config
  * 
  * @author www.xiaoxiaofeng.com
  * @date 2024-05-27
@@ -19,7 +19,7 @@ import java.util.Date;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "网站用户对象", description = "website-网站用户信息表")
+@ApiModel(value = "网站配置对象", description = "website-网站配置信息表")
 public class WebConfigModel {
 
     @ApiModelProperty(value = "ID")

@@ -33,7 +33,7 @@ CREATE TABLE `web_config`
     `update_time`     DATETIME NULL DEFAULT NULL COMMENT '更新日期',
     `version`         BIGINT(20) NULL DEFAULT '0' COMMENT '版本号',
     PRIMARY KEY (`id`) USING BTREE
-) COMMENT='网站用户表' COLLATE='utf8_general_ci' ENGINE=InnoDB;
+) COMMENT='网站配置表' COLLATE='utf8_general_ci' ENGINE=InnoDB;
 
 CREATE TABLE `web_menu`
 (

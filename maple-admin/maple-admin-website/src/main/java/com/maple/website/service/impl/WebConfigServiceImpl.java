@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * 网站用户Service业务层处理
+ * 网站配置Service业务层处理
  *
  * @author www.xiaoxiaofeng.com
  * @date 2024-05-27

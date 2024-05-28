@@ -1,4 +1,4 @@
-package com.maple.website.controller;
+package com.maple.rest.controller.manage.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.query.WebUserOperationPageQuery;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站用户操作")
 @RestController
-@RequestMapping("/manage/website/webUserOperation")
+@RequestMapping("/manage/manageUserOperation")
 @AllArgsConstructor
-public class WebUserOperationController {
+public class ManageUserOperationController {
     
     private final IWebUserOperationService webUserOperationService;
 

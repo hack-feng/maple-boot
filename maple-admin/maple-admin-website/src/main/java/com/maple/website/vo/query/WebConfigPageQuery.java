@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 网站用户分页请求对象 web_config
+ * 网站配置分页请求对象 web_config
  * 
  * @author www.xiaoxiaofeng.com
  * @date 2024-05-27
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "网站用户分页请求对象", description = "website-网站用户分页请求对象")
+@ApiModel(value = "网站配置分页请求对象", description = "website-网站配置分页请求对象")
 public class WebConfigPageQuery {
 
     @ApiModelProperty(value = "分页信息")

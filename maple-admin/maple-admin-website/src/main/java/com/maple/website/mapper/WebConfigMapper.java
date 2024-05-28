@@ -8,18 +8,18 @@ import com.maple.website.vo.model.WebConfigModel;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * 网站用户Mapper接口
+ * 网站配置Mapper接口
  * 
  * @author www.xiaoxiaofeng.com
  * @date 2024-05-27
  */
 public interface WebConfigMapper extends BaseMapper<WebConfig>{
     /**
-     * 查询网站用户列表
+     * 查询网站配置列表
      * 
      * @param page 分页信息
-     * @param webConfig 网站用户
-     * @return 网站用户集合
+     * @param webConfig 网站配置
+     * @return 网站配置集合
      */
     IPage<WebConfigModel> getPageList(@Param("page") Page<WebConfigModel> page, @Param("webConfig") WebConfigModel webConfig);
 }

@@ -1,4 +1,4 @@
-package com.maple.website.controller;
+package com.maple.rest.controller.manage.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.query.WebFriendlyLinkPageQuery;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "网站链接")
 @RestController
-@RequestMapping("/manage/website/webFriendlyLink")
+@RequestMapping("/manage/manageFriendlyLink")
 @AllArgsConstructor
-public class WebFriendlyLinkController {
+public class ManageFriendlyLinkController {
     
     private final IWebFriendlyLinkService webFriendlyLinkService;
 
