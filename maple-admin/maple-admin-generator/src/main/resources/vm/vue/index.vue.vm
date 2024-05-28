@@ -159,7 +159,7 @@
 <script setup lang="ts" name="${className}">
   import { defineAsyncComponent, reactive, onMounted, ref, nextTick, getCurrentInstance } from 'vue';
   import { ElMessageBox, ElMessage } from 'element-plus';
-  import { use${ClassName}Api } from '/@/api/${moduleName}/${className}';
+  import { use${ClassName}Api } from '/@/api/${moduleName}/${businessName}';
   import { parseDateTime } from '/@/utils/formatTime';
   
 #if(${dictTypeKey} != "")
