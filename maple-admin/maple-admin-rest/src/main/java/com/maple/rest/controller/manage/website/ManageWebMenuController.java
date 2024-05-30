@@ -1,7 +1,6 @@
 package com.maple.rest.controller.manage.website;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.maple.website.vo.query.WebMenuPageQuery;
+import java.util.List;
 import com.maple.website.service.IWebMenuService;
 import com.maple.website.vo.model.WebMenuModel;
 import io.swagger.annotations.Api;
@@ -11,22 +10,22 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 网站菜单  前端控制器
- * 
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-29
  */
 @Api(tags = "网站菜单")
 @RestController
-@RequestMapping("/manage/manageMenu")
+@RequestMapping("/manage/manageWebMenu")
 @AllArgsConstructor
 public class ManageWebMenuController {
-    
+
     private final IWebMenuService webMenuService;
 
-    @ApiOperation(value = "分页查询网站菜单列表", notes="网站菜单-分页查询列表", nickname = "www.xiaoxiaofeng.com")
-    @PostMapping("/getPageList")
-    public IPage<WebMenuModel> getPageList(@RequestBody WebMenuPageQuery query) {
-        return webMenuService.getPageList(query);
+    @ApiOperation(value = "查询网站菜单树结构", notes="网站菜单-查询树结构", nickname = "www.xiaoxiaofeng.com")
+    @PostMapping("/getTreeList")
+    public List<WebMenuModel> getTreeList(@RequestBody WebMenuModel model) {
+        return webMenuService.getTreeList(model);
     }
 
     @ApiOperation(value = "根据id查询网站菜单信息", notes="网站菜单-根据id查询数据信息", nickname = "www.xiaoxiaofeng.com")
@@ -41,7 +40,7 @@ public class ManageWebMenuController {
         return webMenuService.createWebMenu(model);
     }
 
-    @ApiOperation(value = "/修改网站菜单数据", notes="网站菜单-修改数据", nickname = "www.xiaoxiaofeng.com")
+    @ApiOperation(value = "修改网站菜单数据", notes="网站菜单-修改数据", nickname = "www.xiaoxiaofeng.com")
     @PostMapping("/updateWebMenu")
     public void updateWebMenu(@RequestBody WebMenuModel model) {
         webMenuService.updateWebMenu(model);

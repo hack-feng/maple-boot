@@ -11,10 +11,10 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 /**
- * 网站用户对象 web_config
- * 
+ * 网站配置对象 web_config
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-29
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -24,19 +24,19 @@ public class WebConfig extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "网站标题")
-    private String title;
-    
-    @ApiModelProperty(value = "网站描述")
-    private String description;
-    
-    @ApiModelProperty(value = "网站图标")
-    private String webImg;
-    
-    @ApiModelProperty(value = "备案号")
-    private String icp;
-    
-    @ApiModelProperty(value = "版本号")
-    private Long version;
-    
+    @ApiModelProperty(value = "参数名称")
+    private String configName;
+
+    @ApiModelProperty(value = "参数键名")
+    private String configKey;
+
+    @ApiModelProperty(value = "参数键值")
+    private String configValue;
+
+    @ApiModelProperty(value = "是否内置")
+    private Boolean isSystem;
+
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
 }

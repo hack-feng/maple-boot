@@ -8,12 +8,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 网站菜单对象 web_menu
- * 
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-29
  */
 @Data
 @Builder
@@ -79,4 +80,6 @@ public class WebMenuModel {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "子节点信息")
+    List<WebMenuModel> children;
 }

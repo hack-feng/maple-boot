@@ -56,7 +56,6 @@
       </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column label="ID" prop="id" show-overflow-tooltip/>
         <el-table-column label="所属类目id" prop="categoryId" show-overflow-tooltip/>
         <el-table-column label="标题" prop="title" show-overflow-tooltip/>
         <el-table-column label="描述" prop="description" show-overflow-tooltip/>

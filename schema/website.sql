@@ -22,18 +22,19 @@ CREATE TABLE `web_user`
 
 CREATE TABLE `web_config`
 (
-    `id`              BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    `title`           VARCHAR(64) NULL DEFAULT NULL COMMENT '网站标题',
-    `description`     VARCHAR(64) NOT NULL COMMENT '网站描述',
-    `web_img`         VARCHAR(2000) NULL DEFAULT NULL COMMENT '网站图标',
-    `icp`             VARCHAR(50) NULL DEFAULT NULL COMMENT '备案号',
-    `create_id`       BIGINT(20) NULL DEFAULT NULL COMMENT '创建人',
-    `create_time`     DATETIME NULL DEFAULT NULL COMMENT '创建日期',
-    `update_id`       BIGINT(20) NULL DEFAULT NULL COMMENT '更新人',
-    `update_time`     DATETIME NULL DEFAULT NULL COMMENT '更新日期',
-    `version`         BIGINT(20) NULL DEFAULT '0' COMMENT '版本号',
-    PRIMARY KEY (`id`) USING BTREE
-) COMMENT='网站配置表' COLLATE='utf8_general_ci' ENGINE=InnoDB;
+    `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+    `config_name`  varchar(100) DEFAULT '' COMMENT '参数名称',
+    `config_key`   varchar(100) DEFAULT '' COMMENT '参数键名',
+    `config_value` varchar(500) DEFAULT '' COMMENT '参数键值',
+    `is_system`    tinyint(1) DEFAULT '0' COMMENT '是否内置',
+    `create_id`    bigint(20) DEFAULT NULL COMMENT '创建人id',
+    `create_time`  datetime     DEFAULT NULL COMMENT '创建时间',
+    `update_id`    bigint(20) DEFAULT NULL COMMENT '修改人id',
+    `update_time`  datetime     DEFAULT NULL COMMENT '更新时间',
+    `remark`       varchar(500) DEFAULT NULL COMMENT '备注',
+    PRIMARY KEY (`id`)
+)  COLLATE='utf8_general_ci' COMMENT='网站配置表' ENGINE=InnoDB;
+
 
 CREATE TABLE `web_menu`
 (

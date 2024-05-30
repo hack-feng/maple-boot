@@ -1,24 +1,23 @@
 package com.maple.website.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.maple.website.vo.query.WebMenuPageQuery;
+import java.util.List;
 import com.maple.website.vo.model.WebMenuModel;
 
 /**
  * 网站菜单Service接口
- * 
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-29
  */
 public interface IWebMenuService {
-   
+
     /**
-     * 分页查询网站菜单列表
+     * 查询网站菜单树结构
      *
-     * @param query 请求参数
+     * @param model 请求参数
      * @return 网站菜单集合
      */
-    IPage<WebMenuModel> getPageList(WebMenuPageQuery query);
+    List<WebMenuModel> getTreeList(WebMenuModel model);
 
     /**
      * 根据id查询网站菜单详情
@@ -35,7 +34,7 @@ public interface IWebMenuService {
      * @return 新增后的ID
      */
     Long createWebMenu(WebMenuModel model);
-    
+
     /**
      * 修改网站菜单信息
      *
@@ -45,7 +44,7 @@ public interface IWebMenuService {
 
     /**
      * 删除网站菜单信息
-     * 
+     *
      * @param id 网站菜单ID
      * @return 删除数量
      */

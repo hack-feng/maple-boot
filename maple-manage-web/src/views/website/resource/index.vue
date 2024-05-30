@@ -66,7 +66,6 @@
       </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column label="ID" prop="id" show-overflow-tooltip/>
         <el-table-column label="资源类型" prop="resourceType" show-overflow-tooltip>
           <template #default="scope">
             <el-tag :type="web_resource_type[scope.row.resourceType].elTagType">{{ web_resource_type[scope.row.resourceType].label }}</el-tag>

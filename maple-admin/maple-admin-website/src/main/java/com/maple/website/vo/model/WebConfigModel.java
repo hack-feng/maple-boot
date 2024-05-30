@@ -11,9 +11,9 @@ import java.util.Date;
 
 /**
  * 网站配置对象 web_config
- * 
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-29
  */
 @Data
 @Builder
@@ -22,34 +22,34 @@ import java.util.Date;
 @ApiModel(value = "网站配置对象", description = "website-网站配置信息表")
 public class WebConfigModel {
 
-    @ApiModelProperty(value = "ID")
+    @ApiModelProperty(value = "参数主键")
     private Long id;
 
-    @ApiModelProperty(value = "网站标题")
-    private String title;
+    @ApiModelProperty(value = "参数名称")
+    private String configName;
 
-    @ApiModelProperty(value = "网站描述")
-    private String description;
+    @ApiModelProperty(value = "参数键名")
+    private String configKey;
 
-    @ApiModelProperty(value = "网站图标")
-    private String webImg;
+    @ApiModelProperty(value = "参数键值")
+    private String configValue;
 
-    @ApiModelProperty(value = "备案号")
-    private String icp;
+    @ApiModelProperty(value = "是否内置")
+    private Boolean isSystem;
 
-    @ApiModelProperty(value = "创建人")
+    @ApiModelProperty(value = "创建人id")
     private Long createId;
 
-    @ApiModelProperty(value = "创建日期")
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    @ApiModelProperty(value = "更新人")
+    @ApiModelProperty(value = "修改人id")
     private Long updateId;
 
-    @ApiModelProperty(value = "更新日期")
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    @ApiModelProperty(value = "版本号")
-    private Long version;
+    @ApiModelProperty(value = "备注")
+    private String remark;
 
 }

@@ -8,12 +8,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 网站类目对象 web_category
- * 
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-29
  */
 @Data
 @Builder
@@ -70,4 +71,6 @@ public class WebCategoryModel {
     @ApiModelProperty(value = "更新日期")
     private Date updateTime;
 
+    @ApiModelProperty(value = "子节点信息")
+    List<WebCategoryModel> children;
 }

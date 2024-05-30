@@ -1,9 +1,17 @@
 <template>
   <div class="website-webArticle-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="60%">
+      <el-collapse v-model="activeNames">
+        <el-collapse-item title="文章基础信息" name="info">
           <el-form ref="webArticleDialogFormRef" :model="state.ruleForm" :rules="state.rules" size="default" label-width="90px">
             <el-row :gutter="35">
-
+    
+              <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+                <el-form-item label="标题" prop="title">
+                  <el-input v-model="state.ruleForm.title" placeholder="请输入标题" clearable></el-input>
+                </el-form-item>
+              </el-col>
+    
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                 <el-form-item label="所属类目id" prop="categoryId">
                   <el-select v-model="state.ruleForm.categoryId" placeholder="请选择所属类目id" clearable class="w100">
@@ -11,19 +19,62 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-
+    
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="标题" prop="title">
-                  <el-input v-model="state.ruleForm.title" placeholder="请输入标题" clearable></el-input>
+                <el-form-item label="作者" prop="author">
+                  <el-input v-model="state.ruleForm.author" placeholder="请输入作者" clearable></el-input>
                 </el-form-item>
               </el-col>
-
+    
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="关键词" prop="keywords">
+                  <el-input v-model="state.ruleForm.keywords" placeholder="请输入关键词，多个以英文逗号分割" clearable></el-input>
+                </el-form-item>
+              </el-col>
+    
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="原文地址" prop="originalUrl">
+                  <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入原文地址" clearable></el-input>
+                </el-form-item>
+              </el-col>
+    
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="状态" prop="status">
+                  <el-select v-model="state.ruleForm.status" placeholder="请选择状态" clearable class="w100">
+                    <el-option
+                        v-for="dict in approve_status"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+    
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="排序" prop="sortNum">
+                  <el-input-number v-model="state.ruleForm.sortNum" placeholder="请输入排序"  />
+                </el-form-item>
+              </el-col>
+    
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="是否置顶" prop="isTop">
+                  <el-switch v-model="state.ruleForm.isTop" inline-prompt active-text="是" inactive-text="否"></el-switch>
+                </el-form-item>
+              </el-col>
+    
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-form-item label="是否热门" prop="isHot">
+                  <el-switch v-model="state.ruleForm.isHot" inline-prompt active-text="是" inactive-text="否"></el-switch>
+                </el-form-item>
+              </el-col>
+    
               <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
                 <el-form-item label="描述" prop="description">
                   <el-input type="textarea" :rows="3"  v-model="state.ruleForm.description" placeholder="请输入描述" clearable></el-input>
                 </el-form-item>
               </el-col>
-
+    
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                 <el-form-item label="图片" prop="img">
                   <el-upload
@@ -39,57 +90,13 @@
                   </el-upload>
                 </el-form-item>
               </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="排序" prop="sortNum">
-                  <el-input-number v-model="state.ruleForm.sortNum" placeholder="请输入排序"  />
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="关键词" prop="keywords">
-                  <el-input v-model="state.ruleForm.keywords" placeholder="请输入关键词，多个以英文逗号分割" clearable></el-input>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="作者" prop="author">
-                  <el-input v-model="state.ruleForm.author" placeholder="请输入作者" clearable></el-input>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="原文地址" prop="originalUrl">
-                  <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入原文地址" clearable></el-input>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="是否置顶" prop="isTop">
-                  <el-switch v-model="state.ruleForm.isTop" inline-prompt active-text="是" inactive-text="否"></el-switch>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="是否热门" prop="isHot">
-                  <el-switch v-model="state.ruleForm.isHot" inline-prompt active-text="是" inactive-text="否"></el-switch>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="状态" prop="status">
-                  <el-select v-model="state.ruleForm.status" placeholder="请选择状态" clearable class="w100">
-                    <el-option
-                        v-for="dict in approve_status"
-                        :key="dict.value"
-                        :label="dict.label"
-                        :value="dict.value"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
             </el-row>
           </el-form>
+        </el-collapse-item>
+        <el-collapse-item title="文章内容" name="content">
+          <MdEditor v-model="state.ruleForm.contentVo.originalContent" @onUploadImg="onUploadImg"/>
+        </el-collapse-item>
+      </el-collapse>
         
       <template #footer>
         <span class="dialog-footer">
@@ -106,7 +113,10 @@
   import { useWebArticleApi } from '/@/api/website/article';
   import { ElMessage } from "element-plus";
   import { Session } from "/@/utils/storage";
-  
+  import { MdEditor } from 'md-editor-v3';
+  // preview.css相比style.css少了编辑器那部分样式
+  import 'md-editor-v3/lib/style.css';
+  import axios from "axios";
   
   // 定义子组件向父组件传值/事件
   const emit = defineEmits(['refresh']);
@@ -115,9 +125,9 @@
   const { proxy } = getCurrentInstance();
   const { approve_status,web_article_source } = proxy.parseDict("approve_status","web_article_source");
 
-
   // 定义变量内容
   const useWebArticle = useWebArticleApi();
+  const activeNames = ref(['info', 'content'])
   const webArticleDialogFormRef = ref();
   const state = reactive({
     ruleForm: {
@@ -132,6 +142,9 @@
       isTop: true,
       isHot: true,
       status: '',
+      contentVo: {
+        originalContent :"",
+      },
     },
     dialog: {
       isShowDialog: false,
@@ -207,8 +220,29 @@
     });
   };
 
+  // 图片上传事件
+  const onUploadImg = async (files, callback) => {
+    const res = await Promise.all(
+        files.map((file) => {
+          return new Promise((rev, rej) => {
+            const form = new FormData();
+            form.append('file', file);
+            axios.post('/manageApi/article/uploadUpy', form, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': Session.get("token")
+              }
+            })
+                .then((res) => {
+                  rev(res.data.data)
+                })
+                .catch((error) => rej(error));
+          });
+        })
+    );
+    callback(res.map((item) => item));
+  };
 
-  
   const beforeImageUpload = (rawFile) => {
     if (rawFile.raw.type !== 'image/jpeg' && rawFile.raw.type !== 'image/png') {
       ElMessage.error('图片只支持jpg或png格式')
@@ -241,6 +275,9 @@
       isTop: true,
       isHot: true,
       status: '',
+      contentVo: {
+        originalContent :"",
+      },
     }
   }
   // 暴露变量

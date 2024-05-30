@@ -43,15 +43,16 @@
           row-key="id"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
-        <el-table-column label="菜单ID" prop="id" show-overflow-tooltip/>
-        <el-table-column label="路由名称" prop="name" show-overflow-tooltip/>
         <el-table-column label="菜单名称" prop="title" show-overflow-tooltip/>
-        <el-table-column label="菜单大图" prop="image" show-overflow-tooltip/>
-        <el-table-column label="菜单类型" prop="menuType" show-overflow-tooltip/>
+        <el-table-column label="路由名称" prop="name" show-overflow-tooltip/>
+        <el-table-column label="菜单类型" prop="menuType" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag :type="website_menu_type[scope.row.menuType].elTagType">{{ website_menu_type[scope.row.menuType].label }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="显示顺序" prop="sortNum" show-overflow-tooltip/>
         <el-table-column label="路由地址" prop="path" show-overflow-tooltip/>
         <el-table-column label="组件路径" prop="component" show-overflow-tooltip/>
-        <el-table-column label="链接地址" prop="linkUrl" show-overflow-tooltip/>
         <el-table-column label="是否外链" prop="isLink" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isLink">是</el-tag>
@@ -63,8 +64,6 @@
             <el-tag :type="sys_status[scope.row.status].elTagType">{{ sys_status[scope.row.status].label }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="菜单图标" prop="icon" show-overflow-tooltip/>
-        <el-table-column label="备注" prop="remark" show-overflow-tooltip/>
         <el-table-column label="操作" show-overflow-tooltip width="140">
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onOpenAdd('add', scope.row)">新增</el-button>
@@ -86,7 +85,7 @@
 
   // 获取字典
   const { proxy } = getCurrentInstance();
-  const { sys_status } = proxy.parseDict("sys_status");
+  const { sys_status, website_menu_type } = proxy.parseDict("sys_status", "website_menu_type");
 
   // 引入组件
   const WebMenuDialog = defineAsyncComponent(() => import('./dialog.vue'));

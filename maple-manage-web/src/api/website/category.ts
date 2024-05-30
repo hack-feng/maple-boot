@@ -3,43 +3,43 @@ import request from '/@/utils/request';
 /**
  * 网站类目api接口集合
  */
-export function useWebArticleApi() {
+export function useWebCategoryApi() {
     return {
-        // 分页获取网站类目
-        getPageList(data: object) {
+        // 获取树形组件数据网站类目
+        getTreeList(data: object) {
             return request({
-                url: '/manageArticle/getPageList',
+                url: '/manageCategory/getTreeList',
                 method: 'post',
                 data: data
             })
         },
         // 查询网站类目详细
-        getWebArticleById(id: number) {
+        getWebCategoryById(id: number) {
             return request({
-                url: '/manageArticle/' + id,
+                url: '/manageCategory/' + id,
                 method: 'get'
             })
         },
         // 新增网站类目
-        createWebArticle(data: object) {
+        createWebCategory(data: object) {
             return request({
-                url: '/manageArticle/createWebArticle',
+                url: '/manageCategory/createWebCategory',
                 method: 'post',
                 data: data
             })
         },
         // 修改网站类目
-        updateWebArticle(data: object) {
+        updateWebCategory(data: object) {
             return request({
-                url: '/manageArticle/updateWebArticle',
+                url: '/manageCategory/updateWebCategory',
                 method: 'post',
                 data: data
             })
         },
         // 删除网站类目
-        deleteWebArticle(id: number) {
+        deleteWebCategory(id: number) {
             return request({
-                url: '/manageArticle/' + id,
+                url: '/manageCategory/' + id,
                 method: 'delete'
             })
         },
