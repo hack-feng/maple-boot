@@ -1,5 +1,3 @@
-import request from '/@/utils/request';
-
 /**
  * 字典api接口集合
  */
@@ -59,3 +57,5 @@ export function useDictApi() {
         }
     }
 }
+
+import request from '/@/utils/request';

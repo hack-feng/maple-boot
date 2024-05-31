@@ -1,6 +1,8 @@
 <script setup>
 import logoDark from "@/assets/img/logos/logo.jpg";
 import upyun from "@/assets/img/upyun.svg";
+import { getSiteConfig } from '@/stores/website';
+
 defineProps({
   brand: {
     type: Object,
@@ -112,7 +114,7 @@ defineProps({
           </div>
           <div class="text-center">
             <p class="text-dark my-4 text-sm font-weight-normal">
-              {{ new Date().getFullYear() }} © 笑小枫 - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2021024782号</a>
+              {{ new Date().getFullYear() }} © {{ getSiteConfig("website_name") }} - <a href="https://beian.miit.gov.cn/" target="_blank"> {{ getSiteConfig("ICP") }}</a>
               <br>
               本站点由 
               <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">

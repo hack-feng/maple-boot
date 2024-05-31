@@ -4,6 +4,7 @@ import { ref, watch } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
 import { getToken } from '@/utils/auth'
 import { useRouter } from "vue-router";
+import { getSiteConfig } from '@/stores/website';
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
@@ -132,7 +133,7 @@ const searchClick = () => {
         title="Designed and Coded by Creative Tim"
         data-placement="bottom"
       >
-        笑小枫
+        {{ getSiteConfig("website_name") }}
       </RouterLink>
       <RouterLink
         class="navbar-brand d-block d-md-none"
@@ -146,7 +147,7 @@ const searchClick = () => {
         title="Designed and Coded by Creative Tim"
         data-placement="bottom"
       >
-        笑小枫
+        {{ getSiteConfig("website_name") }}
       </RouterLink>
       <a
         :href="action.route"
