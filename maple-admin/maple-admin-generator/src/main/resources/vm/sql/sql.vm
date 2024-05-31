@@ -1,3 +1,3 @@
 -- 菜单 SQL
 INSERT INTO `usc_menu` (`name`, `title`, `menu_type`, `parent_id`, `ancestors`, `sort_num`, `path`, `component`, `link_url`, `is_iframe`, `is_link`, `is_keep_alive`, `is_hide`, `is_affix`, `status`, `perms`, `icon`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`)
-VALUES ('${businessName}', '${functionName}', 'C', '${parentMenuId}', '[${parentMenuId}]', 1, '/${moduleName}/${businessName}', '${moduleName}/${businessName}/index', '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-icon-', '', 1, now(), 1, now());
+VALUES ('${businessName}', '${functionName}', 'C', '${parentMenuId}', '${parentMenuId}', 1, '/${moduleName}/${businessName}', '${moduleName}/${businessName}/index', '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-icon-', '', 1, now(), 1, now());

@@ -297,7 +297,7 @@
       use${ClassName}.get${ClassName}ById(row.id).then(res => {
         state.ruleForm = res;
 #if($table.tree)
-        state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
+        state.ruleForm.ancestorsArray = state.ruleForm.ancestors.split(",").map(item => Number(item));
 #end
         state.dialog.title = '修改${functionName}';
         state.dialog.submitTxt = '修 改';
@@ -306,7 +306,7 @@
 #if($table.tree)
       if(row) {
         if(row.ancestors) {
-          state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
+          state.ruleForm.ancestorsArray = row.ancestors.split(",").map(item => Number(item));
         }
         state.ruleForm.ancestorsArray.push(row.${treeCode})
       }
@@ -339,7 +339,7 @@
       if (validateResult) {
 #if($table.tree)
         state.ruleForm.${treeParentCode} = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1]
-        state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+        state.ruleForm.ancestors = state.ruleForm.ancestorsArray.join(",");
 #end
         if(state.dialog.type == 'add'){
           use${ClassName}.create${ClassName}(state.ruleForm).then(() => {
