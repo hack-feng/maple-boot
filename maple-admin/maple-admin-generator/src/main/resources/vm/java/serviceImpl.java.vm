@@ -159,7 +159,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     private void recursionFn(List<${ClassName}Model> list, ${ClassName}Model model) {
         // 得到子节点列表
         List<${ClassName}Model> childList = getChildList(list, model);
-        model.setChildrenList(childList);
+        model.setChildren(childList);
         for (${ClassName}Model child : childList) {
             // 判断是否有子节点
             if (!CollectionUtils.isEmpty(getChildList(list, model))) {
