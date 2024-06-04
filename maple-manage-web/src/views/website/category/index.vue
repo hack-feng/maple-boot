@@ -29,8 +29,6 @@
           row-key="id"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
-        <el-table-column label="ID" prop="id" show-overflow-tooltip/>
-        <el-table-column label="图标" prop="icon" show-overflow-tooltip/>
         <el-table-column label="名称" prop="name" show-overflow-tooltip/>
         <el-table-column label="描述" prop="description" show-overflow-tooltip/>
         <el-table-column label="排序" prop="sortNum" show-overflow-tooltip/>

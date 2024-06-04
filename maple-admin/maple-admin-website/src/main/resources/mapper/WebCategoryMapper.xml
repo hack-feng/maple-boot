@@ -25,4 +25,11 @@
         </where>
         order by sort_num
     </select>
+    <select id="selectCountGroupByCategory" resultType="com.maple.common.model.IdNumList">
+            SELECT COUNT(*)    as num,
+                   category_id as id
+            FROM web_article
+            WHERE STATUS = 1
+            GROUP BY category_id
+    </select>
 </mapper>

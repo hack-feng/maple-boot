@@ -10,41 +10,26 @@ import lombok.RequiredArgsConstructor;
 import java.util.Date;
 
 /**
- * 网站用户操作对象 web_user_operation
- * 
+ * 网站用户操作对象 web_menu_category
+ *
  * @author www.xiaoxiaofeng.com
- * @date 2024-05-27
+ * @date 2024-05-31
  */
 @Data
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "网站用户操作对象", description = "website-网站用户操作信息表")
-public class WebUserOperationModel {
+@ApiModel(value = "网站用户操作对象", description = "system-网站用户操作信息表")
+public class WebMenuCategoryModel {
 
     @ApiModelProperty(value = "ID")
     private Long id;
 
-    @ApiModelProperty(value = "类型")
-    private Integer dataType;
+    @ApiModelProperty(value = "菜单id")
+    private Long webMenuId;
 
-    @ApiModelProperty(value = "数据id")
-    private Long dataId;
-
-    @ApiModelProperty(value = "用户id")
-    private Long userId;
-
-    @ApiModelProperty(value = "是否阅读")
-    private Boolean isRead;
-
-    @ApiModelProperty(value = "是否下载")
-    private Boolean isDownload;
-
-    @ApiModelProperty(value = "是否点赞")
-    private Boolean isLike;
-
-    @ApiModelProperty(value = "是否收藏")
-    private Boolean isCollect;
+    @ApiModelProperty(value = "类目id")
+    private Long categoryId;
 
     @ApiModelProperty(value = "创建人")
     private Long createId;

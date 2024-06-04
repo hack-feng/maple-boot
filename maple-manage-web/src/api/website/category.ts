@@ -13,6 +13,14 @@ export function useWebCategoryApi() {
                 data: data
             })
         },
+        // 查询类目列表
+        getCategoryList(data: object) {
+            return request({
+                url: '/manageCategory/getCategoryList',
+                method: 'post',
+                data: data
+            })
+        },
         // 查询网站类目详细
         getWebCategoryById(id: number) {
             return request({

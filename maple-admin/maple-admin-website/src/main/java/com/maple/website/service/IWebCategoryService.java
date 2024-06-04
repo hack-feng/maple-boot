@@ -27,6 +27,15 @@ public interface IWebCategoryService {
      */
     WebCategoryModel getWebCategoryById(Long id);
 
+
+    /**
+     * 获取类目详情
+     *
+     * @param id 主键ID
+     * @return 类目信息
+     */
+    WebCategoryModel getCategoryInfo(Long id);
+
     /**
      * 新增网站类目信息
      *
@@ -49,4 +58,12 @@ public interface IWebCategoryService {
      * @return 删除数量
      */
     Integer deleteWebCategory(Long id);
+
+    /**
+     * 获取类目信息
+     *
+     * @param query 请求参数
+     * @return 类目信息
+     */
+    List<WebCategoryModel> getCategoryList(WebCategoryModel query);
 }

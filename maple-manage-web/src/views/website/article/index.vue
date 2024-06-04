@@ -56,7 +56,11 @@
       </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column label="所属类目id" prop="categoryId" show-overflow-tooltip/>
+        <el-table-column label="所属类目" prop="categoryId" show-overflow-tooltip>
+          <template #default="scope">
+            <span v-text="state.categoryOption[scope.row.categoryId] != null ? state.categoryOption[scope.row.categoryId] : ''"></span>
+          </template>
+        </el-table-column>
         <el-table-column label="标题" prop="title" show-overflow-tooltip/>
         <el-table-column label="描述" prop="description" show-overflow-tooltip/>
         <el-table-column label="图片" prop="img" show-overflow-tooltip>
@@ -129,6 +133,7 @@
   import { defineAsyncComponent, reactive, onMounted, ref, nextTick, getCurrentInstance } from 'vue';
   import { ElMessageBox, ElMessage } from 'element-plus';
   import { useWebArticleApi } from '/@/api/website/article';
+  import { useWebCategoryApi } from '/@/api/website/category';
   import { parseDateTime } from '/@/utils/formatTime';
   
   // 获取字典
@@ -142,6 +147,7 @@
   const webArticleDialogRef = ref();
   const webArticleSearchRef = ref();
   const useWebArticle = useWebArticleApi();
+  const useWebCategory = useWebCategoryApi();
   const state = reactive({
     tableData: {
       records: [],
@@ -165,6 +171,7 @@
         },
       },
     },
+    categoryOption: {},
   });
 
   // 初始化表格数据
@@ -203,6 +210,16 @@
           ElMessage.error('删除失败');
         });
   };
+
+  const initOption = () => {
+    useWebCategory.getCategoryList({"parentIdList":[]}).then(res => {
+      state.categoryOption = res.reduce((acc, item) => {
+        acc[item.id] = item.name;
+        return acc;
+      }, {});
+    });
+  }
+  
   // 重置搜索框
   const resetQuery = () => {
     nextTick(() => {
@@ -222,6 +239,7 @@
   // 页面加载时
   onMounted(() => {
     getTableData();
+    initOption();
   });
 </script>
 

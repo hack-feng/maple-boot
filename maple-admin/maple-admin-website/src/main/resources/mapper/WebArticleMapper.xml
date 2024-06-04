@@ -5,7 +5,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.maple.website.mapper.WebArticleMapper">
     
     <sql id="selectWebArticleVo">
-        select id, category_id, parent_id, title, description, img, sort_num, keywords, author, original_url, is_top, is_hot, status, source, level, read_num, collect_num, like_num, comment_num, create_id, create_time, update_id, update_time from web_article
+        select id, category_id, parent_id, article_type, title, description, img, sort_num, keywords, author, 
+               original_url, is_top, is_hot, status, source, level, read_num, download_num, collect_num, like_num, 
+               comment_num, create_id, create_time, update_id, update_time from web_article
     </sql>
     <select id="getPageList" resultType="com.maple.website.vo.model.WebArticleModel">
         <include refid="selectWebArticleVo"/>
@@ -60,5 +62,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         </where>
         order by id desc
+    </select>
+    
+    <select id="selectReadAndCollectNum" resultType="com.maple.website.vo.model.WebCategoryModel">
+        select SUM(read_num)    as readNum,
+               SUM(collect_num) as collectNum,
+               COUNT(*)         AS titleNum
+        from web_article
+        where category_id = #{categoryId}
+    </select>
+    
+    <select id="getPreviousTitle" resultType="com.maple.website.vo.model.WebArticleModel">
+        SELECT id, title
+        FROM web_article
+        WHERE category_id = #{req.categoryId}
+          AND sort_num = (
+            select max(sort_num)
+            from web_article
+            where status = 1
+              and sort_num &lt; #{req.sortNum}
+              and category_id = #{req.categoryId}
+            order by is_top desc, sort_num, id)
+    </select>
+    
+    <select id="getNextTitle" resultType="com.maple.website.vo.model.WebArticleModel">
+        SELECT id, title
+        FROM web_article
+        WHERE category_id = #{req.categoryId}
+          AND sort_num = (
+            select min(sort_num)
+            from web_article
+            where status = 1
+              and sort_num > #{req.sortNum}
+              and category_id = #{req.categoryId}
+            order by is_top desc, sort_num, id)
+    </select>
+    
+    <select id="getMaxSortNum" resultType="java.lang.Long">
+        select max(sort_num) + 10
+        from web_article
+        where category_id = #{categoryId}
     </select>
 </mapper>

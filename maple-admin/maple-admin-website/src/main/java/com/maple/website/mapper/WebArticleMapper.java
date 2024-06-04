@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.maple.website.bean.WebArticle;
 import com.maple.website.vo.model.WebArticleModel;
+import com.maple.website.vo.model.WebCategoryModel;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -22,4 +23,12 @@ public interface WebArticleMapper extends BaseMapper<WebArticle>{
      * @return 网站文章集合
      */
     IPage<WebArticleModel> getPageList(@Param("page") Page<WebArticleModel> page, @Param("webArticle") WebArticleModel webArticle);
+
+    WebCategoryModel selectReadAndCollectNum(@Param("categoryId") Long categoryId);
+
+    WebArticleModel getPreviousTitle(@Param("req") WebArticleModel req);
+
+    WebArticleModel getNextTitle(@Param("req") WebArticleModel req);
+
+    Long getMaxSortNum(@Param("categoryId") Long categoryId);
 }

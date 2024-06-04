@@ -28,6 +28,12 @@ public class WebCategoryController {
         return webCategoryService.getTreeList(model);
     }
 
+    @ApiOperation(value = "查询类目列表", notes="博客类目-分页查询列表", nickname = "笑小枫-www.xiaoxiaofeng.com")
+    @PostMapping("/getCategoryList")
+    public List<WebCategoryModel> getCategoryList(@RequestBody WebCategoryModel query) {
+        return webCategoryService.getCategoryList(query);
+    }
+    
     @ApiOperation(value = "根据id查询网站类目信息", notes="网站类目-根据id查询数据信息", nickname = "www.xiaoxiaofeng.com")
     @GetMapping(value = "/{id}")
     public WebCategoryModel getWebCategoryById(@PathVariable("id") Long id) {

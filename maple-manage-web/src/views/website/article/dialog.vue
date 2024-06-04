@@ -14,8 +14,13 @@
     
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                 <el-form-item label="所属类目id" prop="categoryId">
-                  <el-select v-model="state.ruleForm.categoryId" placeholder="请选择所属类目id" clearable class="w100">
-                    <el-option label="请选择字典生成" value="" />
+                  <el-select v-model="state.ruleForm.categoryId" filterable placeholder="请选择所属类目" class="w100">
+                    <el-option
+                        v-for="(value, key) in props.categoryOption"
+                        :key="Number(key)"
+                        :label="value"
+                        :value="Number(key)"
+                    />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -120,6 +125,14 @@
   
   // 定义子组件向父组件传值/事件
   const emit = defineEmits(['refresh']);
+
+  // 定义父组件传过来的值
+  const props = defineProps({
+    categoryOption: {
+      type: Array,
+      default: () => [],
+    }
+  });
 
   // 获取字典
   const { proxy } = getCurrentInstance();

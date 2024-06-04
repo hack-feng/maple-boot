@@ -1,7 +1,11 @@
 package com.maple.website.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.maple.common.model.IdNumList;
+import com.maple.website.bean.WebArticle;
 import com.maple.website.bean.WebCategory;
+import com.maple.website.mapper.WebArticleMapper;
 import com.maple.website.vo.model.WebCategoryModel;
 import com.maple.website.mapper.WebCategoryMapper;
 import com.maple.website.service.IWebCategoryService;
@@ -12,6 +16,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 网站类目Service业务层处理
@@ -24,6 +31,8 @@ import java.util.List;
 public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCategory> implements IWebCategoryService {
 
     private final WebCategoryMapper webCategoryMapper;
+    
+    private final WebArticleMapper webArticleMapper;
 
     @Override
     public List<WebCategoryModel> getTreeList(WebCategoryModel webCategory) {
@@ -31,6 +40,20 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
         return getChildPerms(list, 0L);
     }
 
+    @Override
+    public WebCategoryModel getCategoryInfo(Long id) {
+        WebCategory category = webCategoryMapper.selectById(id);
+        if (Objects.isNull(category)) {
+            return null;
+        }
+        WebCategoryModel temp = webArticleMapper.selectReadAndCollectNum(id);
+        WebCategoryModel categoryVo = TransformUtils.map(category, WebCategoryModel.class);
+        categoryVo.setTitleNum(temp.getTitleNum());
+        categoryVo.setCollectNum(temp.getCollectNum());
+        categoryVo.setReadNum(temp.getReadNum());
+        return categoryVo;
+    }
+    
     @Override
     public WebCategoryModel getWebCategoryById(Long id) {
         return TransformUtils.map(webCategoryMapper.selectById(id), WebCategoryModel.class);
@@ -53,6 +76,27 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
         return webCategoryMapper.deleteById(id);
     }
 
+    @Override
+    public List<WebCategoryModel> getCategoryList(WebCategoryModel query) {
+        if (Objects.isNull(query)) {
+            query = new WebCategoryModel();
+            query.setParentId(-1L);
+        }
+        List<WebCategory> list = webCategoryMapper.selectList(Wrappers.lambdaQuery(WebCategory.class)
+                .eq(Objects.nonNull(query.getParentId()), WebCategory::getParentId, query.getParentId())
+                .eq(WebCategory::getIsValid, true)
+                .orderByDesc(WebCategory::getIsTop)
+                .orderByAsc(WebCategory::getSortNum)
+                .orderByDesc(WebCategory::getId));
+        List<WebCategoryModel> result = TransformUtils.mapList(list, WebCategoryModel.class);
+
+        List<IdNumList> idNumLists = webCategoryMapper.selectCountGroupByCategory();
+        Map<Long, Long> categoryMap = idNumLists.stream().collect(Collectors.toMap(IdNumList::getId, IdNumList::getNum));
+        for (WebCategoryModel categoryModel : result) {
+            categoryModel.setTitleNum(categoryMap.get(categoryModel.getId()));
+        }
+        return result;
+    }
 
     /**
      * 根据父节点的ID获取所有子节点

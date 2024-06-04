@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.maple.website.mapper.WebUserOperationMapper">
     
     <sql id="selectWebUserOperationVo">
-        select id, data_type, data_id, user_id, is_read, is_like, is_collect, is_delete, create_id, create_time, update_id, update_time from web_user_operation
+        select id, data_type, data_id, user_id, is_read, is_download, is_like, is_collect, is_delete, create_id, create_time, update_id, update_time from web_user_operation
     </sql>
     <select id="getPageList" resultType="com.maple.website.vo.model.WebUserOperationModel">
         <include refid="selectWebUserOperationVo"/>

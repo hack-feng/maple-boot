@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
 /**
  * 网站用户操作对象 web_user_operation
  * 
@@ -35,6 +33,9 @@ public class WebUserOperation extends BaseEntity {
     
     @ApiModelProperty(value = "是否阅读")
     private Boolean isRead;
+    
+    @ApiModelProperty(value = "是否下载")
+    private Boolean isDownload;
     
     @ApiModelProperty(value = "是否点赞")
     private Boolean isLike;

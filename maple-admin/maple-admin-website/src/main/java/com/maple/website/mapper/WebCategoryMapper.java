@@ -1,6 +1,7 @@
 package com.maple.website.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.maple.common.model.IdNumList;
 import com.maple.website.bean.WebCategory;
 import com.maple.website.vo.model.WebCategoryModel;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,11 @@ public interface WebCategoryMapper extends BaseMapper<WebCategory>{
      * @return 网站类目集合
      */
     List<WebCategoryModel> getTreeList(@Param("webCategory") WebCategoryModel webCategory);
+
+    /**
+     * 获取分类文章的数量
+     *
+     * @return id：分类id    num：文章数量
+     */
+    List<IdNumList> selectCountGroupByCategory();
 }

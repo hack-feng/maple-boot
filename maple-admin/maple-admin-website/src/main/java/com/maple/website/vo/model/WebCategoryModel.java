@@ -71,6 +71,15 @@ public class WebCategoryModel {
     @ApiModelProperty(value = "更新日期")
     private Date updateTime;
 
+    @ApiModelProperty("文章数量")
+    private Long titleNum;
+
+    @ApiModelProperty("阅读数量")
+    private Long readNum;
+
+    @ApiModelProperty("收藏数量")
+    private Long collectNum;
+
     @ApiModelProperty(value = "子节点信息")
     List<WebCategoryModel> children;
 }

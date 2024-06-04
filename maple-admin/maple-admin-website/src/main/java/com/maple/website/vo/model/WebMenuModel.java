@@ -38,6 +38,9 @@ public class WebMenuModel {
     @ApiModelProperty(value = "菜单类型（H页头菜单 F页脚菜单）")
     private String menuType;
 
+    @ApiModelProperty(value = "展示类型")
+    private String viewType;
+
     @ApiModelProperty(value = "父菜单ID")
     private Long parentId;
 
