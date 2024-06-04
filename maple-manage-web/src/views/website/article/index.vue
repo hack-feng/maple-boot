@@ -125,7 +125,7 @@
       >
       </el-pagination>
     </el-card>
-    <WebArticleDialog ref="webArticleDialogRef" @refresh="getTableData()" />
+    <WebArticleDialog ref="webArticleDialogRef" :categoryOption="state.categoryOption" @refresh="getTableData()" />
   </div>
 </template>
 

@@ -240,7 +240,7 @@
           return new Promise((rev, rej) => {
             const form = new FormData();
             form.append('file', file);
-            axios.post('/manageApi/article/uploadUpy', form, {
+            axios.post('/manageApi/file/uploadImage', form, {
               headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': Session.get("token")
