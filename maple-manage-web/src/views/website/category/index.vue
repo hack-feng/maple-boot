@@ -29,23 +29,22 @@
           row-key="id"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
-        <el-table-column label="名称" prop="name" show-overflow-tooltip/>
-        <el-table-column label="描述" prop="description" show-overflow-tooltip/>
+        <el-table-column label="名称" prop="name" show-overflow-tooltip width="200"/>
+        <el-table-column label="描述" prop="description" show-overflow-tooltip width="260"/>
         <el-table-column label="排序" prop="sortNum" show-overflow-tooltip/>
-        <el-table-column label="是否置顶" prop="isTop" show-overflow-tooltip>
+        <el-table-column label="置顶" prop="isTop" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isTop">是</el-tag>
             <el-tag type="info" v-else>否</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="是否热门" prop="isHot" show-overflow-tooltip>
+        <el-table-column label="热门" prop="isHot" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isHot">是</el-tag>
             <el-tag type="info" v-else>否</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="作者" prop="target" show-overflow-tooltip/>
-        <el-table-column label="跳转地址" prop="url" show-overflow-tooltip/>
         <el-table-column label="是否有效" prop="isValid" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isValid">是</el-tag>

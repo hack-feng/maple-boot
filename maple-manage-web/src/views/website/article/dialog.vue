@@ -99,7 +99,7 @@
           </el-form>
         </el-collapse-item>
         <el-collapse-item title="文章内容" name="content">
-          <MdEditor v-model="state.ruleForm.contentVo.originalContent" @onUploadImg="onUploadImg"/>
+          <MdEditor v-model="state.ruleForm.contentModel.originalContent" @onUploadImg="onUploadImg"/>
         </el-collapse-item>
       </el-collapse>
         
@@ -155,7 +155,7 @@
       isTop: true,
       isHot: true,
       status: '',
-      contentVo: {
+      contentModel: {
         originalContent :"",
       },
     },
@@ -167,6 +167,7 @@
     },
     rules: {
       title: { required: true, message: '请输入标题', trigger: 'blur' },
+      status: { required: true, message: '请选择状态', trigger: 'blur' },
       isTop: { required: true, message: '请输入是否置顶', trigger: 'blur' },
       isHot: { required: true, message: '请输入是否热门', trigger: 'blur' },
     },
@@ -288,7 +289,7 @@
       isTop: true,
       isHot: true,
       status: '',
-      contentVo: {
+      contentModel: {
         originalContent :"",
       },
     }
@@ -300,7 +301,7 @@
 </script>
 
 <style scoped>
-  .img-uploader .avatar {
+  .img-uploader .img {
     width: 350px;
     height: 160px;
     display: block;

@@ -24,9 +24,9 @@
               <el-select v-model="state.tableData.param.query.status" placeholder="请选择状态" clearable>
                 <el-option
                   v-for="dict in approve_status"
-                    :key="dict.value"
+                    :key="Number(dict.value)"
                     :label="dict.label"
-                    :value="dict.value"
+                    :value="Number(dict.value)"
                 />
               </el-select>
             </el-form-item>
@@ -61,35 +61,8 @@
             <span v-text="state.categoryOption[scope.row.categoryId] != null ? state.categoryOption[scope.row.categoryId] : ''"></span>
           </template>
         </el-table-column>
-        <el-table-column label="标题" prop="title" show-overflow-tooltip/>
-        <el-table-column label="描述" prop="description" show-overflow-tooltip/>
-        <el-table-column label="图片" prop="img" show-overflow-tooltip>
-          <template #default="scope">
-            <el-image
-                :src="scope.row.img"
-                :zoom-rate="1.2"
-                :preview-src-list="[scope.row.img]"
-                preview-teleported
-                fit="cover"
-            />
-          </template>
-        </el-table-column>
+        <el-table-column label="标题" prop="title" show-overflow-tooltip width="260"/>
         <el-table-column label="排序" prop="sortNum" show-overflow-tooltip/>
-        <el-table-column label="关键词" prop="keywords" show-overflow-tooltip/>
-        <el-table-column label="作者" prop="author" show-overflow-tooltip/>
-        <el-table-column label="原文地址" prop="originalUrl" show-overflow-tooltip/>
-        <el-table-column label="是否置顶" prop="isTop" show-overflow-tooltip>
-          <template #default="scope">
-            <el-tag type="success" v-if="scope.row.isTop">是</el-tag>
-            <el-tag type="info" v-else>否</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否热门" prop="isHot" show-overflow-tooltip>
-          <template #default="scope">
-            <el-tag type="success" v-if="scope.row.isHot">是</el-tag>
-            <el-tag type="info" v-else>否</el-tag>
-          </template>
-        </el-table-column>
         <el-table-column label="状态" prop="status" show-overflow-tooltip>
           <template #default="scope">
             <el-tag :type="approve_status[scope.row.status].elTagType">{{ approve_status[scope.row.status].label }}</el-tag>
@@ -100,10 +73,9 @@
             <el-tag :type="web_article_source[scope.row.source].elTagType">{{ web_article_source[scope.row.source].label }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="阅读数量" prop="readNum" show-overflow-tooltip/>
-        <el-table-column label="收藏数量" prop="collectNum" show-overflow-tooltip/>
-        <el-table-column label="点赞数量" prop="likeNum" show-overflow-tooltip/>
-        <el-table-column label="评论数量" prop="commentNum" show-overflow-tooltip/>
+        <el-table-column label="阅读" prop="readNum" show-overflow-tooltip/>
+        <el-table-column label="点赞" prop="likeNum" show-overflow-tooltip/>
+        <el-table-column label="收藏" prop="collectNum" show-overflow-tooltip/>
         <el-table-column label="操作" width="100">
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>

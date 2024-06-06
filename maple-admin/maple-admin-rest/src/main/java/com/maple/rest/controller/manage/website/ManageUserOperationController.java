@@ -34,22 +34,4 @@ public class ManageUserOperationController {
     public WebUserOperationModel getWebUserOperationById(@PathVariable("id") Long id) {
         return webUserOperationService.getWebUserOperationById(id);
     }
-
-    @ApiOperation(value = "新增网站用户操作数据", notes="网站用户操作-新增数据", nickname = "www.xiaoxiaofeng.com")
-    @PostMapping("/createWebUserOperation")
-    public Long createWebUserOperation(@RequestBody WebUserOperationModel model) {
-        return webUserOperationService.createWebUserOperation(model);
-    }
-
-    @ApiOperation(value = "/修改网站用户操作数据", notes="网站用户操作-修改数据", nickname = "www.xiaoxiaofeng.com")
-    @PostMapping("/updateWebUserOperation")
-    public void updateWebUserOperation(@RequestBody WebUserOperationModel model) {
-        webUserOperationService.updateWebUserOperation(model);
-    }
-
-    @ApiOperation(value = "删除网站用户操作", notes="网站用户操作-根据id删除数据信息", nickname = "www.xiaoxiaofeng.com")
-    @DeleteMapping("/{id}")
-    public Integer deleteWebUserOperation(@PathVariable("id") Long id) {
-        return webUserOperationService.deleteWebUserOperation(id);
-    }
 }

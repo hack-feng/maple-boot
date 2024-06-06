@@ -32,12 +32,13 @@ public class ManageArticleController {
     @ApiOperation(value = "根据id查询网站文章信息", notes="网站文章-根据id查询数据信息", nickname = "www.xiaoxiaofeng.com")
     @GetMapping(value = "/{id}")
     public WebArticleModel getWebArticleById(@PathVariable("id") Long id) {
-        return webArticleService.getWebArticleById(id);
+        return webArticleService.getWebArticleById(id, false);
     }
 
     @ApiOperation(value = "新增网站文章数据", notes="网站文章-新增数据", nickname = "www.xiaoxiaofeng.com")
     @PostMapping("/createWebArticle")
     public Long createWebArticle(@RequestBody WebArticleModel model) {
+        model.setSource(1);
         return webArticleService.createWebArticle(model);
     }
 

@@ -84,5 +84,8 @@ public class WebMenuModel {
     private Date updateTime;
 
     @ApiModelProperty(value = "子节点信息")
-    List<WebMenuModel> children;
+    private List<WebMenuModel> children;
+    
+    @ApiModelProperty(value = "拥有的类目数据")
+    private List<Long> categoryList;
 }

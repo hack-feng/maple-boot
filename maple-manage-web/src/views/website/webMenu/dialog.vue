@@ -117,6 +117,22 @@
               <el-input type="textarea" :rows="3"  v-model="state.ruleForm.remark" placeholder="请输入备注" clearable></el-input>
             </el-form-item>
           </el-col>
+
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+            <el-form-item label="关联目录" prop="categoryList">
+              <el-tree
+                  :data="state.categoryData"
+                  :props="{ label: 'name' }"
+                  show-checkbox
+                  node-key="id"
+                  ref="categoryRef"
+                  check-strictly
+                  default-expand-all
+                  v-model="state.ruleForm.categoryList"
+                  class="menu-data-tree" >
+              </el-tree>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
 
@@ -131,8 +147,16 @@
 </template>
 
 <script setup lang="ts" name="dictDialog">
-import { defineAsyncComponent, nextTick, reactive, ref, getCurrentInstance, defineProps, defineEmits } from 'vue';
+import {
+  reactive,
+  ref,
+  getCurrentInstance,
+  defineProps,
+  defineEmits,
+  onMounted
+} from 'vue';
 import { useWebMenuApi } from '/@/api/website/webMenu';
+import { useWebCategoryApi } from '/@/api/website/category';
 import { ElMessage } from "element-plus";
 import { Session } from "/@/utils/storage";
 
@@ -154,7 +178,9 @@ const { website_menu_type,sys_status } = proxy.parseDict("website_menu_type","sy
 
 // 定义变量内容
 const useWebMenu = useWebMenuApi();
+const useWebCategory = useWebCategoryApi();
 const webMenuDialogFormRef = ref();
+const categoryRef = ref();
 const state = reactive({
   ruleForm: {
     name: '',
@@ -170,6 +196,7 @@ const state = reactive({
     icon: '',
     remark: '',
     parentId: '',
+    categoryList: [],
     ancestors: '',
     ancestorsArray: [],
   },
@@ -179,6 +206,7 @@ const state = reactive({
     title: '',
     submitTxt: '',
   },
+  categoryData: [],
   rules: {
     title: { required: true, message: '请输入菜单名称', trigger: 'blur' },
   },
@@ -190,6 +218,15 @@ const openDialog = (type: string, row) => {
   if (type === 'edit') {
     useWebMenu.getWebMenuById(row.id).then(res => {
       state.ruleForm = res;
+      let checkedKeys = res.categoryList;
+      if(checkedKeys && checkedKeys.length > 0) {
+        checkedKeys.forEach((v) => {
+          categoryRef.value.setChecked(v, true ,false);
+        });
+      } else {
+        categoryRef.value.setCheckedKeys([]);
+      }
+     
       state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
       state.dialog.title = '修改网站菜单';
       state.dialog.submitTxt = '修 改';
@@ -200,6 +237,9 @@ const openDialog = (type: string, row) => {
         state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
       }
       state.ruleForm.ancestorsArray.push(row.id)
+    }
+    if(categoryRef.value){
+      categoryRef.value.setCheckedKeys([]);
     }
     state.dialog.title = '新增网站菜单';
     state.dialog.submitTxt = '新 增';
@@ -226,6 +266,12 @@ const onSubmit = () => {
     if (validateResult) {
       state.ruleForm.parentId = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1]
       state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+
+      let checkedKeys = categoryRef.value.getCheckedKeys();
+      let halfCheckedKeys = categoryRef.value.getHalfCheckedKeys();
+      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+      state.ruleForm.categoryList = checkedKeys;
+      
       if(state.dialog.type == 'add'){
         useWebMenu.createWebMenu(state.ruleForm).then(() => {
           ElMessage.success('创建成功');
@@ -275,6 +321,12 @@ const handleImageSuccess = (response) => {
   }
 }
 
+const getCategoryData = () => {
+  useWebCategory.getTreeList({}).then(res => {
+    state.categoryData = res;
+  })
+}
+
 const resetForm = () => {
   state.ruleForm = {
     name: '',
@@ -290,10 +342,17 @@ const resetForm = () => {
     icon: '',
     remark: '',
     parentId: '',
+    categoryList: [],
     ancestors: '',
     ancestorsArray: [],
   }
 }
+
+// 页面加载时
+onMounted(() => {
+  getCategoryData();
+});
+
 // 暴露变量
 defineExpose({
   openDialog,
@@ -329,4 +388,12 @@ defineExpose({
   height: 160px;
   text-align: center;
 }
+
+.menu-data-tree {
+  width: 100%;
+  border: 1px solid var(--el-border-color);
+  border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+  padding: 5px;
+}
+
 </style>

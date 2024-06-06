@@ -35,6 +35,12 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/manageApi/, ''),
 				},
+				'/fileApi': {
+					target: 'http://127.0.0.1:6666/',
+					ws: true,
+					changeOrigin: true,
+					rewrite: (path) => path.replace(/^\/fileApi/, ''),
+				},
 			},
 		},
 		build: {

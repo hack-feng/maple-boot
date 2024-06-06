@@ -46,9 +46,24 @@
         </el-table-column>
         <el-table-column label="数据id" prop="dataId" show-overflow-tooltip/>
         <el-table-column label="用户id" prop="userId" show-overflow-tooltip/>
-        <el-table-column label="是否阅读" prop="isRead" show-overflow-tooltip/>
-        <el-table-column label="是否点赞" prop="isLike" show-overflow-tooltip/>
-        <el-table-column label="是否收藏" prop="isCollect" show-overflow-tooltip/>
+        <el-table-column label="是否阅读" prop="isRead" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.isRead">是</el-tag>
+            <el-tag type="info" v-else>否</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否点赞" prop="isLike" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.isLike">是</el-tag>
+            <el-tag type="info" v-else>否</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否收藏" prop="isCollect" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.isCollect">是</el-tag>
+            <el-tag type="info" v-else>否</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="100">
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>

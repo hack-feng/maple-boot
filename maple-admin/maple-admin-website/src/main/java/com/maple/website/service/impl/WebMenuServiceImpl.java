@@ -1,17 +1,22 @@
 package com.maple.website.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.maple.common.util.TransformUtils;
 import com.maple.website.bean.WebMenu;
-import com.maple.website.vo.model.WebMenuModel;
+import com.maple.website.bean.WebMenuCategory;
+import com.maple.website.mapper.WebMenuCategoryMapper;
 import com.maple.website.mapper.WebMenuMapper;
 import com.maple.website.service.IWebMenuService;
-import com.maple.common.util.TransformUtils;
+import com.maple.website.vo.model.WebMenuModel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 网站菜单Service业务层处理
@@ -25,6 +30,8 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
 
     private final WebMenuMapper webMenuMapper;
 
+    private final WebMenuCategoryMapper menuCategoryMapper;
+
     @Override
     public List<WebMenuModel> getTreeList(WebMenuModel webMenu) {
         List<WebMenuModel> list = webMenuMapper.getTreeList(webMenu);
@@ -33,23 +40,54 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
 
     @Override
     public WebMenuModel getWebMenuById(Long id) {
-        return TransformUtils.map(webMenuMapper.selectById(id), WebMenuModel.class);
+        WebMenuModel menuModel = TransformUtils.map(webMenuMapper.selectById(id), WebMenuModel.class);
+
+        List<WebMenuCategory> menuCategoryList = menuCategoryMapper.selectList(Wrappers.lambdaUpdate(WebMenuCategory.class)
+                .eq(WebMenuCategory::getWebMenuId, id));
+        menuModel.setCategoryList(menuCategoryList.stream().map(WebMenuCategory::getCategoryId).collect(Collectors.toList()));
+        return menuModel;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long createWebMenu(WebMenuModel model) {
         WebMenu webMenu = TransformUtils.map(model, WebMenu.class);
         webMenuMapper.insert(webMenu);
+
+        if (!CollectionUtils.isEmpty(model.getCategoryList())) {
+            for (Long categoryId : model.getCategoryList()) {
+                WebMenuCategory menuCategory = new WebMenuCategory();
+                menuCategory.setCategoryId(categoryId);
+                menuCategory.setWebMenuId(webMenu.getId());
+                menuCategoryMapper.insert(menuCategory);
+            }
+        }
         return webMenu.getId();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateWebMenu(WebMenuModel model) {
         webMenuMapper.updateById(TransformUtils.map(model, WebMenu.class));
+
+        menuCategoryMapper.delete(Wrappers.lambdaUpdate(WebMenuCategory.class)
+                .eq(WebMenuCategory::getWebMenuId, model.getId()));
+
+        if (!CollectionUtils.isEmpty(model.getCategoryList())) {
+            for (Long categoryId : model.getCategoryList()) {
+                WebMenuCategory menuCategory = new WebMenuCategory();
+                menuCategory.setCategoryId(categoryId);
+                menuCategory.setWebMenuId(model.getId());
+                menuCategoryMapper.insert(menuCategory);
+            }
+        }
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer deleteWebMenu(Long id) {
+        menuCategoryMapper.delete(Wrappers.lambdaUpdate(WebMenuCategory.class)
+                .eq(WebMenuCategory::getWebMenuId, id));
         return webMenuMapper.deleteById(id);
     }
 

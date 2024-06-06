@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 网站文章对象 web_article
@@ -27,6 +28,9 @@ public class WebArticleModel {
 
     @ApiModelProperty(value = "所属类目id")
     private Long categoryId;
+
+    @ApiModelProperty("文章类型")
+    private Integer articleType;
 
     @ApiModelProperty(value = "父节点id")
     private Long parentId;
@@ -59,7 +63,7 @@ public class WebArticleModel {
     private Boolean isHot;
 
     @ApiModelProperty(value = "状态")
-    private String status;
+    private Integer status;
 
     @ApiModelProperty(value = "来源")
     private Integer source;
@@ -79,6 +83,15 @@ public class WebArticleModel {
     @ApiModelProperty(value = "评论数量")
     private Long commentNum;
 
+    @ApiModelProperty("是否阅读")
+    private Boolean isRead;
+
+    @ApiModelProperty("是否收藏")
+    private Boolean isCollect;
+
+    @ApiModelProperty("是否点赞")
+    private Boolean isLike;
+
     @ApiModelProperty(value = "创建人")
     private Long createId;
 
@@ -90,5 +103,23 @@ public class WebArticleModel {
 
     @ApiModelProperty(value = "更新日期")
     private Date updateTime;
+
+    @ApiModelProperty("类目信息")
+    private WebCategoryModel categoryModel;
+
+    @ApiModelProperty("类目ID集合")
+    private List<Long> categoryIdList;
+
+    @ApiModelProperty("文章内容")
+    private WebContentModel contentModel;
+
+    @ApiModelProperty("文章多级目录")
+    private List<WebArticleModel> childList;
+
+    @ApiModelProperty("上一篇文章")
+    private WebArticleModel preTitle;
+
+    @ApiModelProperty("下一篇文章")
+    private WebArticleModel nextTitle;
 
 }

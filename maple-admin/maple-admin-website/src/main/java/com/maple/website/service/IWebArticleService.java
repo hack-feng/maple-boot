@@ -24,9 +24,10 @@ public interface IWebArticleService {
      * 根据id查询网站文章详情
      *
      * @param id 网站文章ID
+     * @param isWebUser 是否网站用户
      * @return 网站文章
      */
-    WebArticleModel getWebArticleById(Long id);
+    WebArticleModel getWebArticleById(Long id, Boolean isWebUser);
 
     /**
      * 新增网站文章信息
