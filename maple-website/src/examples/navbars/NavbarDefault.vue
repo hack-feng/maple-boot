@@ -128,7 +128,7 @@ const searchClick = () => {
             ? 'text-dark font-weight-bolder ms-sm-3'
             : 'text-white font-weight-bolder ms-sm-3'
         ]"
-        :to="{ name: 'presentation' }"
+        :to="{ name: 'home' }"
         rel="tooltip"
         title="Designed and Coded by Creative Tim"
         data-placement="bottom"
@@ -190,7 +190,7 @@ const searchClick = () => {
           <li class="nav-item dropdown dropdown-hover mx-2">
             <div class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
               <RouterLink
-                  to="/"
+                  :to="{ name: 'home' }"
                   class="dropdown-item border-radius-md"
               >
                 <span>

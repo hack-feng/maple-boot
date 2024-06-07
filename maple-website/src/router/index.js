@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import PresentationView from "../views/Presentation/PresentationView.vue";
+import HomeView from "../views/Home/HomeView.vue";
 import AuthorView from "../views/Author/AuthorView.vue";
 import SignInBasicView from "../views/SignIn/BasicView.vue";
 
@@ -23,8 +23,8 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "presentation",
-      component: PresentationView,
+      name: "home",
+      component: HomeView,
     },
     {
       path: "/author",
@@ -44,12 +44,6 @@ const router = createRouter({
     {
       path: "/categoryList",
       name: "categoryList",
-      component: BlogCategoryList,
-    },
-    {
-      // 兼容历史数据
-      path: "/categories/:id",
-      name: "categories",
       component: BlogCategoryList,
     },
     {
