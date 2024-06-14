@@ -153,7 +153,7 @@ import {
   getCurrentInstance,
   defineProps,
   defineEmits,
-  onMounted
+  onMounted, nextTick
 } from 'vue';
 import { useWebMenuApi } from '/@/api/website/webMenu';
 import { useWebCategoryApi } from '/@/api/website/category';
@@ -209,6 +209,7 @@ const state = reactive({
   categoryData: [],
   rules: {
     title: { required: true, message: '请输入菜单名称', trigger: 'blur' },
+    menuType: { required: true, message: '请选择菜单类型', trigger: 'blur' },
   },
 });
 
@@ -226,17 +227,21 @@ const openDialog = (type: string, row) => {
       } else {
         categoryRef.value.setCheckedKeys([]);
       }
-     
-      state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
+
+      nextTick(()=> {
+        state.ruleForm.ancestorsArray = state.ruleForm.ancestors.split(",").map(item => Number(item));
+      });
       state.dialog.title = '修改网站菜单';
       state.dialog.submitTxt = '修 改';
     });
   } else {
     if(row) {
       if(row.ancestors) {
-        state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
+        state.ruleForm.ancestorsArray = row.ancestors.split(",").map(item => Number(item));
       }
-      state.ruleForm.ancestorsArray.push(row.id)
+      nextTick(()=> {
+        state.ruleForm.ancestorsArray.push(row.id);
+      });
     }
     if(categoryRef.value){
       categoryRef.value.setCheckedKeys([]);
@@ -264,8 +269,8 @@ const onSubmit = () => {
   ]).then(res => {
     const validateResult = res.every(item => !!item);
     if (validateResult) {
-      state.ruleForm.parentId = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1]
-      state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+      state.ruleForm.parentId = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1];
+      state.ruleForm.ancestors = state.ruleForm.ancestorsArray.join(",");
 
       let checkedKeys = categoryRef.value.getCheckedKeys();
       let halfCheckedKeys = categoryRef.value.getHalfCheckedKeys();
@@ -299,8 +304,6 @@ const currentValidate = (pageRef) => {
     });
   });
 };
-
-
 
 const beforeImageUpload = (rawFile) => {
   if (rawFile.raw.type !== 'image/jpeg' && rawFile.raw.type !== 'image/png') {

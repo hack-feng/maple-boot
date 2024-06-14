@@ -1,10 +1,11 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { ref, watch } from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
 import { getToken } from '@/utils/auth'
 import { useRouter } from "vue-router";
 import { getSiteConfig } from '@/stores/website';
+import { getHeaderMenu } from '../../api/common';
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
@@ -45,6 +46,11 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
+});
+
+const state = reactive({
+  websiteName: '笑小枫',
+  navbarList: [],
 });
 
 // set arrow  color
@@ -101,6 +107,17 @@ const searchClick = () => {
     router.push("/search?title=" + searchParam.value);
   }
 }
+
+onMounted(() => {
+  getSiteConfig("website_name").then(res => {
+    state.websiteName = res;
+  });
+
+  getHeaderMenu().then(res => {
+    console.log(res)
+    state.navbarList = res;
+  });
+})
 </script>
 <template>
   <nav
@@ -133,7 +150,7 @@ const searchClick = () => {
         title="Designed and Coded by Creative Tim"
         data-placement="bottom"
       >
-        {{ getSiteConfig("website_name") }}
+        {{ state.websiteName }}
       </RouterLink>
       <RouterLink
         class="navbar-brand d-block d-md-none"
@@ -147,7 +164,7 @@ const searchClick = () => {
         title="Designed and Coded by Creative Tim"
         data-placement="bottom"
       >
-        {{ getSiteConfig("website_name") }}
+        {{ state.websiteName }}
       </RouterLink>
       <a
         :href="action.route"
@@ -187,56 +204,122 @@ const searchClick = () => {
         </div>
         </ul>
         <ul class="navbar-nav navbar-nav-hover ms-auto">
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <div class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
-              <RouterLink
-                  :to="{ name: 'home' }"
+          <li class="nav-item dropdown dropdown-hover mx-2"  v-for="navbar in state.navbarList">
+            <div v-if="navbar.children.length === 0" class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
+              <RouterLink v-if="!navbar.isLink"
+                  :to="{ name: navbar.path }"
                   class="dropdown-item border-radius-md"
               >
-                <span>
-                  首页
-                </span>
+                <span> {{ navbar.title }} </span>
               </RouterLink>
+              <a
+                  v-if="navbar.isLink"
+                  :href="navbar.linkUrl"
+                  class="dropdown-item py-2 ps-3 border-radius-md"
+                  target="_blank"
+              >{{ navbar.title }}
+              </a>
             </div>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <div class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
-                <RouterLink
-                  :to="{ name: 'blog' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>小枫博客录</span>
-              </RouterLink>
-            </div>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <div class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
-              <RouterLink
-                  :to="{ name: 'download' }"
-                  class="dropdown-item border-radius-md"
+            
+            <div v-if="navbar.children.length > 0">
+              <a
+                  role="button"
+                  class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+                  :class="getTextColor()"
+                  id="dropdownMenuPages"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
               >
-                <span>小枫资源库</span>
-              </RouterLink>
-            </div>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <div class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
-              <RouterLink
-                  :to="{ name: 'links' }"
-                  class="dropdown-item border-radius-md"
+                {{ navbar.title }}
+                <img :src="getArrowColor()" alt="down-arrow" class="arrow ms-2 d-lg-block d-none"/>
+                <img :src="getArrowColor()" alt="down-arrow" class="arrow ms-1 d-lg-none d-block ms-auto"/>
+              </a>
+              <div
+                  class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
+                  aria-labelledby="dropdownMenuPages"
               >
-                <span>小枫链接集</span>
-              </RouterLink>
-            </div>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <div class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
-              <RouterLink
-                  :to="{ name: 'author' }"
-                  class="dropdown-item border-radius-md"
-              >
-                <span>关于笑小枫</span>
-              </RouterLink>
+                <div class="row d-none d-lg-block" v-for="navbarChildren in navbar.children">
+                  <div class="col-12 px-4 py-1">
+                    <div class="row">
+                      <div v-if="navbarChildren.children.length === 0" class="dropdown-header d-flex align-items-center px-0">
+                        <RouterLink v-if="!navbarChildren.isLink"
+                                    :to="{ name: navbarChildren.path }"
+                                    class="dropdown-item border-radius-md"
+                        >
+                          <span class="text-dark font-weight-bolder"> {{ navbarChildren.title }} </span>
+                        </RouterLink>
+                        <a
+                            v-if="navbarChildren.isLink"
+                            :href="navbarChildren.linkUrl"
+                            class="dropdown-item py-2 ps-3 border-radius-md text-dark font-weight-bolder"
+                            target="_blank"
+                        >{{ navbarChildren.title }}
+                        </a>
+                      </div>
+                      
+                      <div v-if="navbarChildren.children.length > 0" class="position-relative">
+                        <div class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+                          {{ navbarChildren.title }}
+                        </div>
+                        <div v-for="navbarGrandchildren in navbarChildren.children">
+                          <RouterLink v-if="!navbarGrandchildren.isLink"
+                                      :to="{ name: navbarGrandchildren.path }"
+                                      class="dropdown-item border-radius-md"
+                          >
+                            <span> {{ navbarGrandchildren.title }} </span>
+                          </RouterLink>
+                          <a 
+                              v-if="navbarGrandchildren.isLink" 
+                              :href="navbarGrandchildren.linkUrl"  
+                              class="dropdown-item py-2 ps-3 border-radius-md" 
+                              target="_blank"
+                          >{{ navbarGrandchildren.title }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-lg-none" v-for="navbarChildren in navbar.children">
+                  <div v-if="navbarChildren.children.length === 0" class="dropdown-header d-flex align-items-center px-0">
+                    <RouterLink v-if="!navbarChildren.isLink"
+                                :to="{ name: navbarChildren.path }"
+                                class="border-radius-md"
+                    >
+                      <span class="text-dark font-weight-bolder">
+                        {{ navbarChildren.title }}
+                      </span>
+                    </RouterLink>
+                    <a
+                        v-if="navbarChildren.isLink"
+                        :href="navbarChildren.linkUrl"
+                        class="py-2 border-radius-md text-dark font-weight-bolder"
+                        target="_blank"
+                    >{{ navbarChildren.title }}
+                    </a>
+                  </div>
+                  <div v-if="navbarChildren.children.length > 0">
+                    <div class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0">
+                      {{ navbarChildren.title }}
+                    </div>
+                    <div v-for="navbarGrandchildren in navbarChildren.children">
+                      <RouterLink v-if="!navbarGrandchildren.isLink"
+                                  :to="{ name: navbarGrandchildren.path }"
+                                  class="dropdown-item border-radius-md"
+                      >
+                        <span>{{ navbarGrandchildren.title }}</span>
+                      </RouterLink>
+                      <a
+                          v-if="navbarGrandchildren.isLink"
+                          :href="navbarGrandchildren.linkUrl"
+                          class="dropdown-item py-2 ps-3 border-radius-md"
+                          target="_blank"
+                      >{{ navbarGrandchildren.title }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </li>
         </ul>

@@ -43,7 +43,7 @@
           row-key="id"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
-        <el-table-column label="菜单名称" prop="title" show-overflow-tooltip/>
+        <el-table-column label="菜单名称" prop="title" show-overflow-tooltip width="260"/>
         <el-table-column label="路由名称" prop="name" show-overflow-tooltip/>
         <el-table-column label="菜单类型" prop="menuType" show-overflow-tooltip>
           <template #default="scope">

@@ -2,6 +2,7 @@
 import logoDark from "@/assets/img/logos/logo.jpg";
 import upyun from "@/assets/img/upyun.svg";
 import { getSiteConfig } from '@/stores/website';
+import { onMounted, reactive } from "vue";
 
 defineProps({
   brand: {
@@ -74,6 +75,21 @@ defineProps({
     ]
   }
 });
+
+const state = reactive({
+  websiteName: '笑小枫',
+  icp: ''
+});
+
+onMounted(() => {
+  getSiteConfig("website_name").then(res => {
+    state.websiteName = res;
+  });
+  getSiteConfig("ICP").then(res => {
+    state.icp = res;
+  });
+  
+})
 </script>
 <template>
   <footer class="footer pt-5">
@@ -114,7 +130,7 @@ defineProps({
           </div>
           <div class="text-center">
             <p class="text-dark my-4 text-sm font-weight-normal">
-              {{ new Date().getFullYear() }} © {{ getSiteConfig("website_name") }} - <a href="https://beian.miit.gov.cn/" target="_blank"> {{ getSiteConfig("ICP") }}</a>
+              {{ new Date().getFullYear() }} © {{ state.websiteName }} - <a href="https://beian.miit.gov.cn/" target="_blank"> {{ state.icp }}</a>
               <br>
               本站点由 
               <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank">
