@@ -48,6 +48,9 @@ public class WebArticle extends BaseEntity {
     @ApiModelProperty(value = "作者")
     private String author;
 
+    @ApiModelProperty(value = "下载类型")
+    private Integer downloadType;
+
     @ApiModelProperty(value = "原文地址")
     private String originalUrl;
 

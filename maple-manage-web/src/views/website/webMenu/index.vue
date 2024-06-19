@@ -4,10 +4,6 @@
       <div class="website-webMenu-search mb15">
         <el-form :inline="true" ref="webMenuSearchRef" :model="state.tableData.param" size="default">
           <el-row>
-            <el-form-item label="路由名称" class="ml10" size="default">
-              <el-input v-model="state.tableData.param.name" placeholder="请输入路由名称" clearable
-                        style="max-width: 180px"></el-input>
-            </el-form-item>
             <el-form-item label="菜单名称" class="ml10" size="default">
               <el-input v-model="state.tableData.param.title" placeholder="请输入菜单名称" clearable
                         style="max-width: 180px"></el-input>
@@ -44,7 +40,6 @@
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <el-table-column label="菜单名称" prop="title" show-overflow-tooltip width="260"/>
-        <el-table-column label="路由名称" prop="name" show-overflow-tooltip/>
         <el-table-column label="菜单类型" prop="menuType" show-overflow-tooltip>
           <template #default="scope">
             <el-tag :type="website_menu_type[scope.row.menuType].elTagType">{{ website_menu_type[scope.row.menuType].label }}</el-tag>
@@ -52,7 +47,6 @@
         </el-table-column>
         <el-table-column label="显示顺序" prop="sortNum" show-overflow-tooltip/>
         <el-table-column label="路由地址" prop="path" show-overflow-tooltip/>
-        <el-table-column label="组件路径" prop="component" show-overflow-tooltip/>
         <el-table-column label="是否外链" prop="isLink" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isLink">是</el-tag>
@@ -99,7 +93,6 @@
       data: [],
       loading: false,
       param: {
-          name: '',
           title: '',
           menuType: '',
           status: '',

@@ -31,5 +31,10 @@ public class LocalFileConfig implements WebMvcConfigurer {
         //定义文档存放路径
         registry.addResourceHandler("/local/doc/**").
                 addResourceLocations("file:" + localFileProperties.getDocFilePath());
+        // 重写方法
+        // 修改tomcat 虚拟映射
+        // 定义图片存放路径
+        registry.addResourceHandler("/fileApi/local/doc/**").
+                addResourceLocations("file:" + localFileProperties.getImageFilePath());
     }
 }

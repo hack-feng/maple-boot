@@ -1,14 +1,11 @@
 package com.maple.website.bean;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.maple.common.config.bean.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 网站菜单对象 web_menu
@@ -24,9 +21,6 @@ public class WebMenu extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "路由名称")
-    private String name;
-    
     @ApiModelProperty(value = "菜单名称")
     private String title;
     
@@ -50,9 +44,6 @@ public class WebMenu extends BaseEntity {
     
     @ApiModelProperty(value = "路由地址")
     private String path;
-    
-    @ApiModelProperty(value = "组件路径")
-    private String component;
     
     @ApiModelProperty(value = "链接地址")
     private String linkUrl;

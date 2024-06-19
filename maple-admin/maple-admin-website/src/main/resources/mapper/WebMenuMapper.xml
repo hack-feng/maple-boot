@@ -5,14 +5,11 @@
 <mapper namespace="com.maple.website.mapper.WebMenuMapper">
 
     <sql id="selectWebMenuVo">
-        select id, name, title, image, menu_type, view_type, parent_id, ancestors, sort_num, path, component, link_url, is_link, status, icon, remark, create_id, create_time, update_id, update_time from web_menu
+        select id, title, image, menu_type, view_type, parent_id, ancestors, sort_num, path, link_url, is_link, status, icon, remark, create_id, create_time, update_id, update_time from web_menu
     </sql>
     <select id="getTreeList" resultType="com.maple.website.vo.model.WebMenuModel">
         <include refid="selectWebMenuVo"/>
         <where>
-            <if test="webMenu.name != null and webMenu.name != ''">
-                and name like concat('%', #{webMenu.name}, '%')
-            </if>
             <if test="webMenu.title != null and webMenu.title != ''">
                 and title = #{webMenu.title}
             </if>

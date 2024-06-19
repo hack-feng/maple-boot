@@ -42,20 +42,8 @@
           </el-col>
 
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="路由名称" prop="name">
-              <el-input v-model="state.ruleForm.name" placeholder="请输入路由名称" clearable></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="路由地址" prop="path">
               <el-input v-model="state.ruleForm.path" placeholder="请输入路由地址" clearable></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="组件路径" prop="component">
-              <el-input v-model="state.ruleForm.component" placeholder="请输入组件路径" clearable></el-input>
             </el-form-item>
           </el-col>
 
@@ -183,13 +171,11 @@ const webMenuDialogFormRef = ref();
 const categoryRef = ref();
 const state = reactive({
   ruleForm: {
-    name: '',
     title: '',
     image: '',
     menuType: '',
     sortNum: '',
     path: '',
-    component: '',
     linkUrl: '',
     isLink: true,
     status: 1,
@@ -332,13 +318,11 @@ const getCategoryData = () => {
 
 const resetForm = () => {
   state.ruleForm = {
-    name: '',
     title: '',
     image: '',
     menuType: '',
     sortNum: '',
     path: '',
-    component: '',
     linkUrl: '',
     isLink: false,
     status: 1,

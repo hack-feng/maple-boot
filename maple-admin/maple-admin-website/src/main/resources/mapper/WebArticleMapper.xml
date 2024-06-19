@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.maple.website.mapper.WebArticleMapper">
     
     <sql id="selectWebArticleVo">
-        select id, category_id, parent_id, article_type, title, description, img, sort_num, keywords, author, 
+        select id, category_id, parent_id, article_type, title, description, img, sort_num, keywords, author, download_type,
                original_url, is_top, is_hot, status, source, level, read_num, download_num, collect_num, like_num, 
                comment_num, create_id, create_time, update_id, update_time from web_article
     </sql>

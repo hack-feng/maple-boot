@@ -26,9 +26,6 @@ public class WebMenuModel {
     @ApiModelProperty(value = "菜单ID")
     private Long id;
 
-    @ApiModelProperty(value = "路由名称")
-    private String name;
-
     @ApiModelProperty(value = "菜单名称")
     private String title;
 
@@ -52,9 +49,6 @@ public class WebMenuModel {
 
     @ApiModelProperty(value = "路由地址")
     private String path;
-
-    @ApiModelProperty(value = "组件路径")
-    private String component;
 
     @ApiModelProperty(value = "链接地址")
     private String linkUrl;

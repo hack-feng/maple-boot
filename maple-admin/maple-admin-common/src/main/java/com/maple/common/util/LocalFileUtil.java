@@ -110,7 +110,7 @@ public class LocalFileUtil {
             }
             map.put("fileName", fileName);
             map.put("filePath", filePath);
-            map.put("fileServiceName", fileServiceName);
+            map.put("fileServiceName", "/fileApi/local/doc/" + fileServiceName);
             fileInfoList.add(map);
         }
         return fileInfoList;

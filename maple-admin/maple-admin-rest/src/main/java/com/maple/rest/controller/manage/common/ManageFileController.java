@@ -36,6 +36,11 @@ public class ManageFileController {
         return fileUtil.uploadImage(file);
     }
 
+    @PostMapping("/uploadFile")
+    public String uploadFiles(@RequestParam(value = "file") MultipartFile files) {
+        return String.valueOf(fileUtil.uploadFiles(new MultipartFile[]{files}).get(0).get("fileServiceName"));
+    }
+
     /**
      * 文件批量上传
      */

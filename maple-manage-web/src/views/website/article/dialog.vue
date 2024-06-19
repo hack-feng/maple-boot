@@ -1,11 +1,23 @@
 <template>
   <div class="website-webArticle-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="60%">
+
       <el-collapse v-model="activeNames">
-        <el-collapse-item title="文章基础信息" name="info">
+        <el-collapse-item title="基础信息" name="info">
           <el-form ref="webArticleDialogFormRef" :model="state.ruleForm" :rules="state.rules" size="default" label-width="90px">
             <el-row :gutter="35">
-    
+
+              <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+                <el-form-item label="类型" prop="articleType">
+                  <el-radio-group v-model="state.ruleForm.articleType">
+                    <el-radio :label="Number(1)">文章</el-radio>
+                    <el-radio :label="Number(2)">资源</el-radio>
+                    <el-radio :label="Number(3)">链接</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+
+
               <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
                 <el-form-item label="标题" prop="title">
                   <el-input v-model="state.ruleForm.title" placeholder="请输入标题" clearable></el-input>
@@ -13,8 +25,8 @@
               </el-col>
     
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                <el-form-item label="所属类目id" prop="categoryId">
-                  <el-select v-model="state.ruleForm.categoryId" filterable placeholder="请选择所属类目" class="w100">
+                <el-form-item label="归属类目" prop="categoryId">
+                  <el-select v-model="state.ruleForm.categoryId" filterable placeholder="请选择归属类目" class="w100">
                     <el-option
                         v-for="(value, key) in props.categoryOption"
                         :key="Number(key)"
@@ -36,10 +48,58 @@
                   <el-input v-model="state.ruleForm.keywords" placeholder="请输入关键词，多个以英文逗号分割" clearable></el-input>
                 </el-form-item>
               </el-col>
+
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.articleType === 2">
+                <el-form-item label="下载类型" prop="downloadType">
+                  <el-select v-model="state.ruleForm.downloadType" placeholder="请选择下载类型" clearable class="w100">
+                    <el-option
+                        v-for="dict in resource_download_type"
+                        :key="Number(dict.value)"
+                        :label="dict.label"
+                        :value="Number(dict.value)"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
     
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.articleType === 1">
                 <el-form-item label="原文地址" prop="originalUrl">
                   <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入原文地址" clearable></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" 
+                      v-if="state.ruleForm.articleType === 2 && state.ruleForm.downloadType === 1">
+                <el-form-item label="上传文件" prop="originalUrl">
+                  <el-upload
+                      ref="upload"
+                      action="/manageApi/file/uploadFile"
+                      :headers="{Authorization: `${Session.get('token')}`}"
+                      :before-upload="beforeFileUpload"
+                      :limit="1"
+                      :on-exceed="handleExceed"
+                      :on-success="handleSuccess"
+                  >
+                    <template #trigger>
+                      <el-input v-model="state.ruleForm.originalUrl" placeholder="文件地址" disabled></el-input>
+                      <el-button class="ml-3" type="success">
+                        上传
+                      </el-button>
+                    </template>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20"
+                      v-if="state.ruleForm.articleType === 2 && state.ruleForm.downloadType !== 1">
+                <el-form-item label="下载地址" prop="originalUrl">
+                  <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入下载地址" clearable></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.articleType === 3">
+                <el-form-item label="跳转地址" prop="originalUrl">
+                  <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入跳转地址" clearable></el-input>
                 </el-form-item>
               </el-col>
     
@@ -48,9 +108,9 @@
                   <el-select v-model="state.ruleForm.status" placeholder="请选择状态" clearable class="w100">
                     <el-option
                         v-for="dict in approve_status"
-                        :key="dict.value"
+                        :key="Number(dict.value)"
                         :label="dict.label"
-                        :value="dict.value"
+                        :value="Number(dict.value)"
                     />
                   </el-select>
                 </el-form-item>
@@ -88,7 +148,7 @@
                       :headers="{Authorization: `${Session.get('token')}`}"
                       :show-file-list="false"
                       :on-success="handleImageSuccess"
-                      :on-change="beforeImageUpload"
+                      :before-upload="beforeImageUpload"
                   >
                     <img v-if="state.ruleForm.img" :src="state.ruleForm.img" class="img" />
                     <el-icon v-else class="img-uploader-icon"><ele-Plus /></el-icon>
@@ -98,7 +158,7 @@
             </el-row>
           </el-form>
         </el-collapse-item>
-        <el-collapse-item title="文章内容" name="content">
+        <el-collapse-item title="文章内容" name="content" v-show="state.ruleForm.articleType !== 3">
           <MdEditor v-model="state.ruleForm.contentModel.originalContent" @onUploadImg="onUploadImg"/>
         </el-collapse-item>
       </el-collapse>
@@ -122,6 +182,10 @@
   // preview.css相比style.css少了编辑器那部分样式
   import 'md-editor-v3/lib/style.css';
   import axios from "axios";
+  import { genFileId } from 'element-plus'
+  import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
+
+  const upload = ref<UploadInstance>()
   
   // 定义子组件向父组件传值/事件
   const emit = defineEmits(['refresh']);
@@ -136,7 +200,7 @@
 
   // 获取字典
   const { proxy } = getCurrentInstance();
-  const { approve_status,web_article_source } = proxy.parseDict("approve_status","web_article_source");
+  const { approve_status,web_article_source,resource_download_type } = proxy.parseDict("approve_status", "web_article_source", "resource_download_type");
 
   // 定义变量内容
   const useWebArticle = useWebArticleApi();
@@ -151,10 +215,12 @@
       sortNum: '',
       keywords: '',
       author: '',
+      downloadType: 1,
       originalUrl: '',
       isTop: true,
       isHot: true,
       status: '',
+      articleType: 1,
       contentModel: {
         originalContent :"",
       },
@@ -167,6 +233,8 @@
     },
     rules: {
       title: { required: true, message: '请输入标题', trigger: 'blur' },
+      articleType: { required: true, message: '请选择类型', trigger: 'blur' },
+      categoryId: { required: true, message: '请选择归属类目', trigger: 'blur' },
       status: { required: true, message: '请选择状态', trigger: 'blur' },
       isTop: { required: true, message: '请输入是否置顶', trigger: 'blur' },
       isHot: { required: true, message: '请输入是否热门', trigger: 'blur' },
@@ -258,7 +326,7 @@
   };
 
   const beforeImageUpload = (rawFile) => {
-    if (rawFile.raw.type !== 'image/jpeg' && rawFile.raw.type !== 'image/png') {
+    if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
       ElMessage.error('图片只支持jpg或png格式')
       return false
     } else if(rawFile.size / 1024 / 1024 > 3) {
@@ -268,9 +336,33 @@
     return true;
   }
 
+  const beforeFileUpload = (rawFile) => {
+    if(rawFile.size / 1024 / 1024 > 10) {
+      ElMessage.error("文件大小不能超过10MB,超过10MB请走百度云网盘");
+      return false;
+    }
+    return true;
+  }
+
   const handleImageSuccess = (response) => {
     if(response.code === '0000') {
       state.ruleForm.img = response.data;
+    } else {
+      ElMessage.error(response.msg);
+    }
+  }
+
+  const handleExceed: UploadProps['onExceed'] = (files) => {
+    upload.value!.clearFiles()
+    const file = files[0] as UploadRawFile
+    file.uid = genFileId()
+    upload.value!.handleStart(file)
+    upload.value!.submit()
+  }
+
+  const handleSuccess = (response) => {
+    if(response.code === '0000') {
+      state.ruleForm.originalUrl = response.data;
     } else {
       ElMessage.error(response.msg);
     }
@@ -285,10 +377,12 @@
       sortNum: '',
       keywords: '',
       author: '',
+      downloadType: 1,
       originalUrl: '',
       isTop: true,
       isHot: true,
       status: '',
+      articleType: 1,
       contentModel: {
         originalContent :"",
       },
