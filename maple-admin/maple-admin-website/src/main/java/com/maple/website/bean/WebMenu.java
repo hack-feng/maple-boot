@@ -41,6 +41,9 @@ public class WebMenu extends BaseEntity {
     
     @ApiModelProperty(value = "显示顺序")
     private Long sortNum;
+
+    @ApiModelProperty(value = "展示模板")
+    private String uiTemplate;
     
     @ApiModelProperty(value = "路由地址")
     private String path;
@@ -56,6 +59,12 @@ public class WebMenu extends BaseEntity {
     
     @ApiModelProperty(value = "菜单图标")
     private String icon;
+    
+    @ApiModelProperty(value = "关键字")
+    private String keywords;
+    
+    @ApiModelProperty(value = "描述")
+    private String description;
     
     @ApiModelProperty(value = "备注")
     private String remark;

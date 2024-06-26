@@ -80,6 +80,9 @@ public class WebCategoryModel {
     @ApiModelProperty("收藏数量")
     private Long collectNum;
 
+    @ApiModelProperty("菜单路径")
+    private String menuPath;
+
     @ApiModelProperty(value = "子节点信息")
     List<WebCategoryModel> children;
 }

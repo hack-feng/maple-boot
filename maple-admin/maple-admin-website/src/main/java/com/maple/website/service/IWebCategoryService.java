@@ -1,7 +1,10 @@
 package com.maple.website.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.model.WebCategoryModel;
+import com.maple.website.vo.query.WebCategoryPageQuery;
 
 /**
  * 网站类目Service接口
@@ -10,6 +13,14 @@ import com.maple.website.vo.model.WebCategoryModel;
  * @date 2024-05-29
  */
 public interface IWebCategoryService {
+
+    /**
+     * 分页获取类目信息
+     *
+     * @param query  请求参数数
+     * @return 网站类目集合
+     */
+    IPage<WebCategoryModel> getPageCategory(WebCategoryPageQuery query);
 
     /**
      * 查询网站类目树结构

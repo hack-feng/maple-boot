@@ -5,7 +5,23 @@
 <mapper namespace="com.maple.website.mapper.WebCategoryMapper">
 
     <sql id="selectWebCategoryVo">
-        select id, icon, name, description, parent_id, ancestors, sort_num, is_top, is_hot, target, url, is_valid, create_id, create_time, update_id, update_time from web_category
+        select id,
+               icon,
+               name,
+               description,
+               parent_id,
+               ancestors,
+               sort_num,
+               is_top,
+               is_hot,
+               target,
+               url,
+               is_valid,
+               create_id,
+               create_time,
+               update_id,
+               update_time
+        from web_category
     </sql>
     <select id="getTreeList" resultType="com.maple.website.vo.model.WebCategoryModel">
         <include refid="selectWebCategoryVo"/>
@@ -26,10 +42,24 @@
         order by sort_num
     </select>
     <select id="selectCountGroupByCategory" resultType="com.maple.common.model.IdNumList">
-            SELECT COUNT(*)    as num,
-                   category_id as id
-            FROM web_article
-            WHERE STATUS = 1
-            GROUP BY category_id
+        SELECT COUNT(*)    as num,
+               category_id as id
+        FROM web_article
+        WHERE STATUS = 1
+        GROUP BY category_id
+    </select>
+    <select id="getPageList" resultType="com.maple.website.vo.model.WebCategoryModel">
+        select a.*
+        from web_category a
+        left join web_menu_category b on a.id = b.category_id
+        left join web_menu c on b.web_menu_id = c.id
+        <where>
+            <if test="webCategory.isTop != null">
+                and a.is_top = #{webCategory.isTop}
+            </if>
+            <if test="webCategory.menuPath != null">
+                and c.path = #{webCategory.menuPath}
+            </if>
+        </where>
     </select>
 </mapper>

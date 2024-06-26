@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 获取博客目录
 export function getBlogCategory(data) {
   return request({
-    url: '/blog/getCategory',
+    url: '/webArticle/getCategory',
     method: 'post',
     data: data
   })
@@ -12,7 +12,7 @@ export function getBlogCategory(data) {
 // 获取目录详情
 export function getCategoryById(categoryId) {
     return request({
-        url: '/blog/getCategoryById/' + categoryId,
+        url: '/webArticle/getCategoryById/' + categoryId,
         method: 'get'
     })
 }
@@ -20,7 +20,7 @@ export function getCategoryById(categoryId) {
 // 分页获取文章列表
 export function getPageTitle(data) {
     return request({
-      url: '/blog/getPageTitle',
+      url: '/webArticle/getPageTitle',
       method: 'post',
       data: data
     })
@@ -29,7 +29,7 @@ export function getPageTitle(data) {
 // 获取文章详情
 export function getArticleById(articleId) {
     return request({
-        url: '/blog/getTitleById/' + articleId,
+        url: '/webArticle/getTitleById/' + articleId,
         method: 'get'
     })
 }

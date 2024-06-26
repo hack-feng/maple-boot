@@ -7,10 +7,7 @@ import com.maple.website.vo.model.WebMenuModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +29,12 @@ public class WebCommonController {
     @PostMapping("/getHeaderMenuTreeList")
     public List<WebMenuModel> getHeaderMenuTreeList(@RequestBody WebMenuModel model) {
         return webMenuService.getTreeList(model);
+    }
+    
+    @GetMapping("/getWebMenuByPath/{path}")
+    public WebMenuModel getWebMenuByPath(@PathVariable("path") String path){
+        return webMenuService.getWebMenuByPath(path);
+        
     }
 
     @ApiOperation(value = "查询网站配置列表", notes = "网站配置-查询列表", nickname = "www.xiaoxiaofeng.com")

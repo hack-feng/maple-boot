@@ -1,6 +1,7 @@
 package com.maple.website.service;
 
 import java.util.List;
+
 import com.maple.website.vo.model.WebMenuModel;
 
 /**
@@ -49,4 +50,12 @@ public interface IWebMenuService {
      * @return 删除数量
      */
     Integer deleteWebMenu(Long id);
+
+    /**
+     * 根据path获取对应菜单信息
+     *
+     * @param path 路径，唯一
+     * @return 菜单信息
+     */
+    WebMenuModel getWebMenuByPath(String path);
 }

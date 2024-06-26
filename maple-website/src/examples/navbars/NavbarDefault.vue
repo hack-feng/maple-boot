@@ -114,7 +114,6 @@ onMounted(() => {
   });
 
   getHeaderMenu().then(res => {
-    console.log(res)
     state.navbarList = res;
   });
 })
@@ -207,8 +206,8 @@ onMounted(() => {
           <li class="nav-item dropdown dropdown-hover mx-2"  v-for="navbar in state.navbarList">
             <div v-if="navbar.children.length === 0" class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()">
               <RouterLink v-if="!navbar.isLink"
-                  :to="{ name: navbar.path }"
-                  class="dropdown-item border-radius-md"
+                          :to="{ name: navbar.uiTemplate ? navbar.uiTemplate : navbar.path, params: { menu: navbar.path }  }"
+                          class="dropdown-item border-radius-md"
               >
                 <span> {{ navbar.title }} </span>
               </RouterLink>
@@ -243,7 +242,7 @@ onMounted(() => {
                     <div class="row">
                       <div v-if="navbarChildren.children.length === 0" class="dropdown-header d-flex align-items-center px-0">
                         <RouterLink v-if="!navbarChildren.isLink"
-                                    :to="{ name: navbarChildren.path }"
+                                    :to="{ name: navbarChildren.uiTemplate ? navbarChildren.uiTemplate : navbarChildren.path, params: { menu: navbarChildren.path }  }"
                                     class="dropdown-item border-radius-md"
                         >
                           <span class="text-dark font-weight-bolder"> {{ navbarChildren.title }} </span>
@@ -263,7 +262,7 @@ onMounted(() => {
                         </div>
                         <div v-for="navbarGrandchildren in navbarChildren.children">
                           <RouterLink v-if="!navbarGrandchildren.isLink"
-                                      :to="{ name: navbarGrandchildren.path }"
+                                      :to="{ name: navbarGrandchildren.uiTemplate ? navbarGrandchildren.uiTemplate : navbarGrandchildren.path, params: { menu: navbarGrandchildren.path }  }"
                                       class="dropdown-item border-radius-md"
                           >
                             <span> {{ navbarGrandchildren.title }} </span>
@@ -283,7 +282,7 @@ onMounted(() => {
                 <div class="d-lg-none" v-for="navbarChildren in navbar.children">
                   <div v-if="navbarChildren.children.length === 0" class="dropdown-header d-flex align-items-center px-0">
                     <RouterLink v-if="!navbarChildren.isLink"
-                                :to="{ name: navbarChildren.path }"
+                                :to="{ name: navbarChildren.uiTemplate ? navbarChildren.uiTemplate : navbarChildren.path, params: { menu: navbarChildren.path }  }"
                                 class="border-radius-md"
                     >
                       <span class="text-dark font-weight-bolder">
@@ -304,7 +303,7 @@ onMounted(() => {
                     </div>
                     <div v-for="navbarGrandchildren in navbarChildren.children">
                       <RouterLink v-if="!navbarGrandchildren.isLink"
-                                  :to="{ name: navbarGrandchildren.path }"
+                                  :to="{ name: navbarGrandchildren.uiTemplate ? navbarGrandchildren.uiTemplate : navbarGrandchildren.path, params: { menu: navbarGrandchildren.path }  }"
                                   class="dropdown-item border-radius-md"
                       >
                         <span>{{ navbarGrandchildren.title }}</span>

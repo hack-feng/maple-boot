@@ -1,13 +1,13 @@
 <script setup>
 import {computed, onMounted, reactive, ref} from "vue";
-import {useMeta} from "vue-meta";
 
 // example components
 import TransparentBlogCard from "@/examples/cards/blogCards/TransparentBlogCard.vue";
 import BackgroundBlogCard from "@/examples/cards/blogCards/BackgroundBlogCard.vue";
 
 import {formatDateYYYYMMDD} from '@/utils/maple'
-import {getBlogCategory, getPageTitle} from "@/api/blog"
+import {getPageTitle} from "@/api/article"
+import {getPageCategory} from "@/api/category"
 import { isDesktop } from "@/assets/js/useWindowsWidth";
 
 //Maple Blog components
@@ -15,19 +15,18 @@ import post4 from "@/assets/img/examples/blog2.jpg";
 // image
 import defaultImage from "@/assets/img/defaultImage.jpg";
 
+// 定义父组件传过来的值
+const props = defineProps({
+  menuPath: {
+    type: String,
+    default: () => "",
+  }
+});
 
 onMounted(() => {
-  getBlogCategoryClick();
+  getCategoryClick();
   getPageTitleClick();
   getHotTitleClick();
-
-  useMeta({
-    title: '小枫博客录 - 笑小枫',
-    meta: [
-      { name: 'keywords', content: '笑小枫,java,SpringBoot,程序员,博客' },
-      { name: 'description', content: '笑小枫汇聚了众多技术文章，涵盖了编程、软件开发、计算机技术等各个方面，旨在为您提供丰富的技术知识和实践经验。' }
-    ]
-  });
 });
 
 const textDark = isDesktop();
@@ -37,8 +36,8 @@ const loading = ref(false);
 const noMore = ref(false);
 const disabled = computed(() => loading.value || noMore.value);
 
-let data = reactive({
-  blogCategoryList: {}
+const state = reactive({
+  categoryList: {}
 })
 
 let articleParam = ref({
@@ -49,23 +48,24 @@ let articleParam = ref({
   },
   model: {
     isNew: true,
+    menuPath: props.menuPath,
     description: undefined
   }
 });
 
-const getBlogCategoryClick = () => {
+const getCategoryClick = () => {
   let categoryParam = {
     page: {
       current: 1,
       size: 3
     },
     model: {
+      menuPath: props.menuPath,
       isTop: true
     }
   }
-
-  getBlogCategory(categoryParam).then(res => {
-    data.blogCategoryList = res.records
+  getPageCategory(categoryParam).then(res => {
+    state.categoryList = res.records
   });
 };
 
@@ -84,7 +84,6 @@ const getPageTitleClick = (isRefreshList) => {
     articleParam.value.page.current = 1
     blogArticleList.value = [];
   }
-  console.log(isRefreshList)
   getPageTitle(articleParam.value).then(res => {
     articleParam.value.page.total = res.total;
     let list = res.records;
@@ -103,6 +102,7 @@ const getHotTitleClick = () => {
       size: 10
     },
     model: {
+      menuPath: props.menuPath,
       isHot: true
     }
   }
@@ -123,12 +123,12 @@ const getHotTitleClick = () => {
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-3 col-sm-6" v-for="blogCategory in data.blogCategoryList">
+          <div class="col-lg-3 col-sm-6" v-for="category in state.categoryList">
             <TransparentBlogCard
-                :image="blogCategory.icon === null ? defaultImage : blogCategory.icon"
-                :title="blogCategory.name"
-                :description="blogCategory.description"
-                :action="{label:'前往阅读', color: 'success', route: '/category/'+blogCategory.id }"
+                :image="category.icon === null ? defaultImage : category.icon"
+                :title="category.name"
+                :description="category.description"
+                :action="{label:'前往阅读', color: 'success', route: '/category/'+category.id }"
             />
           </div>
           <div class="col-lg-3 col-md-12 col-12">

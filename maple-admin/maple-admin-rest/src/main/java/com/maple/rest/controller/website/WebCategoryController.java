@@ -1,8 +1,11 @@
 package com.maple.rest.controller.website;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.service.IWebCategoryService;
 import com.maple.website.vo.model.WebCategoryModel;
+import com.maple.website.vo.query.WebCategoryPageQuery;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -22,16 +25,10 @@ public class WebCategoryController {
 
     private final IWebCategoryService webCategoryService;
 
-    @ApiOperation(value = "查询网站类目树结构", notes="网站类目-查询树结构", nickname = "www.xiaoxiaofeng.com")
-    @PostMapping("/getTreeList")
-    public List<WebCategoryModel> getTreeList(@RequestBody WebCategoryModel model) {
-        return webCategoryService.getTreeList(model);
-    }
-
     @ApiOperation(value = "查询类目列表", notes="博客类目-分页查询列表", nickname = "笑小枫-www.xiaoxiaofeng.com")
     @PostMapping("/getCategoryList")
-    public List<WebCategoryModel> getCategoryList(@RequestBody WebCategoryModel query) {
-        return webCategoryService.getCategoryList(query);
+    public IPage<WebCategoryModel> getPageCategory(@RequestBody WebCategoryPageQuery query) {
+        return webCategoryService.getPageCategory(query);
     }
     
     @ApiOperation(value = "根据id查询网站类目信息", notes="网站类目-根据id查询数据信息", nickname = "www.xiaoxiaofeng.com")

@@ -1,6 +1,8 @@
 package com.maple.website.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.maple.common.model.IdNumList;
 import com.maple.website.bean.WebCategory;
 import com.maple.website.vo.model.WebCategoryModel;
@@ -28,4 +30,6 @@ public interface WebCategoryMapper extends BaseMapper<WebCategory>{
      * @return id：分类id    num：文章数量
      */
     List<IdNumList> selectCountGroupByCategory();
+
+    IPage<WebCategoryModel> getPageList(@Param("page") Page<WebCategoryModel> page, @Param("webCategory")WebCategoryModel query);
 }

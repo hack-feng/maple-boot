@@ -2,6 +2,8 @@ package com.maple.website.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.maple.common.config.exception.ErrorCode;
+import com.maple.common.config.exception.MapleCheckException;
 import com.maple.common.util.TransformUtils;
 import com.maple.website.bean.WebMenu;
 import com.maple.website.bean.WebMenuCategory;
@@ -51,6 +53,12 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createWebMenu(WebMenuModel model) {
+
+        Long count = webMenuMapper.selectCount(Wrappers.lambdaQuery(WebMenu.class).eq(WebMenu::getPath, model.getPath()));
+        if (count > 0) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "路由地址已存在");
+        }
+
         WebMenu webMenu = TransformUtils.map(model, WebMenu.class);
         webMenuMapper.insert(webMenu);
 
@@ -68,6 +76,13 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateWebMenu(WebMenuModel model) {
+        Long count = webMenuMapper.selectCount(Wrappers.lambdaQuery(WebMenu.class)
+                .ne(WebMenu::getId, model.getId())
+                .eq(WebMenu::getPath, model.getPath()));
+        if (count > 0) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "路由地址已存在");
+        }
+
         webMenuMapper.updateById(TransformUtils.map(model, WebMenu.class));
 
         menuCategoryMapper.delete(Wrappers.lambdaUpdate(WebMenuCategory.class)
@@ -89,6 +104,13 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
         menuCategoryMapper.delete(Wrappers.lambdaUpdate(WebMenuCategory.class)
                 .eq(WebMenuCategory::getWebMenuId, id));
         return webMenuMapper.deleteById(id);
+    }
+
+    @Override
+    public WebMenuModel getWebMenuByPath(String path) {
+        return TransformUtils.map(
+                webMenuMapper.selectOne(Wrappers.lambdaQuery(WebMenu.class).eq(WebMenu::getPath, path).last("LIMIT 1")),
+                WebMenuModel.class);
     }
 
 

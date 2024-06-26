@@ -42,24 +42,36 @@
           </el-col>
 
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="展示模板" prop="uiTemplate">
+              <el-select v-model="state.ruleForm.uiTemplate" placeholder="请选择菜单类型" clearable class="w100">
+                <el-option
+                    v-for="dict in website_ui_template"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="路由地址" prop="path">
               <el-input v-model="state.ruleForm.path" placeholder="请输入路由地址" clearable></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="菜单状态" prop="status">
-              <el-select v-model="state.ruleForm.status" placeholder="请选择菜单状态" class="w100">
-                <el-option
-                    v-for="dict in sys_status"
-                    :key="Number(dict.value)"
-                    :label="dict.label"
-                    :value="Number(dict.value)"
-                />
-              </el-select>
+            <el-form-item label="关键字" prop="keywords">
+              <el-input v-model="state.ruleForm.keywords" placeholder="请输入关键词（多个以英文,分割）" clearable></el-input>
             </el-form-item>
           </el-col>
 
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="菜单图标" prop="icon">
+              <el-input v-model="state.ruleForm.icon" placeholder="请输入菜单图标" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="是否外链" prop="isLink">
               <el-switch v-model="state.ruleForm.isLink" inline-prompt active-text="是" inactive-text="否"></el-switch>
@@ -67,7 +79,7 @@
           </el-col>
 
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="链接地址" prop="linkUrl">
+            <el-form-item label="链接地址" prop="linkUrl" v-if="state.ruleForm.isLink === true ">
               <el-input v-model="state.ruleForm.linkUrl" placeholder="请输入链接地址" clearable></el-input>
             </el-form-item>
           </el-col>
@@ -75,12 +87,6 @@
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="显示顺序" prop="sortNum">
               <el-input-number v-model="state.ruleForm.sortNum" placeholder="请输入显示顺序"  />
-            </el-form-item>
-          </el-col>
-
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="菜单图标" prop="icon">
-              <el-input v-model="state.ruleForm.icon" placeholder="请输入菜单图标" clearable></el-input>
             </el-form-item>
           </el-col>
 
@@ -100,6 +106,12 @@
             </el-form-item>
           </el-col>
 
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+            <el-form-item label="描述" prop="description">
+              <el-input type="textarea" :rows="3"  v-model="state.ruleForm.description" placeholder="请输入描述（对应meta的description）" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item label="备注" prop="remark">
               <el-input type="textarea" :rows="3"  v-model="state.ruleForm.remark" placeholder="请输入备注" clearable></el-input>
@@ -161,7 +173,7 @@ const emit = defineEmits(['refresh']);
 
 // 获取字典
 const { proxy } = getCurrentInstance();
-const { website_menu_type,sys_status } = proxy.parseDict("website_menu_type","sys_status");
+const { website_menu_type,sys_status,website_ui_template } = proxy.parseDict("website_menu_type","sys_status","website_ui_template");
 
 
 // 定义变量内容
@@ -175,12 +187,15 @@ const state = reactive({
     image: '',
     menuType: '',
     sortNum: '',
+    uiTemplate: '',
     path: '',
     linkUrl: '',
     isLink: true,
     status: 1,
     icon: '',
     remark: '',
+    keywords: '',
+    description: '',
     parentId: '',
     categoryList: [],
     ancestors: '',
@@ -322,11 +337,14 @@ const resetForm = () => {
     image: '',
     menuType: '',
     sortNum: '',
+    uiTemplate: '',
     path: '',
     linkUrl: '',
     isLink: false,
     status: 1,
     icon: '',
+    keywords: '',
+    description: '',
     remark: '',
     parentId: '',
     categoryList: [],
@@ -347,7 +365,7 @@ defineExpose({
 </script>
 
 <style scoped>
-.img-uploader .avatar {
+.img-uploader .img {
   width: 350px;
   height: 160px;
   display: block;

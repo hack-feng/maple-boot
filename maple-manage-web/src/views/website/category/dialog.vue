@@ -137,14 +137,14 @@ const openDialog = (type: string, row) => {
   if (type === 'edit') {
     useWebCategory.getWebCategoryById(row.id).then(res => {
       state.ruleForm = res;
-      state.ruleForm.ancestorsArray = JSON.parse(state.ruleForm.ancestors);
+      state.ruleForm.ancestorsArray = state.ruleForm.ancestors.split(",").map(item => Number(item));
       state.dialog.title = '修改网站类目';
       state.dialog.submitTxt = '修 改';
     });
   } else {
     if(row) {
       if(row.ancestors) {
-        state.ruleForm.ancestorsArray = JSON.parse(row.ancestors);
+        state.ruleForm.ancestorsArray = row.ancestors.split(",").map(item => Number(item));
       }
       state.ruleForm.ancestorsArray.push(row.id)
     }
@@ -172,7 +172,7 @@ const onSubmit = () => {
     const validateResult = res.every(item => !!item);
     if (validateResult) {
       state.ruleForm.parentId = state.ruleForm.ancestorsArray[state.ruleForm.ancestorsArray.length - 1]
-      state.ruleForm.ancestors = JSON.stringify(state.ruleForm.ancestorsArray);
+      state.ruleForm.ancestors = state.ruleForm.ancestorsArray.join(",");
       if(state.dialog.type == 'add'){
         useWebCategory.createWebCategory(state.ruleForm).then(() => {
           ElMessage.success('创建成功');

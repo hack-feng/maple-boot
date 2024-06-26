@@ -1,5 +1,6 @@
 package com.maple.website.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maple.common.model.IdNumList;
@@ -10,6 +11,7 @@ import com.maple.website.vo.model.WebCategoryModel;
 import com.maple.website.mapper.WebCategoryMapper;
 import com.maple.website.service.IWebCategoryService;
 import com.maple.common.util.TransformUtils;
+import com.maple.website.vo.query.WebCategoryPageQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +35,11 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
     private final WebCategoryMapper webCategoryMapper;
     
     private final WebArticleMapper webArticleMapper;
+
+    @Override
+    public IPage<WebCategoryModel> getPageCategory(WebCategoryPageQuery query) {
+        return webCategoryMapper.getPageList(query.getPage(), query.getQuery());
+    }
 
     @Override
     public List<WebCategoryModel> getTreeList(WebCategoryModel webCategory) {

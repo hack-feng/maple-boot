@@ -13,6 +13,14 @@ export function getHeaderMenu() {
     })
 }
 
+// 根据菜单ID获取菜单详情
+export function getWebMenuByPath(path) {
+    return request({
+        url: '/common/getWebMenuByPath/' + path,
+        method: 'get',
+    })
+}
+
 // 获取系统配置信息
 export function getAllConfigList() {
     return request({
