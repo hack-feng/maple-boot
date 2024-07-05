@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref, getCurrentInstance, watch, onUpdated} from "vue";
 import { useRoute } from 'vue-router'
-import { getArticleById, collectArticle, likeArticle } from "@/api/blog"
+import { getArticleById, collectArticle, likeArticle } from "@/api/website"
 import {formatDateYYYYMMDD} from '@/utils/maple'
 
 import { MdPreview, MdCatalog } from 'md-editor-v3';
@@ -20,14 +20,14 @@ import Comment from '@/components/Comment.vue'
 const route = useRoute()
 const articleInfo = ref({
   articleContent:{}, 
-  blogCategoryVo: {
+  categoryVo: {
     name: undefined
   }
 });
 const commentData = ref([]);
 const drawer = ref(false)
 const articleContent = ref({});
-const blogCategoryVo = ref({name: undefined});
+const categoryVo = ref({name: undefined});
 const nextArticle = ref({});
 const preArticle = ref({});
 const aboutArticleList = ref([]);
@@ -39,8 +39,8 @@ const scrollElement = document.documentElement;
 const getArticleByIdClick = () => {
   getArticleById(route.params.id).then(res => {
     articleInfo.value = res;
-    articleContent.value = res.blogContentVo ? res.blogContentVo : {};
-    blogCategoryVo.value = res.blogCategoryVo ? res.blogCategoryVo : {};
+    articleContent.value = res.contentModel ? res.contentModel : {};
+    categoryVo.value = res.categoryModel ? res.categoryModel : {};
     nextArticle.value = res.nextTitle;
     preArticle.value = res.preTitle;
     aboutArticleList.value = res.aboutArticle;
@@ -54,7 +54,7 @@ const likeArticleClick = () => {
   });
   likeArticle(param.value).then(res => {
     articleInfo.value.isLike = param.value.isLike
-    if(param.value.isLike == true) {
+    if(param.value.isLike === true) {
       articleInfo.value.likeNum = articleInfo.value.likeNum ? articleInfo.value.likeNum + 1 : 1
     } else {
       articleInfo.value.likeNum = articleInfo.value.likeNum - 1
@@ -69,7 +69,7 @@ const collectArticleClick = () => {
   });
   collectArticle(param.value).then(res => {
     articleInfo.value.isCollect = param.value.isCollect
-    if(param.value.isCollect == true) {
+    if(param.value.isCollect === true) {
       articleInfo.value.collectNum = articleInfo.value.collectNum ? articleInfo.value.collectNum + 1:1
     } else {
       articleInfo.value.collectNum = articleInfo.value.collectNum - 1
@@ -85,7 +85,7 @@ onMounted(() => {
 
 onUpdated(() => {
   useMeta({
-    title: articleInfo.value.title ? articleInfo.value.title + '_【' + blogCategoryVo.value.name + '】' + '- 笑小枫' : '文章详情 - 笑小枫' ,
+    title: articleInfo.value.title ? articleInfo.value.title + '_【' + categoryVo.value.name + '】' + '- 笑小枫' : '文章详情 - 笑小枫' ,
     meta: [
       { name: 'keywords', content: articleInfo.value.keywords ? articleInfo.value.keywords : '笑小枫,java,SpringBoot,程序员' },
       { name: 'description', content: articleInfo.value.description && articleInfo.value.resourceDesc !== '' 
@@ -108,24 +108,44 @@ onUpdated(() => {
         <h3>
           {{ articleInfo.title ? articleInfo.title : '文章不存在了呢'}}
         </h3>
+        <div class="row mx-7 mt-lg-4">
+          <div class="col-auto" v-if="articleInfo.keywords">
+            <span>文章标签： </span>
+            <span v-for="keyword in articleInfo.keywords.split(',')">
+              <el-tag class="mx-2" type="success">{{ keyword }}</el-tag>
+            </span>
+          </div>
+          <div class="col-auto">
+            <span>阅读： </span>
+            <span class="me-1" style="color:#669900;">{{ articleInfo.readNum }}</span>
+          </div>
+          <div class="col-auto">
+            <span>收藏： </span>
+            <span class="me-1" style="color:#669900;">{{ articleInfo.collectNum }}</span>
+          </div>
+          <div class="col-auto">
+            <span>文章最新于<span style="color:#ff9900;">{{ formatDateYYYYMMDD(articleInfo.updateTime) }}</span>更新</span>
+          </div>
+        </div>
+        <el-divider></el-divider>
       </div>
       <div class="row">
         <div class="col-lg-1" v-show="textDark">
           <div class="sticky-100">
             <div class="mx-auto" >
               <el-badge :value="articleInfo.likeNum > 0 ? articleInfo.likeNum : ''" class="item">
-                <el-button class="button-operation" :class="articleInfo.isLike ? 'active' : '222'" circle @click="likeArticleClick">
-                  <i class="fa fa-thumbs-o-up"/>
+                <el-button class="button-operation" :class="articleInfo.isLike ? 'active' : ''" circle @click="likeArticleClick">
+                  <span class="iconfont icon-icon" style="font-size: 2rem;"></span>
                 </el-button>
               </el-badge>
               <el-badge :value="articleInfo.commentNum > 0 ? articleInfo.commentNum : ''" class="item">
                 <el-button class="button-operation" circle @click="drawer = true">
-                  <i class="fa fa-commenting-o"/>
+                  <span class="iconfont icon-pinglun" style="font-size: 2rem;"></span>
                 </el-button>
               </el-badge>
               <el-badge :value="articleInfo.collectNum > 0 ? articleInfo.collectNum : ''" class="item">
                 <el-button class="button-operation" :class="articleInfo.isCollect ? 'active' : ''" circle @click="collectArticleClick">
-                  <i class="fa fa-star-o"/>
+                  <span class="iconfont icon-shoucang" style="font-size: 2rem;"></span>
                 </el-button>
               </el-badge>
             </div>

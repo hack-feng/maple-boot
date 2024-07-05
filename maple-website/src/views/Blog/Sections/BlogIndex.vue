@@ -6,14 +6,14 @@ import TransparentBlogCard from "@/examples/cards/blogCards/TransparentBlogCard.
 import BackgroundBlogCard from "@/examples/cards/blogCards/BackgroundBlogCard.vue";
 
 import {formatDateYYYYMMDD} from '@/utils/maple'
-import {getPageTitle} from "@/api/article"
-import {getPageCategory} from "@/api/category"
+import { getPageCategory, getPageArticle, getArticleById } from "@/api/website"
 import { isDesktop } from "@/assets/js/useWindowsWidth";
 
 //Maple Blog components
 import post4 from "@/assets/img/examples/blog2.jpg";
 // image
 import defaultImage from "@/assets/img/defaultImage.jpg";
+import {ElMessageBox} from "element-plus";
 
 // 定义父组件传过来的值
 const props = defineProps({
@@ -25,13 +25,13 @@ const props = defineProps({
 
 onMounted(() => {
   getCategoryClick();
-  getPageTitleClick();
+  getPageArticleClick();
   getHotTitleClick();
 });
 
 const textDark = isDesktop();
-const blogArticleList = ref([]);
-const hotBlogArticleList = ref([]);
+const articleList = ref([]);
+const hotArticleList = ref([]);
 const loading = ref(false);
 const noMore = ref(false);
 const disabled = computed(() => loading.value || noMore.value);
@@ -46,7 +46,7 @@ let articleParam = ref({
     size: 10,
     total: 100
   },
-  model: {
+  query: {
     isNew: true,
     menuPath: props.menuPath,
     description: undefined
@@ -59,7 +59,7 @@ const getCategoryClick = () => {
       current: 1,
       size: 3
     },
-    model: {
+    query: {
       menuPath: props.menuPath,
       isTop: true
     }
@@ -73,23 +73,23 @@ const handleInfiniteScroll = () => {
   if (articleParam.value.page.current * articleParam.value.page.size <= articleParam.value.page.total) {
     articleParam.value.page.current = articleParam.value.page.current + 1;
     loading.value = true;
-    getPageTitleClick(false);
+    getPageArticleClick(false);
   } else {
     noMore.value = true;
   }
 };
 
-const getPageTitleClick = (isRefreshList) => {
+const getPageArticleClick = (isRefreshList) => {
   if(isRefreshList === true) {
     articleParam.value.page.current = 1
-    blogArticleList.value = [];
+    articleList.value = [];
   }
-  getPageTitle(articleParam.value).then(res => {
+  getPageArticle(articleParam.value).then(res => {
     articleParam.value.page.total = res.total;
     let list = res.records;
     for (let i = 0; i < list.length; i++) {
       let article = list[i];
-      blogArticleList.value.push(article);
+      articleList.value.push(article);
     }
     loading.value = false;
   });
@@ -101,16 +101,34 @@ const getHotTitleClick = () => {
       current: 1,
       size: 10
     },
-    model: {
+    query: {
       menuPath: props.menuPath,
       isHot: true
     }
   }
-  getPageTitle(hotArticleParam).then(res => {
-    hotBlogArticleList.value = res.records;
+  getPageArticle(hotArticleParam).then(res => {
+    hotArticleList.value = res.records;
   });
 }
 
+const jumpWebsite = (id, name, originalUrl) => {
+  ElMessageBox.confirm(
+    '您即将离开本站，前往：<span style="color: teal">' + originalUrl + '</span>',
+    '请注意您的账号和财产安全',
+    {
+      dangerouslyUseHTMLString: true,
+      confirmButtonText: '继续前往',
+      cancelButtonText: '取消前往',
+      type: 'warning',
+    }
+  ).then(() => {
+    getArticleById(id).then(res => {
+      window.open(originalUrl, '_blank')
+    })
+  }).catch(() => {
+    
+  })
+}
 
 </script>
 <template>
@@ -119,7 +137,7 @@ const getHotTitleClick = () => {
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
-            <h3 class="mb-4">博客分类</h3>
+            <h3 class="mb-4">精品分类</h3>
           </div>
         </div>
         <div class="row">
@@ -156,20 +174,20 @@ const getHotTitleClick = () => {
         <div class="container">
           <div class="row mt-2 mb-2">
             <div class="col-lg-2">
-              <h3>博客列表</h3>
+              <h3>最新资讯</h3>
             </div>
             <div class="col-lg-6 mx-auto">
               <div class="input-group input-group-dynamic">
                 <input
                   type="text"
                   class="form-control form-control-md"
-                  v-model="articleParam.model.description"
+                  v-model="articleParam.query.description"
                   placeholder="请输入关键字搜索"
                 />
               </div>
             </div>
             <div class="col-lg-2">
-              <button class="btn bg-gradient-success" v-on:click="getPageTitleClick(true)">
+              <button class="btn bg-gradient-success" v-on:click="getPageArticleClick(true)">
                 <i class="fas fa-search small"></i> 搜索
               </button>
             </div>
@@ -181,13 +199,13 @@ const getHotTitleClick = () => {
         <div class="card card-body blur shadow-blur">
           <section>
             <div class="container">
-              <div class="row" v-for="blogArticle in blogArticleList">
-                <div class="col-12 mx-auto">
+              <div class="row" v-for="blogArticle in articleList">
+                <div class="col-12 mx-auto"  v-show="blogArticle.articleType === 1">
                   <div class="row">
                     <div class="col-lg-3 position-relative mx-auto">
                       <img
                           :src="blogArticle.img === null ? defaultImage : blogArticle.img"
-                          alt="图片去找笑小枫啦"
+                          alt="图片找不到了"
                           class="shadow border-radius-lg img-130"
                           loading="lazy"
                       />
@@ -196,10 +214,50 @@ const getHotTitleClick = () => {
                       <a :href="'/article/'+blogArticle.id">
                         <div style="height:85%">
                           <h6 class="mb-0 more-omit-2">
-                            【{{ blogArticle.blogCategoryVo.name === null ? "笑小枫新作" : blogArticle.blogCategoryVo.name }}】 - {{ blogArticle.title }}
+                            【{{ blogArticle.categoryModel.name === null ? "笑小枫新作" : blogArticle.categoryModel.name }}】 - {{ blogArticle.title }}
+                            <el-tag class="mx-2" type="success">文章</el-tag>
                           </h6>
                           <p class="mb-0 more-omit-3 mt-2 text-sm">
                             {{ blogArticle.description  === null || blogArticle.description === "" ? "连点介绍都没有，还是直接去看详情吧~" : blogArticle.description}}
+                            <br/>
+                          </p>
+                        </div>
+                      </a>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span>{{ formatDateYYYYMMDD(blogArticle.createTime) }}发布</span>
+                        </div>
+                        <div class="col-auto">
+                          <span>阅读 </span>
+                          <span class="me-1">{{ blogArticle.readNum }}</span>
+                        </div>
+                        <div class="col-auto">
+                          <span>收藏 </span>
+                          <span class="me-1">{{ blogArticle.collectNum }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 mx-auto"  v-show="blogArticle.articleType === 2">
+                  <div class="row">
+                    <div class="col-lg-3 position-relative mx-auto">
+                      <img
+                          :src="blogArticle.img === null ? defaultImage : blogArticle.img"
+                          alt="图片找不到了~"
+                          class="shadow border-radius-lg img-130"
+                          loading="lazy"
+                      />
+                    </div>
+                    <div class="col-lg-9 position-relative mx-auto">
+                      <a :href="'/resource/'+blogArticle.id">
+                        <div style="height:85%">
+                          <h6 class="mb-0 more-omit-2">
+                            【{{ blogArticle.categoryModel.name === null ? "笑小枫新作" : blogArticle.categoryModel.name }}】 - {{ blogArticle.title }}
+                            <el-tag class="mx-2" type="warning">资源</el-tag>
+                          </h6>
+                          <p class="mb-0 more-omit-3 mt-2 text-sm">
+                            {{ blogArticle.description  === null || blogArticle.description === "" ? "哎呀，没有介绍哎~要不先下载试试" : blogArticle.description}}
                             <br/>
                           </p>
                         </div>
@@ -210,12 +268,55 @@ const getHotTitleClick = () => {
                             <span>{{ formatDateYYYYMMDD(blogArticle.createTime) }}发布</span>
                           </div>
                           <div class="col-auto">
-                            <span>阅读 </span>
-                            <span class="h6 me-1">{{ blogArticle.readNum }}</span>
+                            <span>下载 </span>
+                            <span class="me-1">{{ blogArticle.downloadNum }}</span>
                           </div>
                           <div class="col-auto">
                             <span>收藏 </span>
-                            <span class="h6 me-1">{{ blogArticle.collectNum }}</span>
+                            <span class="me-1">{{ blogArticle.collectNum }}</span>
+                          </div>
+                          <div class="col-auto">
+                            <a class="text-success icon-move-left" style="cursor: pointer;">
+                              <span v-if="blogArticle.isDownload">点击下载(已下载)</span>
+                              <span v-else>立即下载</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 mx-auto"  v-show="blogArticle.articleType === 3">
+                  <div class="row">
+                    <div class="col-lg-3 position-relative mx-auto">
+                      <img
+                          :src="blogArticle.img === null ? defaultImage : blogArticle.img"
+                          alt="图片去找笑小枫啦"
+                          class="shadow border-radius-lg img-130"
+                          loading="lazy"
+                      />
+                    </div>
+                    <div class="col-lg-9 position-relative mx-auto">
+                      <a v-on:click="jumpWebsite(blogArticle.id, blogArticle.title, blogArticle.originalUrl)">
+                        <div style="height:85%">
+                          <h6 class="mb-0 more-omit-2">
+                            {{ blogArticle.title }}
+                            <el-tag class="mx-2" type="danger">链接</el-tag>
+                          </h6>
+                          <p class="mb-0 more-omit-3 mt-2 text-sm">
+                            {{ blogArticle.description  === null || blogArticle.description === "" ? "连点介绍都没有，还是直接去看看吧~" : blogArticle.description}}
+                            <br/>
+                          </p>
+                        </div>
+                      </a>
+                      <div>
+                        <div class="row">
+                          <div class="col-auto">
+                            <span>{{ formatDateYYYYMMDD(blogArticle.createTime) }}发布</span>
+                          </div>
+                          <div class="col-auto">
+                            <span>点击次数 </span>
+                            <span class="me-1">{{ blogArticle.readNum }}</span>
                           </div>
                         </div>
                       </div>
@@ -236,7 +337,7 @@ const getHotTitleClick = () => {
         <section>
           <div class="card card-body blur shadow-blur">
             <h6><i class="fas fa-fire-alt text-warning"></i> 热门文章</h6>
-            <div class="more-omit-1" v-for="(hotArticle, index) in hotBlogArticleList" :key="index">
+            <div class="more-omit-1" v-for="(hotArticle, index) in hotArticleList" :key="index">
               <hr class="hr-2"/>
               <a :href="'/article/'+ hotArticle.id">
                 <span class="text-sm">

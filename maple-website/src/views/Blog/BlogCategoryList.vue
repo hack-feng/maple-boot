@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 // Sections components
 import TransparentBlogCard from "@/examples/cards/blogCards/TransparentBlogCard.vue";
 import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
-import {getBlogCategory} from "@/api/blog"
+import {getBlogCategory} from "@/api/website"
 import { useMeta } from 'vue-meta'
 
 // nav-pills

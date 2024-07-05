@@ -83,5 +83,8 @@ public class WebArticle extends BaseEntity {
 
     @ApiModelProperty(value = "评论数量")
     private Long commentNum;
+    
+    @ApiModelProperty(value = "关联文章ID（资源时使用）")
+    private Long relevanceArticleId;
 
 }

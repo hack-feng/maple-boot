@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
 // 获取博客目录
+export function getPageCategory(data) {
+    return request({
+        url: '/webCategory/getPageCategory',
+        method: 'post',
+        data: data
+    })
+}
+
+// 获取博客目录
 export function getBlogCategory(data) {
   return request({
     url: '/webArticle/getCategory',
@@ -12,15 +21,15 @@ export function getBlogCategory(data) {
 // 获取目录详情
 export function getCategoryById(categoryId) {
     return request({
-        url: '/webArticle/getCategoryById/' + categoryId,
+        url: '/webCategory/' + categoryId,
         method: 'get'
     })
 }
 
 // 分页获取文章列表
-export function getPageTitle(data) {
+export function getPageArticle(data) {
     return request({
-      url: '/webArticle/getPageTitle',
+      url: '/webArticle/getPageArticle',
       method: 'post',
       data: data
     })
@@ -29,12 +38,12 @@ export function getPageTitle(data) {
 // 获取文章详情
 export function getArticleById(articleId) {
     return request({
-        url: '/webArticle/getTitleById/' + articleId,
+        url: '/webArticle/' + articleId,
         method: 'get'
     })
 }
 
-// 收藏文章
+// 收藏
 export function collectArticle(data) {
     return request({
         url: '/operation/collectTitle',
@@ -43,12 +52,22 @@ export function collectArticle(data) {
     })
 }
 
-// 点赞文章
+// 点赞
 export function likeArticle(data) {
     return request({
         url: '/operation/likeTitle',
         method: 'post',
         data: data
+    })
+}
+
+// 下载文件
+export function downResource(data) {
+    return request({
+        url: '/resource/downResource',
+        method: 'post',
+        data: data,
+        responseType: "blob"
     })
 }
 

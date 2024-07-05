@@ -40,10 +40,10 @@ public class WebsiteJwtFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         includedUrlList.addAll(Arrays.asList(
-                
+                "/website/operation/*"
         ));
         excludedUrlList.addAll(Arrays.asList(
-                "/website/*"
+                
         ));
     }
 

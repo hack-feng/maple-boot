@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * 网站文章对象 web_article
- * 
+ *
  * @author www.xiaoxiaofeng.com
  * @date 2024-05-27
  */
@@ -65,6 +65,9 @@ public class WebArticleModel {
     @ApiModelProperty(value = "是否热门")
     private Boolean isHot;
 
+    @ApiModelProperty("是否最新")
+    private Boolean isNew;
+
     @ApiModelProperty(value = "状态")
     private Integer status;
 
@@ -86,6 +89,9 @@ public class WebArticleModel {
     @ApiModelProperty(value = "评论数量")
     private Long commentNum;
 
+    @ApiModelProperty(value = "下载数量")
+    private Long downloadNum;
+
     @ApiModelProperty("是否阅读")
     private Boolean isRead;
 
@@ -94,6 +100,15 @@ public class WebArticleModel {
 
     @ApiModelProperty("是否点赞")
     private Boolean isLike;
+
+    @ApiModelProperty("是否下载")
+    private Boolean isDownload;
+
+    @ApiModelProperty("用户ID")
+    private Long userId;
+
+    @ApiModelProperty("关联文章ID")
+    private Long relevanceArticleId;
 
     @ApiModelProperty(value = "创建人")
     private Long createId;
@@ -106,6 +121,9 @@ public class WebArticleModel {
 
     @ApiModelProperty(value = "更新日期")
     private Date updateTime;
+
+    @ApiModelProperty(value = "关联文章内容")
+    private String relevanceContent;
 
     @ApiModelProperty("类目信息")
     private WebCategoryModel categoryModel;

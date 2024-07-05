@@ -100,13 +100,27 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
         return webArticleMapper.updateById(article);
     }
 
+    @Override
+    public WebArticleModel getById(Long id) {
+        return TransformUtils.map(webArticleMapper.selectById(id), WebArticleModel.class);
+    }
+
     public WebArticleModel getTitleInfoById(Long id, Boolean isWebUser) {
         WebArticle article = webArticleMapper.selectById(id);
-        WebContent content = webContentMapper.selectOne(Wrappers.lambdaQuery(WebContent.class).eq(WebContent::getArticleId, id));
+        WebContent content = webContentMapper.selectOne(Wrappers.lambdaQuery(WebContent.class)
+                .eq(WebContent::getArticleId, id));
         if (Objects.isNull(article)) {
             return new WebArticleModel();
         }
+
         WebArticleModel articleModel = TransformUtils.map(article, WebArticleModel.class);
+        if (Objects.nonNull(article.getRelevanceArticleId())) {
+            WebContent relevanceContent = webContentMapper.selectOne(Wrappers.lambdaQuery(WebContent.class)
+                    .eq(WebContent::getArticleId, article.getRelevanceArticleId()));
+            if (Objects.nonNull(relevanceContent)) {
+                articleModel.setRelevanceContent(relevanceContent.getOriginalContent());
+            }
+        }
         if (BooleanUtils.isTrue(isWebUser)) {
             WebUserOperation operation = userOperationMapper.selectOne(Wrappers.lambdaQuery(WebUserOperation.class)
                     .eq(WebUserOperation::getDataId, id)

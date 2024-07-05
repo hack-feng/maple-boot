@@ -2,11 +2,12 @@
 import {onMounted, onUpdated, ref} from "vue";
 import { useRoute } from 'vue-router'
 
-import { getResourceById, downResource, collectResource } from "@/api/download"
+import { getArticleById, downResource, collectArticle } from "@/api/website"
 
 import { MdPreview, MdCatalog } from 'md-editor-v3';
 // preview.css相比style.css少了编辑器那部分样式
 import 'md-editor-v3/lib/preview.css';
+import defaultImage from "@/assets/img/defaultImage.jpg";
 
 // Sections components
 import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
@@ -23,8 +24,8 @@ const textDark = isDesktop();
 //获取参数
 const resourceInfo = ref({});
 
-const getResourceByIdClick = () => {
-  getResourceById(route.params.id).then(res => {
+const getArticleByIdClick = () => {
+  getArticleById(route.params.id).then(res => {
     resourceInfo.value = res;
   });
 }
@@ -38,30 +39,30 @@ const downResourceClick = async (resourceId, downUrl) => {
   });
 }
 
-const collectResourceClick = () => {
+const collectArticleClick = () => {
   const param = ref({
     id: resourceInfo.value.id,
     isCollect: resourceInfo.value.isCollect ? !resourceInfo.value.isCollect : true
   });
-  collectResource(param.value).then(res => {
+  collectArticle(param.value).then(res => {
     resourceInfo.value.isCollect = param.value.isCollect
   });
 }
 
 // hook
 onMounted(() => {
-  getResourceByIdClick();
+  getArticleByIdClick();
 });
 
 onUpdated(() => {
   useMeta({
-    title: resourceInfo.value.resourceName ? resourceInfo.value.resourceName + '- 笑小枫' : '资源详情 - 笑小枫',
+    title: resourceInfo.value.title ? resourceInfo.value.title + '- 笑小枫' : '资源详情 - 笑小枫',
     meta: [
       {name: 'keywords', content: '笑小枫,java,SpringBoot,程序员'},
       {
         name: 'description',
-        content: resourceInfo.value.resourceDesc && resourceInfo.value.resourceDesc !== ''
-            ? resourceInfo.value.resourceDesc : '笑小枫拥有海量的资源，包括教程、案例、工具、代码库等，为您的学习和实践提供了全面的支持。'
+        content: resourceInfo.value.description && resourceInfo.value.description !== ''
+            ? resourceInfo.value.description : '笑小枫拥有海量的资源，包括教程、案例、工具、代码库等，为您的学习和实践提供了全面的支持。'
       }
     ]
   })
@@ -76,34 +77,65 @@ onUpdated(() => {
     ]"
   >
     <div class="col-lg-10 mx-auto">
-      <div class="text-center">
-        <h4>
-          {{ resourceInfo.resourceName ? resourceInfo.resourceName : '资源不存在了呢' }}
-        </h4>
 
-        <p>
-          {{ resourceInfo.resourceDesc }}
-        </p>
 
-        <el-button type="success" :plain="!resourceInfo.isDownload" v-show="resourceInfo.id" v-on:click="downResourceClick(resourceInfo.id, resourceInfo.downUrl)">
-          <i class="fa fa-arrow-circle-o-down"></i>
-          <span v-if="resourceInfo.isDownload">点击下载(已下载)</span>
-          <span v-else-if="resourceInfo.needPoints !== 0">点击下载({{ resourceInfo.needPoints }}🍁)</span>
-          <span v-else>免费下载</span>
-        </el-button>
-        
-        <el-button type="warning" :plain="!resourceInfo.isCollect" plain v-show="resourceInfo.id" v-on:click="collectResourceClick()">
-          <i class="fa fa-star-o"></i>
-          <span v-if="!resourceInfo.isCollect">我要收藏</span>
-          <span v-else-if="resourceInfo.isCollect">已收藏</span>
-        </el-button>
+      <div class="card alignment-container">
+        <div class="row mt-2 mx-md-2 mb-4">
+          <el-space class="col-lg-3">
+            <a class="d-block blur-shadow-image">
+              <img
+                  :src="resourceInfo.img === null ? defaultImage : resourceInfo.img"
+                  :alt="resourceInfo.title"
+                  class="img-fluid border-radius-lg img-160" />
+            </a>
+          </el-space>
+          <div class="col-lg-9">
+            <div class="position-relative mx-3">
+              <div class="row mb-1">
+                <div class="d-flex justify-content-between">
+                  <h4 class="font-weight-bolder mt-3">
+                    {{ resourceInfo.title ? resourceInfo.title : '资源不存在了呢' }}
+                  </h4>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-auto">
+                  <span>下载 </span>
+                  <span class="h6 me-1">{{ resourceInfo.downloadNum }}</span>
+                </div>
+                <div class="col-auto">
+                  <span>收藏 </span>
+                  <span class="h6 me-1">{{ resourceInfo.collectNum }}</span>
+                </div>
+              </div>
+              <p class="pe-5">
+                {{ resourceInfo.description }}
+              </p>
 
+              <el-button type="success" :plain="!resourceInfo.isDownload" v-show="resourceInfo.id" v-on:click="downResourceClick(resourceInfo.id, resourceInfo.downUrl)">
+                <span class="iconfont icon-xiazai"/>
+                <span v-if="resourceInfo.isDownload">点击下载(已下载)</span>
+                <span v-else>立即下载</span>
+              </el-button>
+
+              <el-button type="warning" :plain="!resourceInfo.isCollect" plain v-show="resourceInfo.id" v-on:click="collectArticleClick()">
+                <span class="iconfont icon-shoucang"/>
+                <span v-if="!resourceInfo.isCollect">我要收藏</span>
+                <span v-else-if="resourceInfo.isCollect">已收藏</span>
+              </el-button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="row" v-if="resourceInfo.originalContent">
+      
+      <div class="row relevanceContent" v-if="resourceInfo.relevanceContent" >
+        <el-divider>
+          <h4>使用教程</h4>
+        </el-divider>
         <div :class="textDark ? 'col-lg-10' : 'col-lg-12'">
           <div class="card">
             <div class="row mt-2 mx-md-2">
-              <MdPreview :editorId="id" :modelValue="resourceInfo.originalContent" previewTheme="smart-blue" codeTheme="github"/>
+              <MdPreview :editorId="id" :modelValue="resourceInfo.relevanceContent" previewTheme="smart-blue" codeTheme="github"/>
             </div>
           </div>
         </div>
@@ -121,5 +153,10 @@ onUpdated(() => {
 <style>
 .md-editor-preview-wrapper {
   padding: 10px 0px;
+}
+
+.relevanceContent {
+  margin-top: 80px !important;
+  margin-bottom: 20px;
 }
 </style>

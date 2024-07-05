@@ -22,7 +22,7 @@ public interface WebArticleMapper extends BaseMapper<WebArticle>{
      * @param webArticle 网站文章
      * @return 网站文章集合
      */
-    IPage<WebArticleModel> getPageList(@Param("page") Page<WebArticleModel> page, @Param("webArticle") WebArticleModel webArticle);
+    IPage<WebArticleModel> getPageList(@Param("page") Page<WebArticleModel> page, @Param("req") WebArticleModel req);
 
     WebCategoryModel selectReadAndCollectNum(@Param("categoryId") Long categoryId);
 

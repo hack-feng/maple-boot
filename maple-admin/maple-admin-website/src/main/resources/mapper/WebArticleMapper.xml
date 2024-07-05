@@ -4,64 +4,68 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maple.website.mapper.WebArticleMapper">
     
-    <sql id="selectWebArticleVo">
-        select id, category_id, parent_id, article_type, title, description, img, sort_num, keywords, author, download_type,
-               original_url, is_top, is_hot, status, source, level, read_num, download_num, collect_num, like_num, 
-               comment_num, create_id, create_time, update_id, update_time from web_article
-    </sql>
     <select id="getPageList" resultType="com.maple.website.vo.model.WebArticleModel">
-        <include refid="selectWebArticleVo"/>
+        select
+        t1.*,
+        t2.id as `categoryModel.id`,
+        t2.icon as `categoryModel.icon`,
+        t2.name as `categoryModel.name`,
+        t3.is_read as isRead,
+        t3.is_collect as isCollect,
+        t3.is_like as isLike,
+        t3.is_download as isDownload
+        from web_article t1
+        left join web_category t2 on t1.category_id = t2.id
+        left join web_user_operation t3 on t1.id = t3.data_id and data_type = 1 and is_delete = 0 and t3.user_id = #{req.userId}
         <where>
-            <if test="webArticle.categoryId != null"> 
-                and category_id = #{webArticle.categoryId}
+            <if test="req.status != null and req.status != ''">
+                and t1.status = #{req.status}
             </if>
-            <if test="webArticle.title != null and webArticle.title != ''"> 
-                and title = #{webArticle.title}
+            <if test="req.categoryId != null">
+                and t1.category_id = #{req.categoryId}
             </if>
-            <if test="webArticle.description != null and webArticle.description != ''"> 
-                and description = #{webArticle.description}
+            <if test="req.categoryIdList != null and req.categoryIdList.size > 0">
+                and t1.category_id in
+                <foreach collection="req.categoryIdList" item="categoryId" open="(" separator="," close=")">
+                    #{categoryId}
+                </foreach>
             </if>
-            <if test="webArticle.img != null and webArticle.img != ''"> 
-                and img = #{webArticle.img}
+            <if test="req.title != null and req.title != ''">
+                and t1.title like concat ('%', #{req.title}, '%')
             </if>
-            <if test="webArticle.keywords != null and webArticle.keywords != ''"> 
-                and keywords = #{webArticle.keywords}
+            <if test="req.description != null and req.description != ''">
+                and (t1.title like concat ('%', #{req.description}, '%')
+                or t1.description like concat ('%', #{req.description}, '%')
+                )
             </if>
-            <if test="webArticle.author != null and webArticle.author != ''"> 
-                and author = #{webArticle.author}
+            <if test="req.isHot != null">
+                and t1.is_hot = #{req.isHot}
             </if>
-            <if test="webArticle.originalUrl != null and webArticle.originalUrl != ''"> 
-                and original_url = #{webArticle.originalUrl}
+            <if test="req.isCollect != null">
+                and t3.is_collect = #{req.isCollect}
             </if>
-            <if test="webArticle.isTop != null"> 
-                and is_top = #{webArticle.isTop}
-            </if>
-            <if test="webArticle.isHot != null"> 
-                and is_hot = #{webArticle.isHot}
-            </if>
-            <if test="webArticle.status != null and webArticle.status != ''"> 
-                and status = #{webArticle.status}
-            </if>
-            <if test="webArticle.source != null"> 
-                and source = #{webArticle.source}
-            </if>
-            <if test="webArticle.level != null"> 
-                and level = #{webArticle.level}
-            </if>
-            <if test="webArticle.readNum != null"> 
-                and read_num = #{webArticle.readNum}
-            </if>
-            <if test="webArticle.collectNum != null"> 
-                and collect_num = #{webArticle.collectNum}
-            </if>
-            <if test="webArticle.likeNum != null"> 
-                and like_num = #{webArticle.likeNum}
-            </if>
-            <if test="webArticle.commentNum != null"> 
-                and comment_num = #{webArticle.commentNum}
+            <if test="req.isRead != null">
+                and t3.is_read = #{req.isRead}
             </if>
         </where>
-        order by id desc
+        group by t1.id
+        <choose>
+            <when test="req.isRead != null">
+                order by t3.update_time desc
+            </when>
+            <when test="req.isCollect != null">
+                order by t3.create_time desc
+            </when>
+            <when test="req.isNew != null">
+                order by t1.create_time desc
+            </when>
+            <when test="req.categoryId != null">
+                order by t1.is_top desc, t1.sort_num, t1.id
+            </when>
+            <otherwise>
+                order by t1.is_top desc, t1.id desc
+            </otherwise>
+        </choose>
     </select>
     
     <select id="selectReadAndCollectNum" resultType="com.maple.website.vo.model.WebCategoryModel">

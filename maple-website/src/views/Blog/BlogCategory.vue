@@ -7,7 +7,7 @@ import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
 import DefaultInfoCard from "@/examples/cards/infoCards/DefaultInfoCard.vue";
 import CenteredBlogCard from "@/examples/cards/blogCards/CenteredBlogCard.vue";
 import {formatDateYYYYMMDD} from '@/utils/maple'
-import {getCategoryById, getPageTitle} from "@/api/blog"
+import {getCategoryById, getPageArticle} from "@/api/website"
 import { isDesktop } from "@/assets/js/useWindowsWidth";
 
 // image
@@ -50,14 +50,14 @@ const handleInfiniteScroll = () => {
   if (articleParam.value.page.current * articleParam.value.page.size <= articleParam.value.page.total) {
     articleParam.value.page.current = articleParam.value.page.current + 1;
     loading.value = true;
-    getPageTitleClick();
+    getPageArticleClick();
   } else {
     noMore.value = true;
   }
 };
 
-const getPageTitleClick = () => {
-  getPageTitle(articleParam.value).then(res => {
+const getPageArticleClick = () => {
+  getPageArticle(articleParam.value).then(res => {
     articleParam.value.page.total = res.total;
     let list = res.records;
     for (let i = 0; i < list.length; i++) {
@@ -71,7 +71,7 @@ const getPageTitleClick = () => {
 // hook
 onMounted(() => {
   getCategoryByIdClick();
-  getPageTitleClick();
+  getPageArticleClick();
 });
 
 onUpdated(() => {
@@ -95,16 +95,16 @@ onUpdated(() => {
   >
 
     <div class="col-lg-12 mx-auto">
-      <div class="card">
+      <div class="card alignment-container">
         <div class="row mt-2 mx-md-2 mb-4">
-          <div class="col-lg-3">
+          <el-space class="col-lg-3">
             <a class="d-block blur-shadow-image">
               <img 
               :src="blogCategory.icon === null ? defaultImage : blogCategory.icon" 
               :alt="blogCategory.name" 
               class="img-fluid border-radius-lg img-160" />
             </a>
-          </div>
+          </el-space>
           <div class="col-lg-7">
             <div class="position-relative mx-3">
               <div class="row mb-1">

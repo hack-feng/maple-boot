@@ -2,11 +2,11 @@
 import {computed, onMounted, ref} from "vue";
 
 import {formatDateYYYYMMDD} from '@/utils/maple'
-import {getPageTitle} from "@/api/blog"
+import {getPageArticle} from "@/api/website"
 
 
 onMounted(() => {
-  getPageTitleClick();
+  getPageArticleClick();
 });
 
 const blogArticleList = ref([]);
@@ -28,14 +28,14 @@ const handleInfiniteScroll = () => {
   if (articleParam.value.page.current * articleParam.value.page.size <= articleParam.value.page.total) {
     articleParam.value.page.current = articleParam.value.page.current + 1;
     readLoading.value = true;
-    getPageTitleClick();
+    getPageArticleClick();
   } else {
     readNoMore.value = true;
   }
 };
 
-const getPageTitleClick = () => {
-  getPageTitle(articleParam.value).then(res => {
+const getPageArticleClick = () => {
+  getPageArticle(articleParam.value).then(res => {
     articleParam.value.page.total = res.total;
     let list = res.records;
     for (let i = 0; i < list.length; i++) {
