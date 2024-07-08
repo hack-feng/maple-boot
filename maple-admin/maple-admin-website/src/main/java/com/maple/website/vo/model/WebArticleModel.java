@@ -124,6 +124,9 @@ public class WebArticleModel {
 
     @ApiModelProperty(value = "关联文章内容")
     private String relevanceContent;
+    
+    @ApiModelProperty(value = "菜单PATH")
+    private String menuPath;
 
     @ApiModelProperty("类目信息")
     private WebCategoryModel categoryModel;

@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 import { useRoute } from 'vue-router';
 
 import Meta from "@/examples/Meta.vue";
@@ -14,17 +14,24 @@ import {getWebMenuByPath} from "../../api/common";
 const route = useRoute();
 
 const state = reactive({
-  menuPath: route.params.menu,
   webMenuInfo: {},
   isGetData: false
 });
 
 onMounted(() => {
-  getWebMenuByPath(state.menuPath).then(res => {
+  getWebMenuByPathClick(route.params.menu);
+});
+
+const getWebMenuByPathClick = (menuPath) => {
+  getWebMenuByPath(menuPath).then(res => {
     state.webMenuInfo = res;
     state.isGetData = true;
   });
-});
+}
+
+watch(() => route.params.menu, (newId, oldId) => {
+  getWebMenuByPathClick(route.params.menu);
+})
 
 </script>
 <template>
@@ -45,6 +52,6 @@ onMounted(() => {
       <span class="mask bg-gradient-dark opacity-3"></span>
     </div>
   </Header>
-  <BlogIndex :menuPath="state.menuPath"/>
+  <BlogIndex :menuPath="state.webMenuInfo.path" :key="state.webMenuInfo.path"/>
   <DefaultFooter />
 </template>

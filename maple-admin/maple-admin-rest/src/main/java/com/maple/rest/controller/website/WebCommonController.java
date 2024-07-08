@@ -30,11 +30,10 @@ public class WebCommonController {
     public List<WebMenuModel> getHeaderMenuTreeList(@RequestBody WebMenuModel model) {
         return webMenuService.getTreeList(model);
     }
-    
+
     @GetMapping("/getWebMenuByPath/{path}")
-    public WebMenuModel getWebMenuByPath(@PathVariable("path") String path){
+    public WebMenuModel getWebMenuByPath(@PathVariable("path") String path) {
         return webMenuService.getWebMenuByPath(path);
-        
     }
 
     @ApiOperation(value = "查询网站配置列表", notes = "网站配置-查询列表", nickname = "www.xiaoxiaofeng.com")

@@ -22,9 +22,12 @@ import com.maple.website.vo.model.WebContentModel;
 import com.maple.website.vo.query.WebArticlePageQuery;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.maple.common.config.MapleConstants.LAST_LIMIT_1;
@@ -51,6 +54,15 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
 
     @Override
     public IPage<WebArticleModel> getPageList(WebArticlePageQuery query) {
+        if (StringUtils.isNotBlank(query.getQuery().getMenuPath())) {
+            List<Long> categoryList = categoryMapper.getCategoryByMenuPath(query.getQuery().getMenuPath());
+            if (categoryList.isEmpty()) {
+                categoryList = new ArrayList<>();
+                categoryList.add(-1L);
+            }
+            query.getQuery().setCategoryIdList(categoryList);
+        }
+
         return webArticleMapper.getPageList(query.getPage(), query.getQuery());
     }
 

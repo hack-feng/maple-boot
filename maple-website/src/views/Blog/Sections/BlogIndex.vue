@@ -25,7 +25,7 @@ const props = defineProps({
 
 onMounted(() => {
   getCategoryClick();
-  getPageArticleClick();
+  getPageArticleClick(true);
   getHotTitleClick();
 });
 

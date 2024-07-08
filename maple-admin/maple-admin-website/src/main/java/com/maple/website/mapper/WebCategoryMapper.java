@@ -32,4 +32,6 @@ public interface WebCategoryMapper extends BaseMapper<WebCategory>{
     List<IdNumList> selectCountGroupByCategory();
 
     IPage<WebCategoryModel> getPageList(@Param("page") Page<WebCategoryModel> page, @Param("webCategory")WebCategoryModel query);
+
+    List<Long> getCategoryByMenuPath(@Param("menuPath") String menuPath);
 }
