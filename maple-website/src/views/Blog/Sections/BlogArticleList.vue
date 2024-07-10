@@ -131,19 +131,9 @@
 
 <script setup>
 
-import {computed, onMounted, reactive, ref} from "vue";
-
-// example components
-import TransparentBlogCard from "@/examples/cards/blogCards/TransparentBlogCard.vue";
-import BackgroundBlogCard from "@/examples/cards/blogCards/BackgroundBlogCard.vue";
-
 import {formatDateYYYYMMDD} from '@/utils/maple'
-import { getPageCategory, getPageArticle, getArticleById } from "@/api/website"
-import { isDesktop } from "@/assets/js/useWindowsWidth";
+import { getArticleById } from "@/api/website"
 
-//Maple Blog components
-import post4 from "@/assets/img/examples/blog2.jpg";
-// image
 import defaultImage from "@/assets/img/defaultImage.jpg";
 import {ElMessageBox} from "element-plus";
 
@@ -154,7 +144,6 @@ const props = defineProps({
     default: () => [],
   }
 });
-
 
 const jumpWebsite = (id, name, originalUrl) => {
   ElMessageBox.confirm(

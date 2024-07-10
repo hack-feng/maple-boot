@@ -1,10 +1,10 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
-
-import { getPageArticle } from "@/api/website"
+import { getPageArticle, getArticleById } from "@/api/website"
 import { getDictByCode } from "@/api/common"
 
 import setNavPills from "@/assets/js/nav-pills.js";
+import {ElMessageBox} from "element-plus";
 
 onMounted(() => {
   setNavPills();
@@ -75,12 +75,23 @@ const getDictByCodeClick = () => {
   console.log(linksType)
 }
 
-const addLinkNumClick = async (linkId) => {
-  await addLinkNum(linkId);
-}
+const jumpWebsite = (id, name, originalUrl) => {
+  ElMessageBox.confirm(
+      '您即将离开本站，前往：<span style="color: teal">' + originalUrl + '</span>',
+      '请注意您的账号和财产安全',
+      {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: '继续前往',
+        cancelButtonText: '取消前往',
+        type: 'warning',
+      }
+  ).then(() => {
+    getArticleById(id).then(res => {
+      window.open(originalUrl, '_blank')
+    })
+  }).catch(() => {
 
-function toLinkTypeText (typeValue) {
-  return typeValue;
+  })
 }
 
 </script>
@@ -154,10 +165,7 @@ function toLinkTypeText (typeValue) {
                   <div class="row">
                     <h6 class="mt-2 mb-1 more-omit-1">
                     {{ link.title }} 
-                    <el-tag v-if="link.dataClass == 1">友情链接</el-tag>
-                    <el-tag type="warning" v-if="link.dataClass == 2">工具链接</el-tag>
-                    <el-tag type="warning" v-if="link.dataClass == 3">优秀网站</el-tag>
-                    <el-tag type="success" v-if="link.dataClass == 4">学习地址</el-tag>
+                    <el-tag :type="linksType[link.dataClass].listClass">{{linksType[link.dataClass].label}}</el-tag>
                     </h6>
                   </div>
                   <p class="mb-0 more-omit-2 text-sm">
@@ -166,9 +174,7 @@ function toLinkTypeText (typeValue) {
                 </div>
               </div>
               <div class="mb-0">
-                <a :href="link.url" target="_blank">
-                  <el-button type="success" size="small" plain><i class="fa fa-paper-plane-o">立即前往</i></el-button>
-                </a>
+                <el-button type="success" size="small" plain v-on:click="jumpWebsite(link.id, link.title, link.originalUrl)"><i class="fa fa-paper-plane-o">立即前往</i></el-button>
                 <hr class="hr-3"/>
               </div>
             </div>
