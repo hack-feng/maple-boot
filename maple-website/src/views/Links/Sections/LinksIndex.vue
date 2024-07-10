@@ -5,7 +5,6 @@ import { getPageArticle } from "@/api/website"
 import { getDictByCode } from "@/api/common"
 
 import setNavPills from "@/assets/js/nav-pills.js";
-import {useDictStore} from "../../../../../maple-manage-web/src/stores/dict";
 
 onMounted(() => {
   setNavPills();
