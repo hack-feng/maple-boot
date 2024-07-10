@@ -82,7 +82,10 @@ public class WebCategoryModel {
 
     @ApiModelProperty("菜单路径")
     private String menuPath;
+    
+    @ApiModelProperty("父节点ID集合")
+    private List<Long> parentIdList;
 
     @ApiModelProperty(value = "子节点信息")
-    List<WebCategoryModel> children;
+    private List<WebCategoryModel> children;
 }

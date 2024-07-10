@@ -29,8 +29,11 @@ public class WebArticleModel {
     @ApiModelProperty(value = "所属类目id")
     private Long categoryId;
 
-    @ApiModelProperty("文章类型")
-    private Integer articleType;
+    @ApiModelProperty("数据类型")
+    private Integer dataType;
+
+    @ApiModelProperty("数据分类")
+    private Integer dataClass;
 
     @ApiModelProperty(value = "父节点id")
     private Long parentId;
@@ -52,9 +55,6 @@ public class WebArticleModel {
 
     @ApiModelProperty(value = "作者")
     private String author;
-
-    @ApiModelProperty(value = "下载类型")
-    private Integer downloadType;
 
     @ApiModelProperty(value = "原文地址")
     private String originalUrl;

@@ -12,7 +12,7 @@ export function getPageCategory(data) {
 // 获取博客目录
 export function getBlogCategory(data) {
   return request({
-    url: '/webArticle/getCategory',
+    url: '/webCategory/getPageCategory',
     method: 'post',
     data: data
   })

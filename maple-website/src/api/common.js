@@ -29,3 +29,11 @@ export function getAllConfigList() {
     })
 }
 
+// 根据字典type获取字典数据
+export function getDictByCode(dictCode){
+    return request({
+        url: '/common/getDictByCode/' + dictCode,
+        method: 'get'
+    })
+}
+

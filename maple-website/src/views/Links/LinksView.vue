@@ -1,29 +1,35 @@
 <script setup>
-import { onMounted} from "vue";
-import {useMeta} from "vue-meta";
-
-// example components
+import { onMounted, reactive } from "vue";
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import Header from "@/examples/Header.vue";
 import DefaultFooter from "@/examples/footers/FooterDefault.vue";
+import Meta from "@/examples/Meta.vue";
 
 // image
-import image from "@/assets/img/bg/b5.jpg";
 import LinksIndex from "./Sections/LinksIndex.vue";
 
 import Typed from "typed.js";
 
+import { getWebMenuByPath } from "../../api/common";
+
+const state = reactive({
+  webMenuInfo: {},
+  isGetData: false
+});
+
+onMounted(() => {
+  getWebMenuByPathClick("links");
+});
+
+const getWebMenuByPathClick = (menuPath) => {
+  getWebMenuByPath(menuPath).then(res => {
+    state.webMenuInfo = res;
+    state.isGetData = true;
+  });
+}
+
 onMounted(() => {
   
-  useMeta({
-    title: '小枫链接集 - 笑小枫',
-    meta: [
-      { name: 'keywords', content: '笑小枫,java链接,链接地址,程序员,java链接' },
-      { name: 'description', content: '笑小枫的链接地址丰富多样，无论是寻找学习资源、解决技术难题，还是探索行业趋势，都能为您提供实用、高效的帮助。' }
-    ]
-  });
-  
-
   if (document.getElementById("typed")) {
     // eslint-disable-next-line no-unused-vars
     var typed = new Typed("#typed", {
@@ -39,11 +45,18 @@ onMounted(() => {
 
 </script>
 <template>
-  <DefaultNavbar transparent />
+  <Meta v-if="state.isGetData" :webMenuInfo="state.webMenuInfo" :key="state.webMenuInfo.path"/>
+  <div class="container position-sticky z-index-sticky top-0  opacity-8">
+    <div class="row">
+      <div class="col-12">
+        <DefaultNavbar :sticky="true"/>
+      </div>
+    </div>
+  </div>
   <Header>
     <div
         class="page-header min-height-400"
-        :style="{ backgroundImage: `url(${image})` }"
+        :style="{ backgroundImage: `url(${state.webMenuInfo.image})` }"
         loading="lazy"
     >
       <span class="mask bg-gradient-dark opacity-3"></span>

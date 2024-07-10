@@ -27,8 +27,11 @@ public class WebArticle extends BaseEntity {
     @ApiModelProperty(value = "父节点id")
     private Long parentId;
 
-    @ApiModelProperty("文章类型")
-    private Integer articleType;
+    @ApiModelProperty("数据类型")
+    private Integer dataType;
+
+    @ApiModelProperty("数据分类")
+    private Integer dataClass;
 
     @ApiModelProperty(value = "标题")
     private String title;
@@ -47,9 +50,6 @@ public class WebArticle extends BaseEntity {
 
     @ApiModelProperty(value = "作者")
     private String author;
-
-    @ApiModelProperty(value = "下载类型")
-    private Integer downloadType;
 
     @ApiModelProperty(value = "原文地址")
     private String originalUrl;
@@ -83,7 +83,7 @@ public class WebArticle extends BaseEntity {
 
     @ApiModelProperty(value = "评论数量")
     private Long commentNum;
-    
+
     @ApiModelProperty(value = "关联文章ID（资源时使用）")
     private Long relevanceArticleId;
 

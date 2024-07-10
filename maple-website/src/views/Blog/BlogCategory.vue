@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router'
 import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
 import DefaultInfoCard from "@/examples/cards/infoCards/DefaultInfoCard.vue";
 import CenteredBlogCard from "@/examples/cards/blogCards/CenteredBlogCard.vue";
+import BlogArticleList from "./Sections/BlogArticleList.vue"
 import {formatDateYYYYMMDD} from '@/utils/maple'
 import {getCategoryById, getPageArticle} from "@/api/website"
 import { isDesktop } from "@/assets/js/useWindowsWidth";
@@ -168,28 +169,7 @@ onUpdated(() => {
           <div v-infinite-scroll="handleInfiniteScroll" :infinite-scroll-disabled="disabled">
             <div class="card card-body blur shadow-blur">
               <section>
-                <div class="container">
-                  <div class="row"  v-for="blogArticle in blogArticleList">
-                    <div class="col-12 mx-auto">
-                      <div class="row">
-                        <div class="col-lg-12 position-relative mx-auto">
-                          <a :href="'/article/'+blogArticle.id">
-                            <div style="height:85%">
-                              <h6 class="more-omit-1">
-                                {{ blogArticle.title }}
-                              </h6>
-                              <p class="mb-0 more-omit-2 text-sm">
-                                {{ blogArticle.description  === null || blogArticle.description === "" ? "连点介绍都没有，还是直接去看详情吧~" : blogArticle.description}}
-                                <br/>
-                              </p>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <hr class="hr-3"/>
-                  </div>
-                </div>
+                <BlogArticleList :articleList="blogArticleList"/>
               </section>
             </div>
             <p class="text-center" v-if="loading">加载中...</p>

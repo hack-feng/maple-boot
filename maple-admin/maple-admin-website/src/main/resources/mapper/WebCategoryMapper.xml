@@ -60,10 +60,25 @@
             <if test="webCategory.menuPath != null">
                 and t3.path = #{webCategory.menuPath}
             </if>
+            <if test="webCategory.description != null and webCategory.description != ''">
+                and (t1.name like concat ('%', #{webCategory.description}, '%')
+                or t1.description like concat ('%', #{webCategory.description}, '%')
+                )
+            </if>
+            <if test="webCategory.parentId">
+                and t1.parent_id = #{webCategory.parentId}
+            </if>
+            <if test="webCategory.parentIdList and webCategory.parentIdList.size > 0">
+                and t1.parent_id in
+                <foreach collection="webCategory.parentIdList" item="parentId" open="(" separator="," close=")">
+                    #{parentId}
+                </foreach>
+            </if>
         </where>
+        group by t1.id
     </select>
     <select id="getCategoryByMenuPath" resultType="java.lang.Long">
-        select t1.category_id
+        select distinct t1.category_id
         from web_menu_category t1
                  left join web_menu t2 on t1.web_menu_id = t2.id
         where t2.path = #{menuPath}

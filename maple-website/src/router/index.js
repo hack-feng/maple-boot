@@ -4,7 +4,7 @@ import AuthorView from "../views/Author/AuthorView.vue";
 import SignInBasicView from "../views/SignIn/BasicView.vue";
 
 import BlogView from "../views/Blog/BlogView.vue";
-import BlogArticle from "../views/Blog/BlogArticle.vue";
+import BlogArticle from "../views/Blog/BlogArticleInfo.vue";
 import BlogCategory from "../views/Blog/BlogCategory.vue";
 import BlogCategoryList from "../views/Blog/BlogCategoryList.vue";
 

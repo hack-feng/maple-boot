@@ -8,8 +8,8 @@
             <el-row :gutter="35">
 
               <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-                <el-form-item label="类型" prop="articleType">
-                  <el-radio-group v-model="state.ruleForm.articleType">
+                <el-form-item label="类型" prop="dataType">
+                  <el-radio-group v-model="state.ruleForm.dataType">
                     <el-radio :label="Number(1)">文章</el-radio>
                     <el-radio :label="Number(2)">资源</el-radio>
                     <el-radio :label="Number(3)">链接</el-radio>
@@ -49,9 +49,9 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.articleType === 2">
-                <el-form-item label="下载类型" prop="downloadType">
-                  <el-select v-model="state.ruleForm.downloadType" placeholder="请选择下载类型" clearable class="w100">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.dataType === 2">
+                <el-form-item label="下载类型" prop="dataClass">
+                  <el-select v-model="state.ruleForm.dataClass" placeholder="请选择下载类型" clearable class="w100">
                     <el-option
                         v-for="dict in resource_download_type"
                         :key="Number(dict.value)"
@@ -62,14 +62,14 @@
                 </el-form-item>
               </el-col>
     
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.articleType === 1">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.dataType === 1">
                 <el-form-item label="原文地址" prop="originalUrl">
                   <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入原文地址" clearable></el-input>
                 </el-form-item>
               </el-col>
 
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" 
-                      v-if="state.ruleForm.articleType === 2 && state.ruleForm.downloadType === 1">
+                      v-if="state.ruleForm.dataType === 2 && state.ruleForm.dataClass === 1">
                 <el-form-item label="上传文件" prop="originalUrl">
                   <el-upload
                       ref="upload"
@@ -91,13 +91,13 @@
               </el-col>
 
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20"
-                      v-if="state.ruleForm.articleType === 2 && state.ruleForm.downloadType !== 1">
+                      v-if="state.ruleForm.dataType === 2 && state.ruleForm.dataClass !== 1">
                 <el-form-item label="下载地址" prop="originalUrl">
                   <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入下载地址" clearable></el-input>
                 </el-form-item>
               </el-col>
 
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.articleType === 3">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.dataType === 3">
                 <el-form-item label="跳转地址" prop="originalUrl">
                   <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入跳转地址" clearable></el-input>
                 </el-form-item>
@@ -158,7 +158,7 @@
             </el-row>
           </el-form>
         </el-collapse-item>
-        <el-collapse-item title="文章内容" name="content" v-show="state.ruleForm.articleType !== 3">
+        <el-collapse-item title="文章内容" name="content" v-show="state.ruleForm.dataType !== 3">
           <MdEditor v-model="state.ruleForm.contentModel.originalContent" @onUploadImg="onUploadImg"/>
         </el-collapse-item>
       </el-collapse>
@@ -215,12 +215,12 @@
       sortNum: '',
       keywords: '',
       author: '',
-      downloadType: 1,
+      dataClass: 1,
       originalUrl: '',
       isTop: true,
       isHot: true,
       status: '',
-      articleType: 1,
+      dataType: 1,
       contentModel: {
         originalContent :"",
       },
@@ -233,7 +233,7 @@
     },
     rules: {
       title: { required: true, message: '请输入标题', trigger: 'blur' },
-      articleType: { required: true, message: '请选择类型', trigger: 'blur' },
+      dataType: { required: true, message: '请选择类型', trigger: 'blur' },
       categoryId: { required: true, message: '请选择归属类目', trigger: 'blur' },
       status: { required: true, message: '请选择状态', trigger: 'blur' },
       isTop: { required: true, message: '请输入是否置顶', trigger: 'blur' },
@@ -377,12 +377,12 @@
       sortNum: '',
       keywords: '',
       author: '',
-      downloadType: 1,
+      dataClass: 1,
       originalUrl: '',
       isTop: true,
       isHot: true,
       status: '',
-      articleType: 1,
+      dataType: 1,
       contentModel: {
         originalContent :"",
       },

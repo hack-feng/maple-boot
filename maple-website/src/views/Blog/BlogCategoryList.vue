@@ -26,7 +26,7 @@ let categoryParam = ref({
     size: 12,
     total: 100
   },
-  model: {
+  query: {
     description: undefined
   }
 });
@@ -87,7 +87,7 @@ onMounted(() => {
           <input
             type="text"
             class="form-control form-control-md"
-            v-model="categoryParam.model.description"
+            v-model="categoryParam.query.description"
             placeholder="请输入关键字搜索"
           />
         </div>

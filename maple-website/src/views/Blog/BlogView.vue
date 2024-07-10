@@ -9,7 +9,7 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
 import BlogIndex from "./Sections/BlogIndex.vue";
 
 
-import {getWebMenuByPath} from "../../api/common";
+import { getWebMenuByPath } from "../../api/common";
 
 const route = useRoute();
 
@@ -35,7 +35,7 @@ watch(() => route.params.menu, (newId, oldId) => {
 
 </script>
 <template>
-  <Meta v-if="state.isGetData" :webMenuInfo="state.webMenuInfo"/>
+  <Meta v-if="state.isGetData" :webMenuInfo="state.webMenuInfo" :key="state.webMenuInfo.path"/>
   <div class="container position-sticky z-index-sticky top-0  opacity-8">
     <div class="row">
       <div class="col-12">

@@ -77,7 +77,7 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
                     .eq(WebArticle::getId, articleModel.getId())
                     .set(WebArticle::getReadNum, articleModel.getReadNum() + 1));
             if (Objects.nonNull(JwtUtil.getUserId())) {
-                userOperationService.read(articleModel.getId(), articleModel.getArticleType());
+                userOperationService.read(articleModel.getId(), articleModel.getDataType());
             }
         }
         return articleModel;

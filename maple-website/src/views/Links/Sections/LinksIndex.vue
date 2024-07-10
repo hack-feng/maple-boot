@@ -1,31 +1,24 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 
-import {getPageLink, addLinkNum} from "@/api/links"
+import { getPageArticle } from "@/api/website"
+import { getDictByCode } from "@/api/common"
 
 import setNavPills from "@/assets/js/nav-pills.js";
+import {useDictStore} from "../../../../../maple-manage-web/src/stores/dict";
 
 onMounted(() => {
   setNavPills();
-  getPageLinkClick();
+  getPageArticleClick();
+  getDictByCodeClick();
 });
 
-const linksType = ref([
-  {"item": "全部", "value": ""}, 
-  {"item": "学习地址", "value": "4"}, 
-  {"item": "工具链接", "value": "2"}, 
-  {"item": "优秀网站", "value": "3"},
-  {"item": "友情链接", "value": "1"}
-]);
-
+const linksType = ref([]);
 
 const linksList = ref([]);
 const loading = ref(false);
 const noMore = ref(false);
 const disabled = computed(() => loading.value || noMore.value);
-
-
-
 
 let linksParam = ref({
   page: {
@@ -33,9 +26,10 @@ let linksParam = ref({
     size: 10,
     total: 100
   },
-  model: {
-    linkType: undefined,
-    name: undefined,
+  query: {
+    dataType: 3,
+    categoryId: undefined,
+    title: undefined,
   }
 });
 
@@ -43,7 +37,7 @@ const handleInfiniteScroll = () => {
   if (linksParam.value.page.current * linksParam.value.page.size <= linksParam.value.page.total) {
     linksParam.value.page.current = linksParam.value.page.current + 1;
     loading.value = true;
-    getPageLinkClick();
+    getPageArticleClick();
   } else {
     noMore.value = true;
   }
@@ -53,18 +47,33 @@ const searchClick = (typeValue) => {
   loading.value = true;
   linksParam.value.page.current = 1;
   if(typeValue !== undefined){
-    linksParam.value.model.linkType = typeValue;
+    linksParam.value.query.categoryId = typeValue;
   }
   linksList.value = [];
-  getPageLinkClick();
+  getPageArticleClick();
 }
 
-const getPageLinkClick = () => {
-  getPageLink(linksParam.value).then(res => {
+const getPageArticleClick = () => {
+  getPageArticle(linksParam.value).then(res => {
     linksParam.value.page.total = res.total;
     linksList.value.push(...res.records);
     loading.value = false;
   });
+}
+
+const getDictByCodeClick = () => {
+  getDictByCode("web_friendly_link_type").then(res => {
+    linksType.value = res.map(p => ({
+      label: p.dictLabel,
+      value: p.dictValue,
+      elTagType: p.listClass,
+      elTagClass: p.cssClass
+    })).reduce((acc, item) => {
+      acc[item.value] = item;
+      return acc;
+    }, {});
+  });
+  console.log(linksType)
 }
 
 const addLinkNumClick = async (linkId) => {
@@ -90,17 +99,27 @@ function toLinkTypeText (typeValue) {
           <div class="col-lg-5">
             <div class="nav-wrapper position-relative end-0">
               <ul class="nav nav-pills nav-fill p-1">
+                <li class="nav-item" >
+                  <a
+                      class="nav-link mb-0 px-0 py-1 active"
+                      data-bs-toggle="tab"
+                      href="#"
+                      v-on:click="searchClick('')"
+                      aria-selected="true"
+                  >
+                    全部
+                  </a>
+                </li>
                 <li class="nav-item" v-for="typeItem in linksType">
                   <a
                     class="nav-link mb-0 px-0 py-1"
-                    :class="typeItem.value === '' ? 'active' : ''"
                     data-bs-toggle="tab"
                     href="#"
                     v-on:click="searchClick(typeItem.value)"
                     :aria-controls="typeItem.value"
                     aria-selected="true"
                   >
-                    {{typeItem.item}}
+                    {{typeItem.label}}
                   </a>
                 </li>
               </ul>
@@ -112,7 +131,7 @@ function toLinkTypeText (typeValue) {
               <input
                 type="text"
                 class="form-control form-control-md"
-                v-model="linksParam.model.name"
+                v-model="linksParam.query.title"
                 placeholder="请输入关键字搜索"
               />
             </div>
@@ -135,11 +154,11 @@ function toLinkTypeText (typeValue) {
                 <div class="px-1">
                   <div class="row">
                     <h6 class="mt-2 mb-1 more-omit-1">
-                    {{ link.name }} 
-                    <el-tag v-if="link.linkType == 1">友情链接</el-tag>
-                    <el-tag type="warning" v-if="link.linkType == 2">工具链接</el-tag>
-                    <el-tag type="warning" v-if="link.linkType == 3">优秀网站</el-tag>
-                    <el-tag type="success" v-if="link.linkType == 4">学习地址</el-tag>
+                    {{ link.title }} 
+                    <el-tag v-if="link.dataClass == 1">友情链接</el-tag>
+                    <el-tag type="warning" v-if="link.dataClass == 2">工具链接</el-tag>
+                    <el-tag type="warning" v-if="link.dataClass == 3">优秀网站</el-tag>
+                    <el-tag type="success" v-if="link.dataClass == 4">学习地址</el-tag>
                     </h6>
                   </div>
                   <p class="mb-0 more-omit-2 text-sm">

@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maple.common.model.IdNumList;
-import com.maple.website.bean.WebArticle;
+import com.maple.common.util.TransformUtils;
 import com.maple.website.bean.WebCategory;
 import com.maple.website.mapper.WebArticleMapper;
-import com.maple.website.vo.model.WebCategoryModel;
 import com.maple.website.mapper.WebCategoryMapper;
 import com.maple.website.service.IWebCategoryService;
-import com.maple.common.util.TransformUtils;
+import com.maple.website.vo.model.WebCategoryModel;
 import com.maple.website.vo.query.WebCategoryPageQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCategory> implements IWebCategoryService {
 
     private final WebCategoryMapper webCategoryMapper;
-    
+
     private final WebArticleMapper webArticleMapper;
 
     @Override
@@ -60,7 +59,7 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
         categoryVo.setReadNum(temp.getReadNum());
         return categoryVo;
     }
-    
+
     @Override
     public WebCategoryModel getWebCategoryById(Long id) {
         return TransformUtils.map(webCategoryMapper.selectById(id), WebCategoryModel.class);

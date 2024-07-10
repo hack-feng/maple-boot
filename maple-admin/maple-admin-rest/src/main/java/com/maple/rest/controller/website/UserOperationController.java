@@ -40,7 +40,7 @@ public class UserOperationController {
         if (Objects.isNull(article)) {
             throw new MapleCommonException(ErrorCode.NOT_FIND_DATA);
         }
-        userOperationService.collect(article.getId(), articleModel.getIsCollect(), article.getArticleType());
+        userOperationService.collect(article.getId(), articleModel.getIsCollect(), article.getDataType());
     }
 
     @ApiOperation(value = "点赞/取消点赞文章")
@@ -51,6 +51,6 @@ public class UserOperationController {
         if (Objects.isNull(article)) {
             throw new MapleCommonException(ErrorCode.NOT_FIND_DATA);
         }
-        userOperationService.like(article.getId(), articleModel.getIsLike(), article.getArticleType());
+        userOperationService.like(article.getId(), articleModel.getIsLike(), article.getDataType());
     }
 }
