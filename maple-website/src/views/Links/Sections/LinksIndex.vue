@@ -60,6 +60,12 @@ const getPageArticleClick = () => {
   });
 }
 
+const activeName = ref('')
+
+const handleClick = (tab, event) => {
+  searchClick(tab.value)
+}
+
 const getDictByCodeClick = () => {
   getDictByCode("web_friendly_link_type").then(res => {
     linksType.value = res.map(p => ({
@@ -72,7 +78,6 @@ const getDictByCodeClick = () => {
       return acc;
     }, {});
   });
-  console.log(linksType)
 }
 
 const jumpWebsite = (id, name, originalUrl) => {
@@ -108,13 +113,21 @@ const jumpWebsite = (id, name, originalUrl) => {
         <div class="row mt-4">
           <div class="col-lg-5">
             <div class="nav-wrapper position-relative end-0">
+              <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+                <el-tab-pane label="全部" name=""/>
+                <div v-for="typeItem in linksType">
+                  <el-tab-pane :label="typeItem.label" :name="typeItem.value" />
+                </div>
+              </el-tabs>
+              
               <ul class="nav nav-pills nav-fill p-1">
-                <li class="nav-item" >
+                <li class="nav-item" v-show="linksType !== {}">
                   <a
-                      class="nav-link mb-0 px-0 py-1 active"
+                      class="nav-link mb-0 px-0 py-1"
                       data-bs-toggle="tab"
                       href="#"
                       v-on:click="searchClick('')"
+                      aria-controls=""
                       aria-selected="true"
                   >
                     全部
@@ -165,7 +178,7 @@ const jumpWebsite = (id, name, originalUrl) => {
                   <div class="row">
                     <h6 class="mt-2 mb-1 more-omit-1">
                     {{ link.title }} 
-                    <el-tag :type="linksType[link.dataClass].listClass">{{linksType[link.dataClass].label}}</el-tag>
+                    <el-tag :type="linksType[link.dataClass].elTagType">{{linksType[link.dataClass].label}}</el-tag>
                     </h6>
                   </div>
                   <p class="mb-0 more-omit-2 text-sm">

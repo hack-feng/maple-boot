@@ -1,33 +1,42 @@
 <script setup>
-import { onMounted } from "vue";
-import {useMeta} from "vue-meta";
-
-// example components
+import {onMounted, reactive} from "vue";
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import Header from "@/examples/Header.vue";
 import DefaultFooter from "@/examples/footers/FooterDefault.vue";
-
-// image
-import image from "@/assets/img/bg/b1.jpg";
 import DownloadIndex from "./Sections/DownloadIndex.vue";
+import Meta from "@/examples/Meta.vue";
+import { getWebMenuByPath } from "../../api/common";
+
+const state = reactive({
+  webMenuInfo: {},
+  isGetData: false
+});
 
 onMounted(() => {
-  useMeta({
-    title: '小枫资源库 - 笑小枫',
-    meta: [
-      { name: 'keywords', content: '笑小枫,java资源,开发软件,程序员,资源下载' },
-      { name: 'description', content: '笑小枫拥有海量的资源，包括教程、案例、工具、代码库等，为您的学习和实践提供了全面的支持。' }
-    ]
-  });
+  getWebMenuByPathClick("download");
 });
+
+const getWebMenuByPathClick = (menuPath) => {
+  getWebMenuByPath(menuPath).then(res => {
+    state.webMenuInfo = res;
+    state.isGetData = true;
+  });
+}
 
 </script>
 <template>
-  <DefaultNavbar transparent />
+  <Meta v-if="state.isGetData" :webMenuInfo="state.webMenuInfo" :key="state.webMenuInfo.path"/>
+  <div class="container position-sticky z-index-sticky top-0  opacity-8">
+    <div class="row">
+      <div class="col-12">
+        <DefaultNavbar :sticky="true"/>
+      </div>
+    </div>
+  </div>
   <Header>
     <div
         class="page-header min-height-400"
-        :style="{ backgroundImage: `url(${image})` }"
+        :style="{ backgroundImage: `url(${state.webMenuInfo.image})` }"
         loading="lazy"
     >
       <span class="mask bg-gradient-dark opacity-2"></span>

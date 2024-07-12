@@ -2,7 +2,7 @@
 import {computed, onMounted, reactive, ref} from "vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 
-import {getPageResource, getResourceById, downResource} from "@/api/download"
+import { getPageArticle, downResource } from "@/api/website"
 
 
 onMounted(() => {
@@ -57,7 +57,7 @@ const searchResourceClick = (typeValue) => {
 }
 
 const getPageResourceClick = () => {
-  getPageResource(resourceParam.value).then(res => {
+  getPageArticle(resourceParam.value).then(res => {
     resourceParam.value.page.total = res.total;
     resourceList.value.push(...res.records);
     loading.value = false;

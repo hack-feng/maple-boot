@@ -1,12 +1,8 @@
 <script setup>
-import {computed, onMounted, reactive, ref} from "vue";
-
-
-import {getPageResource, getResourceById, downResource} from "@/api/download";
+import { computed, onMounted, reactive, ref } from "vue";
+import { getPageArticle, downResource } from "@/api/website";
 import { isDesktop } from "@/assets/js/useWindowsWidth";
-
 import setNavPills from "@/assets/js/nav-pills.js";
-// image
 import defaultImage from "@/assets/img/defaultImage.jpg";
 import wxImage from "@/assets/img/wx.jpg";
 
@@ -36,7 +32,7 @@ let resourceParam = ref({
     size: 10,
     total: 100
   },
-  model: {
+  query: {
     resourceType: undefined,
     resourceName: undefined,
   }
@@ -56,14 +52,14 @@ const searchResourceClick = (typeValue) => {
   loading.value = true;
   resourceParam.value.page.current = 1;
   if(typeValue !== undefined){
-    resourceParam.value.model.resourceType = typeValue;
+    resourceParam.value.query.resourceType = typeValue;
   }
   resourceList.value = [];
   getPageResourceClick();
 }
 
 const getPageResourceClick = () => {
-  getPageResource(resourceParam.value).then(res => {
+  getPageArticle(resourceParam.value).then(res => {
     resourceParam.value.page.total = res.total;
     resourceList.value.push(...res.records);
     loading.value = false;
@@ -115,7 +111,7 @@ const downResourceClick = (resourceId, downUrl) => {
               <input
                 type="text"
                 class="form-control form-control-md"
-                v-model="resourceParam.model.resourceName"
+                v-model="resourceParam.query.resourceName"
                 placeholder="请输入关键字搜索"
               />
             </div>
