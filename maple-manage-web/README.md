@@ -18,27 +18,27 @@
 
 #### ⚡ 使用说明
 
-建议使用 cnpm，因为 yarn 有时会报错。<a href="http://nodejs.cn/" target="_blank">node 版本 > 14.18+/16+</a>
+建议使用 npm，因为 yarn 有时会报错。<a href="http://nodejs.cn/" target="_blank">node 版本 > 14.18+/16+</a>
 
 > Vite 不再支持 Node 12 / 13 / 15，因为上述版本已经进入了 EOL 阶段。现在你必须使用 Node 14.18+ / 16+ 版本。
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/lyt-top/vue-next-admin.git
+git clone https://gitee.com/hack-feng/maple-boot.git
 
 # 进入项目
-cd maple-web
+cd maple-manage-web
 
 # 安装依赖
-cnpm install
+npm install
 
 # 运行项目
-cnpm run dev
+npm run dev
 
 # 打包发布
-cnpm run build
+npm run build
 ```
 
 #### 📚 开发文档
 
-- 查看开发文档：<a href="https://lyt-top.gitee.io/vue-next-admin-doc-preview" target="_blank">vue-next-admin-doc</a>
+- 查看开发文档：<a href="https://www.xiaoxiaofeng.com/category/49" target="_blank">Maple Boot</a>

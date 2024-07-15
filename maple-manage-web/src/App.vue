@@ -39,7 +39,6 @@ const { themeConfig } = storeToRefs(storesThemeConfig);
 // 设置锁屏时组件显示隐藏
 const setLockScreen = computed(() => {
 	// 防止锁屏后，刷新出现不相关界面
-	// https://gitee.com/lyt-top/vue-next-admin/issues/I6AF8P
 	return themeConfig.value.isLockScreen ? themeConfig.value.lockScreenTime > 1 : themeConfig.value.lockScreenTime >= 0;
 });
 // 获取版本号
