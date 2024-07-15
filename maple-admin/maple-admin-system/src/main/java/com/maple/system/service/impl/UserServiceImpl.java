@@ -26,10 +26,11 @@ import com.maple.system.service.IUserService;
 import com.maple.system.vo.model.UserModel;
 import com.maple.system.vo.query.LoginQuery;
 import com.maple.system.vo.query.UserPageQuery;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +49,7 @@ import java.util.stream.Collectors;
  * @since 2021-12-07
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final UserMapper userMapper;
@@ -60,6 +61,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private final RoleMapper roleMapper;
 
     private final IUserRoleService userRoleService;
+
+    @Value("${maple.admin.account}")
+    private String adminAccount;
 
     @Override
     public UserModel login(LoginQuery req) {
@@ -80,6 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .eq(UserRole::getUserId, user.getId()))
                 .stream().map(UserRole::getRoleId).collect(Collectors.toList());
         TokenBean tokenBean = TokenBean.builder()
+                .isAdmin(adminAccount.equals(user.getAccount()))
                 .userId(user.getId())
                 .userType(user.getUserType())
                 .account(user.getAccount())
@@ -120,6 +125,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createUser(UserModel model) {
+        if (userMapper.selectCount(Wrappers.lambdaQuery(User.class).eq(User::getAccount, model.getAccount())) > 0) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "该用户账号已存在，请更换");
+        }
         User user = TransformUtils.map(model, User.class);
         String salt = String.valueOf(RandomUtils.nextInt(100000, 999999));
         user.setPassword(Md5Util.encrypt(user.getPassword(), salt));
@@ -132,6 +140,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserModel model) {
+        if (userMapper.selectCount(Wrappers.lambdaQuery(User.class)
+                .ne(User::getId, model.getId())
+                .eq(User::getAccount, model.getAccount())) > 0) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "该用户账号已存在，请更换");
+        }
         User user = TransformUtils.map(model, User.class);
         user.setPassword(null);
         user.setSalt(null);

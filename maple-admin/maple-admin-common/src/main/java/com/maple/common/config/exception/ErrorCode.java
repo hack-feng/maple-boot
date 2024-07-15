@@ -24,6 +24,7 @@ public enum ErrorCode {
     USER_STATUS_ERROR("2002", "用户已被停用，请联系管理员"),
 
     ARTICLE_CHECK_ERROR("3003", "资源不存在"),
+    DISABLE_UPDATE_ERROR("9000", "演示环境，不支持增删改操作"),
     PARAM_ERROR("9001", "请求参数有误，请重试"),
     NOT_FIND_DATA("9002", "数据不存在，请刷新后重试"),
     /**

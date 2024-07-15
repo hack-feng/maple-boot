@@ -7,10 +7,12 @@ import com.maple.common.config.exception.ErrorCode;
 import com.maple.common.model.ResultJson;
 import com.maple.common.util.JwtUtil;
 import com.maple.common.util.RedisUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
@@ -29,13 +31,16 @@ import java.util.regex.Pattern;
  * @date 2021/12/29
  */
 @WebFilter(filterName = "manageJwtFilter", urlPatterns = {"/*"})
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ManageJwtFilter implements Filter {
 
 
     private final List<String> includedUrlList;
 
     private final List<String> excludedUrlList;
+
+    @Value("${maple.isDisableUpdate}")
+    private Boolean isDisableUpdate;
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -99,6 +104,16 @@ public class ManageJwtFilter implements Filter {
                 }
             }
             redisService.set(GlobalConfig.getRedisUserKey(account), authorization, GlobalConfig.EXPIRE_TIME);
+            // 非管理员账户，禁用增删改的操作
+            if (BooleanUtils.isTrue(isDisableUpdate)
+                    && BooleanUtils.isNotTrue(JwtUtil.isAdmin())
+                    && (httpServletRequest.getRequestURI().contains("create")
+                            || httpServletRequest.getRequestURI().contains("update")
+                            || httpServletRequest.getRequestURI().contains("upload")
+                            || httpServletRequest.getMethod().equals(HttpMethod.DELETE.name()))) {
+                writeRsp(httpServletResponse, ErrorCode.DISABLE_UPDATE_ERROR);
+                return;
+            }
             chain.doFilter(httpServletRequest, httpServletResponse);
         }
     }
