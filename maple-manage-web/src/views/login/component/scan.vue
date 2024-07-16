@@ -20,7 +20,7 @@ const initQrcode = () => {
 	nextTick(() => {
 		(<HTMLElement>qrcodeRef.value).innerHTML = '';
 		new QRCode(qrcodeRef.value, {
-			text: `https://qm.qq.com/cgi-bin/qm/qr?k=RdUY97Vx0T0vZ_1OOu-X1yFNkWgDwbjC&jump_from=webapi`,
+			text: `https://u.wechat.com/MN6n8WkVLLmoR_X_77zFhZ8?s=1`,
 			width: 260,
 			height: 260,
 			colorDark: '#000000',

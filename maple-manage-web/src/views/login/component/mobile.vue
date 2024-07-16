@@ -17,7 +17,7 @@
 			</el-col>
 			<el-col :span="1"></el-col>
 			<el-col :span="8">
-				<el-button v-waves class="login-content-code">{{ $t('message.mobile.codeText') }}</el-button>
+				<el-button v-waves class="login-content-code" v-on:click="getMobileCode()">{{ $t('message.mobile.codeText') }}</el-button>
 			</el-col>
 		</el-form-item>
 		<el-form-item class="login-animation3">
@@ -31,6 +31,7 @@
 
 <script setup lang="ts" name="loginMobile">
 import { reactive } from 'vue';
+import {ElMessage} from "element-plus";
 
 // 定义变量内容
 const state = reactive({
@@ -39,6 +40,9 @@ const state = reactive({
 		code: '',
 	},
 });
+const getMobileCode = () => {
+  ElMessage.error('暂未接入手机号登录');
+}
 </script>
 
 <style scoped lang="scss">
