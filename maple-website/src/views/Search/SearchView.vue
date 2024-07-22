@@ -1,15 +1,9 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import { useRoute } from 'vue-router'
-import { search } from "@/api/home"
-
+import { search } from "@/api/website"
 import { isDesktop } from "@/assets/js/useWindowsWidth";
-
-
-// Sections components
 import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
-
-// image
 import defaultImage from "@/assets/img/defaultImage.jpg";
 
 

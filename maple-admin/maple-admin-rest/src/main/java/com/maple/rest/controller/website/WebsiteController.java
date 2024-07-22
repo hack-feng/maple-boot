@@ -6,6 +6,7 @@ import com.maple.website.service.IWebArticleService;
 import com.maple.website.service.IWebCategoryService;
 import com.maple.website.vo.model.WebArticleModel;
 import com.maple.website.vo.model.WebCategoryModel;
+import com.maple.website.vo.home.HomeData;
 import com.maple.website.vo.query.WebArticlePageQuery;
 import com.maple.website.vo.query.WebCategoryPageQuery;
 import io.swagger.annotations.Api;
@@ -30,6 +31,11 @@ public class WebsiteController {
     private final IWebArticleService webArticleService;
 
     private final IWebCategoryService webCategoryService;
+
+    @GetMapping("/getHomeData")
+    public HomeData getHomeData() {
+        return webArticleService.getHomeData();
+    }
 
     @ApiOperation(value = "分页查询网站文章列表", notes = "网站文章-分页查询列表", nickname = "www.xiaoxiaofeng.com")
     @PostMapping("/webArticle/getPageArticle")

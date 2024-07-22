@@ -14,7 +14,7 @@ const props = defineProps({
 
 onMounted(() => {
   useMeta({
-    title: props.webMenuInfo.title,
+    title: props.webMenuInfo.title + " - 笑小枫",
     meta: [
       {name: 'keywords', content: props.webMenuInfo.keywords},
       {name: 'description', content: props.webMenuInfo.keywords}

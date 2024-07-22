@@ -1,47 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maple.website.mapper.WebUserMapper">
-    
+
     <sql id="selectWebUserVo">
-        select id, user_no, openid, unionid, nick_name, sex, email, wechat_name, user_desc, inviter_user_id, head_portrait_link, create_id, create_time, update_id, update_time, version from web_user
+        select id,
+               user_no,
+               openid,
+               unionid,
+               nick_name,
+               sex,
+               email,
+               wechat_name,
+               user_desc,
+               status,
+               inviter_user_id,
+               head_portrait_link,
+               create_id,
+               create_time,
+               update_id,
+               update_time,
+               version
+        from web_user
     </sql>
     <select id="getPageList" resultType="com.maple.website.vo.model.WebUserModel">
         <include refid="selectWebUserVo"/>
         <where>
-            <if test="webUser.userNo != null and webUser.userNo != ''"> 
-                and user_no = #{webUser.userNo}
+            is_delete = 0
+            <if test="webUser.userNo != null and webUser.userNo != ''">
+                and user_no like concat('%', #{webUser.userNo}, '%') 
             </if>
-            <if test="webUser.openid != null and webUser.openid != ''"> 
+            <if test="webUser.openid != null and webUser.openid != ''">
                 and openid = #{webUser.openid}
             </if>
-            <if test="webUser.unionid != null and webUser.unionid != ''"> 
+            <if test="webUser.unionid != null and webUser.unionid != ''">
                 and unionid = #{webUser.unionid}
             </if>
-            <if test="webUser.nickName != null and webUser.nickName != ''"> 
+            <if test="webUser.nickName != null and webUser.nickName != ''">
                 and nick_name like concat('%', #{webUser.nickName}, '%')
             </if>
-            <if test="webUser.sex != null"> 
+            <if test="webUser.sex != null">
                 and sex = #{webUser.sex}
             </if>
-            <if test="webUser.email != null and webUser.email != ''"> 
+            <if test="webUser.email != null and webUser.email != ''">
                 and email = #{webUser.email}
             </if>
-            <if test="webUser.wechatName != null and webUser.wechatName != ''"> 
+            <if test="webUser.wechatName != null and webUser.wechatName != ''">
                 and wechat_name like concat('%', #{webUser.wechatName}, '%')
             </if>
-            <if test="webUser.userDesc != null and webUser.userDesc != ''"> 
+            <if test="webUser.userDesc != null and webUser.userDesc != ''">
                 and user_desc = #{webUser.userDesc}
             </if>
-            <if test="webUser.inviterUserId != null"> 
+            <if test="webUser.inviterUserId != null">
                 and inviter_user_id = #{webUser.inviterUserId}
             </if>
-            <if test="webUser.headPortraitLink != null and webUser.headPortraitLink != ''"> 
+            <if test="webUser.headPortraitLink != null and webUser.headPortraitLink != ''">
                 and head_portrait_link = #{webUser.headPortraitLink}
             </if>
-            <if test="webUser.version != null"> 
-                and version = #{webUser.version}
+            <if test="webUser.status != null">
+                and status = #{webUser.status}
             </if>
         </where>
         order by id desc

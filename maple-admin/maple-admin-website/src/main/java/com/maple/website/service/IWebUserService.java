@@ -1,6 +1,8 @@
 package com.maple.website.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.maple.website.vo.login.AppletAuthModel;
+import com.maple.website.vo.login.LoginVo;
 import com.maple.website.vo.query.WebUserPageQuery;
 import com.maple.website.vo.model.WebUserModel;
 
@@ -50,4 +52,27 @@ public interface IWebUserService {
      * @return 删除数量
      */
     Integer deleteWebUser(Long id);
+
+
+    /**
+     * 获取微信小程序授权的二维码
+     *
+     * @return 二维码信息
+     */
+    AppletAuthModel getUnlimitedQrCode();
+
+    /**
+     * 检测微信小程序授权结果
+     *
+     * @param uniCode 登录唯一编码
+     * @return 授权结果
+     */
+    LoginVo checkAppletAuth(String uniCode);
+
+    /**
+     * 微信小程序授权结果通知
+     *
+     * @param authModel 授权信息
+     */
+    void notifyAppletAuthResult(AppletAuthModel authModel);
 }

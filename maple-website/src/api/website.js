@@ -1,5 +1,21 @@
 import request from '@/utils/request'
 
+// 获取首页数据
+export function getHomeData() {
+    return request({
+        url: '/getHomeData',
+        method: 'get'
+    })
+}
+
+export function search(data) {
+    return request({
+        url: '/search',
+        method: 'post',
+        data: data
+    })
+}
+
 // 获取博客目录
 export function getPageCategory(data) {
     return request({
@@ -64,7 +80,7 @@ export function likeArticle(data) {
 // 下载文件
 export function downResource(data) {
     return request({
-        url: '/resource/downResource',
+        url: '/operation/downResource',
         method: 'post',
         data: data,
         responseType: "blob"

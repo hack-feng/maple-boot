@@ -36,6 +36,32 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.dataType === 2">
+                <el-form-item label="资源类型" prop="dataKind">
+                  <el-select v-model="state.ruleForm.dataKind" filterable placeholder="请选择数据类型" class="w100">
+                    <el-option
+                        v-for="dict in web_resource_type"
+                        :key="Number(dict.value)"
+                        :label="dict.label"
+                        :value="Number(dict.value)"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.dataType === 3">
+                <el-form-item label="链接类型" prop="dataKind">
+                  <el-select v-model="state.ruleForm.dataKind" filterable placeholder="请选择数据类型" class="w100">
+                    <el-option
+                        v-for="dict in web_friendly_link_type"
+                        :key="Number(dict.value)"
+                        :label="dict.label"
+                        :value="Number(dict.value)"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
     
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                 <el-form-item label="作者" prop="author">
@@ -50,8 +76,8 @@
               </el-col>
 
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" v-if="state.ruleForm.dataType === 2">
-                <el-form-item label="下载类型" prop="dataClass">
-                  <el-select v-model="state.ruleForm.dataClass" placeholder="请选择下载类型" clearable class="w100">
+                <el-form-item label="下载类型" prop="urlType">
+                  <el-select v-model="state.ruleForm.urlType" placeholder="请选择下载类型" clearable class="w100">
                     <el-option
                         v-for="dict in resource_download_type"
                         :key="Number(dict.value)"
@@ -69,7 +95,7 @@
               </el-col>
 
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20" 
-                      v-if="state.ruleForm.dataType === 2 && state.ruleForm.dataClass === 1">
+                      v-if="state.ruleForm.dataType === 2 && state.ruleForm.urlType === 1">
                 <el-form-item label="上传文件" prop="originalUrl">
                   <el-upload
                       ref="upload"
@@ -91,7 +117,7 @@
               </el-col>
 
               <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20"
-                      v-if="state.ruleForm.dataType === 2 && state.ruleForm.dataClass !== 1">
+                      v-if="state.ruleForm.dataType === 2 && state.ruleForm.urlType !== 1">
                 <el-form-item label="下载地址" prop="originalUrl">
                   <el-input v-model="state.ruleForm.originalUrl" placeholder="请输入下载地址" clearable></el-input>
                 </el-form-item>
@@ -153,6 +179,7 @@
                     <img v-if="state.ruleForm.img" :src="state.ruleForm.img" class="img" />
                     <el-icon v-else class="img-uploader-icon"><ele-Plus /></el-icon>
                   </el-upload>
+                  <span>建议尺寸宽*高：255*150</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -200,7 +227,8 @@
 
   // 获取字典
   const { proxy } = getCurrentInstance();
-  const { approve_status,web_article_source,resource_download_type } = proxy.parseDict("approve_status", "web_article_source", "resource_download_type");
+  const { approve_status,web_article_source,resource_download_type, web_resource_type,  web_friendly_link_type} 
+      = proxy.parseDict("approve_status", "web_article_source", "resource_download_type", "web_resource_type", "web_friendly_link_type");
 
   // 定义变量内容
   const useWebArticle = useWebArticleApi();
@@ -215,7 +243,8 @@
       sortNum: '',
       keywords: '',
       author: '',
-      dataClass: 1,
+      urlType: 2,
+      dataKind: 1,
       originalUrl: '',
       isTop: true,
       isHot: true,
@@ -235,6 +264,7 @@
       title: { required: true, message: '请输入标题', trigger: 'blur' },
       dataType: { required: true, message: '请选择类型', trigger: 'blur' },
       categoryId: { required: true, message: '请选择归属类目', trigger: 'blur' },
+      dataKind: { required: true, message: '请选择链接类型', trigger: 'blur' },
       status: { required: true, message: '请选择状态', trigger: 'blur' },
       isTop: { required: true, message: '请输入是否置顶', trigger: 'blur' },
       isHot: { required: true, message: '请输入是否热门', trigger: 'blur' },
@@ -377,7 +407,8 @@
       sortNum: '',
       keywords: '',
       author: '',
-      dataClass: 1,
+      dataKind: 1,
+      urlType: 2,
       originalUrl: '',
       isTop: true,
       isHot: true,

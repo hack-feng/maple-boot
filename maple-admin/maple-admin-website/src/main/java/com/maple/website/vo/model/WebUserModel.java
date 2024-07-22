@@ -54,6 +54,9 @@ public class WebUserModel {
 
     @ApiModelProperty(value = "头像链接")
     private String headPortraitLink;
+    
+    @ApiModelProperty(value = "用户状态")
+    private Integer status;
 
     @ApiModelProperty(value = "创建人")
     private Long createId;

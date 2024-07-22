@@ -112,7 +112,7 @@ onUpdated(() => {
                 {{ resourceInfo.description }}
               </p>
 
-              <el-button type="success" :plain="!resourceInfo.isDownload" v-show="resourceInfo.id" v-on:click="downResourceClick(resourceInfo.id, resourceInfo.downUrl)">
+              <el-button type="success" :plain="!resourceInfo.isDownload" v-show="resourceInfo.id" v-on:click="downResourceClick(resourceInfo.id, resourceInfo.originalUrl)">
                 <span class="iconfont icon-xiazai"/>
                 <span v-if="resourceInfo.isDownload">点击下载(已下载)</span>
                 <span v-else>立即下载</span>

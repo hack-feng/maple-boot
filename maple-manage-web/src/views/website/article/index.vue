@@ -4,20 +4,22 @@
       <div class="website-webArticle-search">
         <el-form :inline="true" ref="webArticleSearchRef" :model="state.tableData.param.query" size="default">
           <el-row>
-            <el-form-item label="标题" class="ml20" size="default">
+            <el-form-item label="标题" class="ml20" prop="title" size="default">
               <el-input v-model="state.tableData.param.query.title" placeholder="请输入标题" clearable
                       style="max-width: 180px"></el-input>
             </el-form-item>
-            <el-form-item label="关键词" class="ml20" size="default">
-              <el-input v-model="state.tableData.param.query.keywords" placeholder="请输入关键词" clearable
-                      style="max-width: 180px"></el-input>
+            <el-form-item prop="status" label="文章类目" class="ml20" size="default">
+              <el-select v-model="state.tableData.param.query.categoryId" filterable clearable placeholder="请选择文章类目">
+                <el-option
+                    v-for="(value, key) in state.categoryOption"
+                    :key="key"
+                    :label="value"
+                    :value="key"
+                />
+              </el-select>
             </el-form-item>
-            <el-form-item label="作者" class="ml20" size="default">
+            <el-form-item label="作者" class="ml20" prop="author" size="default">
               <el-input v-model="state.tableData.param.query.author" placeholder="请输入作者" clearable
-                      style="max-width: 180px"></el-input>
-            </el-form-item>
-            <el-form-item label="原文地址" class="ml20" size="default">
-              <el-input v-model="state.tableData.param.query.originalUrl" placeholder="请输入原文地址" clearable
                       style="max-width: 180px"></el-input>
             </el-form-item>
             <el-form-item label="状态" class="ml20" prop="status">

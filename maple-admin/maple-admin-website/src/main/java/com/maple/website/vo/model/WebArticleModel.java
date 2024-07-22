@@ -33,7 +33,7 @@ public class WebArticleModel {
     private Integer dataType;
 
     @ApiModelProperty("数据分类")
-    private Integer dataClass;
+    private Integer dataKind;
 
     @ApiModelProperty(value = "父节点id")
     private Long parentId;
@@ -55,6 +55,9 @@ public class WebArticleModel {
 
     @ApiModelProperty(value = "作者")
     private String author;
+    
+    @ApiModelProperty(value = "链接类型")
+    private Integer urlType;
 
     @ApiModelProperty(value = "原文地址")
     private String originalUrl;

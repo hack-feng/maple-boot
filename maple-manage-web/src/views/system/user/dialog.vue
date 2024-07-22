@@ -42,7 +42,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="用户角色" prop="status">
+            <el-form-item label="用户角色" prop="roleIds">
               <el-select
                   v-model="state.ruleForm.roleIds" 
                   placeholder="用户角色" 

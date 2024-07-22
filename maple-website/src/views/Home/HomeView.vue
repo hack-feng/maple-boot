@@ -1,42 +1,29 @@
 <script setup>
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 
 //example components
 import NavbarDefault from "../../examples/navbars/NavbarDefault.vue";
 import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 import Header from "../../examples/Header.vue";
-
-//Maple Blog components
+import Meta from "../../examples/Meta.vue";
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 import DefaultCounterCard from "@/examples/cards/counterCards/DefaultCounterCard.vue";
-
-// sections
 import PresentationCounter from "./Sections/PresentationCounter.vue";
 import PresentationExample from "./Sections/PresentationExample.vue";
-
-//images
 import vueMkHeader from "@/assets/img/bg/b2.jpg";
-
-import { getHomeData } from "@/api/home.js";
+import { getHomeData } from "../../api/website";
+import { getWebMenuByPath } from "../../api/common";
 import {ElMessage} from "element-plus";
 import Typed from "typed.js";
-
-import { useMeta } from 'vue-meta'
 
 //hooks
 const body = document.getElementsByTagName("body")[0];
 onMounted(() => {
   body.classList.add("presentation-page");
   body.classList.add("bg-gray-200");
+  getWebMenuByPathClick("home");
   getHomeDataClick();
 
-  useMeta({
-    title: '笑小枫 - 程序员的世外桃源',
-    meta: [
-      { name: 'keywords', content: '笑小枫,java,SpringBoot,程序员' },
-      { name: 'description', content: '欢迎来到笑小枫，我们致力于打造一个开放、友好的技术社区，让知识和智慧在这里自由碰撞、绽放。欢迎加入我们的旅程，一起在技术的海洋中探索无限可能！' }
-    ]
-  });
 
   if (document.getElementById("typed")) {
     // eslint-disable-next-line no-unused-vars
@@ -50,6 +37,7 @@ onMounted(() => {
     });
   }
 });
+
 onUnmounted(() => {
   body.classList.remove("presentation-page");
   body.classList.remove("bg-gray-200");
@@ -57,6 +45,10 @@ onUnmounted(() => {
 
 const homeInfo = ref({});
 const data = ref([]);
+const state = reactive({
+  webMenuInfo: {},
+  isGetData: false
+});
 
 const getHomeDataClick = () => {
   getHomeData().then(res => {
@@ -65,9 +57,17 @@ const getHomeDataClick = () => {
   });
 };
 
+const getWebMenuByPathClick = (menuPath) => {
+  getWebMenuByPath(menuPath).then(res => {
+    state.webMenuInfo = res;
+    state.isGetData = true;
+  });
+}
+
 </script>
 
 <template>
+  <Meta v-if="state.isGetData" :webMenuInfo="state.webMenuInfo" :key="state.webMenuInfo.path"/>
   <div class="container position-sticky z-index-sticky top-0  opacity-8">
     <div class="row">
       <div class="col-12">

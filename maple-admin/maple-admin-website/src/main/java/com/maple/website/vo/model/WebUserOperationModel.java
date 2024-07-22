@@ -30,9 +30,15 @@ public class WebUserOperationModel {
 
     @ApiModelProperty(value = "数据id")
     private Long dataId;
+    
+    @ApiModelProperty(value = "数据名称")
+    private String dataName;
 
     @ApiModelProperty(value = "用户id")
     private Long userId;
+    
+    @ApiModelProperty(value = "用户昵称")
+    private String nickName;
 
     @ApiModelProperty(value = "是否阅读")
     private Boolean isRead;

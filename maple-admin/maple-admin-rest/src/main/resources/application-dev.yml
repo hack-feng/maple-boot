@@ -106,4 +106,10 @@ maple:
   admin:
     account: admin
   isDisableUpdate: false
-    
+# 微信小程序配置
+wechat:
+  jscode2sessionUrl: https://api.weixin.qq.com/sns/jscode2session
+  tokenUrl: https://api.weixin.qq.com/cgi-bin/token
+  unlimitedQRCodeUrl: https://api.weixin.qq.com/wxa/getwxacodeunlimit
+  appId: xxxxxxx
+  appSecret: xxxxxxxxxxxxxxxx

@@ -1,6 +1,8 @@
 package com.maple.common.util;
 
 import com.maple.common.config.LocalFileProperties;
+import com.maple.common.config.exception.ErrorCode;
+import com.maple.common.config.exception.MapleCheckException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -141,17 +143,23 @@ public class LocalFileUtil {
     /**
      * 下载文件
      */
-    public void downLoadFile(HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
-        String encodeFileName = URLDecoder.decode(fileName, "UTF-8");
+    public void downLoadFile(HttpServletResponse response, String fileName) {
+        String encodeFileName = null;
+        try {
+            encodeFileName = URLDecoder.decode(fileName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "下载文件失败");
+        }
         File file = new File(fileProperties.getDocFilePath() + encodeFileName);
         // 下载文件
         if (!file.exists()) {
-            throw new RuntimeException("文件不存在！");
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "文件不存在！");
         }
         try (FileInputStream inputStream = new FileInputStream(file);
              ServletOutputStream outputStream = response.getOutputStream()) {
             response.reset();
-            //设置响应类型	PDF文件为"application/pdf"，WORD文件为："application/msword"， EXCEL文件为："application/vnd.ms-excel"。
+            // 设置响应类型	PDF文件为"application/pdf"，WORD文件为："application/msword"， EXCEL文件为："application/vnd.ms-excel"。
             response.setContentType("application/octet-stream;charset=utf-8");
             //设置响应的文件名称,并转换成中文编码
             String afterName = StringUtils.substringAfterLast(fileName, "_");

@@ -2,7 +2,10 @@ package com.maple.website.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.maple.website.vo.model.WebArticleModel;
+import com.maple.website.vo.home.HomeData;
 import com.maple.website.vo.query.WebArticlePageQuery;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 网站文章Service接口
@@ -59,4 +62,18 @@ public interface IWebArticleService {
      * @return 文章信息
      */
     WebArticleModel getById(Long id);
+
+    /**
+     * 获取首页数据
+     *
+     * @return 首页数据
+     */
+    HomeData getHomeData();
+
+    /**
+     * 下载资源
+     * @param response   返回文件
+     * @param articleModel 下载数据
+     */
+    void downResource(HttpServletResponse response, WebArticleModel articleModel);
 }

@@ -19,7 +19,7 @@ const loading = ref(false);
 const noMore = ref(false);
 const disabled = computed(() => loading.value || noMore.value);
 
-let linksParam = ref({
+const linksParam = ref({
   page: {
     current: 1,
     size: 10,
@@ -27,6 +27,7 @@ let linksParam = ref({
   },
   query: {
     dataType: 3,
+    dataKind: '',
     categoryId: undefined,
     title: undefined,
   }
@@ -46,7 +47,7 @@ const searchClick = (typeValue) => {
   loading.value = true;
   linksParam.value.page.current = 1;
   if(typeValue !== undefined){
-    linksParam.value.query.categoryId = typeValue;
+    linksParam.value.query.dataKind = typeValue;
   }
   linksList.value = [];
   getPageArticleClick();
@@ -60,10 +61,8 @@ const getPageArticleClick = () => {
   });
 }
 
-const activeName = ref('')
-
 const handleClick = (tab, event) => {
-  searchClick(tab.value)
+  searchClick(tab.props.name)
 }
 
 const getDictByCodeClick = () => {
@@ -113,39 +112,12 @@ const jumpWebsite = (id, name, originalUrl) => {
         <div class="row mt-4">
           <div class="col-lg-5">
             <div class="nav-wrapper position-relative end-0">
-              <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+              <el-tabs v-model="linksParam.query.dataKind" class="data-type-tabs" @tab-click="handleClick">
                 <el-tab-pane label="全部" name=""/>
                 <div v-for="typeItem in linksType">
                   <el-tab-pane :label="typeItem.label" :name="typeItem.value" />
                 </div>
               </el-tabs>
-              
-              <ul class="nav nav-pills nav-fill p-1">
-                <li class="nav-item" v-show="linksType !== {}">
-                  <a
-                      class="nav-link mb-0 px-0 py-1"
-                      data-bs-toggle="tab"
-                      href="#"
-                      v-on:click="searchClick('')"
-                      aria-controls=""
-                      aria-selected="true"
-                  >
-                    全部
-                  </a>
-                </li>
-                <li class="nav-item" v-for="typeItem in linksType">
-                  <a
-                    class="nav-link mb-0 px-0 py-1"
-                    data-bs-toggle="tab"
-                    href="#"
-                    v-on:click="searchClick(typeItem.value)"
-                    :aria-controls="typeItem.value"
-                    aria-selected="true"
-                  >
-                    {{typeItem.label}}
-                  </a>
-                </li>
-              </ul>
             </div>
           </div>
             
@@ -178,7 +150,7 @@ const jumpWebsite = (id, name, originalUrl) => {
                   <div class="row">
                     <h6 class="mt-2 mb-1 more-omit-1">
                     {{ link.title }} 
-                    <el-tag :type="linksType[link.dataClass].elTagType">{{linksType[link.dataClass].label}}</el-tag>
+                    <el-tag :type="linksType[link.dataKind].elTagType">{{linksType[link.dataKind].label}}</el-tag>
                     </h6>
                   </div>
                   <p class="mb-0 more-omit-2 text-sm">
@@ -198,8 +170,14 @@ const jumpWebsite = (id, name, originalUrl) => {
       </div>
     </section>
   </div>
-
-
-  
 </template>
+
+<style>
+.data-type-tabs {
+  height: 3rem !important
+}
+.el-tab-pane {
+  height: 0 !important;
+}
+</style>
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
@@ -32,7 +33,7 @@ public class UserOperationController {
 
     private final IWebUserOperationService userOperationService;
 
-    @ApiOperation(value = "收藏/取消收藏文章")
+    @ApiOperation(value = "收藏/取消收藏")
     @PostMapping("/collectTitle")
     @MapleLog(operateType = OperateTypeEnum.BLOG, businessType = BusinessTypeEnum.UPDATE)
     public void collectTitle(@RequestBody WebArticleModel articleModel) {
@@ -43,7 +44,7 @@ public class UserOperationController {
         userOperationService.collect(article.getId(), articleModel.getIsCollect(), article.getDataType());
     }
 
-    @ApiOperation(value = "点赞/取消点赞文章")
+    @ApiOperation(value = "点赞/取消点赞")
     @PostMapping("/likeTitle")
     @MapleLog(operateType = OperateTypeEnum.BLOG, businessType = BusinessTypeEnum.UPDATE)
     public void likeTitle(@RequestBody WebArticleModel articleModel) {
@@ -52,5 +53,12 @@ public class UserOperationController {
             throw new MapleCommonException(ErrorCode.NOT_FIND_DATA);
         }
         userOperationService.like(article.getId(), articleModel.getIsLike(), article.getDataType());
+    }
+
+    @ApiOperation(value = "下载资源信息")
+    @PostMapping("/downResource")
+    @MapleLog(operateType = OperateTypeEnum.BLOG, businessType = BusinessTypeEnum.OTHER, saveResult = false)
+    public void downResource(@RequestBody WebArticleModel articleModel, HttpServletResponse response) {
+        articleService.downResource(response, articleModel);
     }
 }

@@ -1,6 +1,7 @@
 package com.maple.website.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maple.common.model.IdNumList;
@@ -43,6 +44,9 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
     @Override
     public List<WebCategoryModel> getTreeList(WebCategoryModel webCategory) {
         List<WebCategoryModel> list = webCategoryMapper.getTreeList(webCategory);
+        if (StringUtils.isNotBlank(webCategory.getName())) {
+            return list;
+        }
         return getChildPerms(list, 0L);
     }
 

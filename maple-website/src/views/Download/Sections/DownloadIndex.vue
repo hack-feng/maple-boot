@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
 import { getPageArticle, downResource } from "@/api/website";
+import { getDictByCode } from "@/api/common";
 import { isDesktop } from "@/assets/js/useWindowsWidth";
 import setNavPills from "@/assets/js/nav-pills.js";
 import defaultImage from "@/assets/img/defaultImage.jpg";
@@ -9,14 +10,10 @@ import wxImage from "@/assets/img/wx.jpg";
 onMounted(() => {
   setNavPills();
   getPageResourceClick();
+  getDictByCodeClick();
 });
 
-const resourceType = ref([
-  {"item": "全部", "value": ""}, 
-  {"item": "开发资源", "value": "3"}, 
-  {"item": "简历模板", "value": "1"}, 
-  {"item": "面试资源", "value": "2"}
-]);
+const resourceType = ref([]);
 
 const textDark = isDesktop();
 const downloadLink = ref(null);
@@ -33,10 +30,16 @@ let resourceParam = ref({
     total: 100
   },
   query: {
-    resourceType: undefined,
-    resourceName: undefined,
+    dataType: 2,
+    dataKind: '',
+    categoryId: undefined,
+    title: undefined,
   }
 });
+
+const handleClick = (tab, event) => {
+  searchResourceClick(tab.props.name)
+}
 
 const handleInfiniteScroll = () => {
   if (resourceParam.value.page.current * resourceParam.value.page.size <= resourceParam.value.page.total) {
@@ -52,7 +55,7 @@ const searchResourceClick = (typeValue) => {
   loading.value = true;
   resourceParam.value.page.current = 1;
   if(typeValue !== undefined){
-    resourceParam.value.query.resourceType = typeValue;
+    resourceParam.value.query.dataKind = typeValue;
   }
   resourceList.value = [];
   getPageResourceClick();
@@ -74,6 +77,20 @@ const downResourceClick = (resourceId, downUrl) => {
   });
 }
 
+const getDictByCodeClick = () => {
+  getDictByCode("web_resource_type").then(res => {
+    resourceType.value = res.map(p => ({
+      label: p.dictLabel,
+      value: p.dictValue,
+      elTagType: p.listClass,
+      elTagClass: p.cssClass
+    })).reduce((acc, item) => {
+      acc[item.value] = item;
+      return acc;
+    }, {});
+  });
+}
+
 </script>
 <template>
   <div class="card card-body blur shadow-blur mx-md-4 mt-n6">
@@ -88,21 +105,12 @@ const downResourceClick = (resourceId, downUrl) => {
         <div class="row mt-2">
           <div class="col-lg-4">
             <div class="nav-wrapper position-relative end-0">
-              <ul class="nav nav-pills nav-fill p-1">
-                <li class="nav-item" v-for="typeItem in resourceType">
-                  <a
-                    class="nav-link mb-0 px-0 py-1"
-                    :class="typeItem.value === '' ? 'active' : ''"
-                    data-bs-toggle="tab"
-                    href="#"
-                    v-on:click="searchResourceClick(typeItem.value)"
-                    :aria-controls="typeItem.value"
-                    aria-selected="true"
-                  >
-                    {{typeItem.item}}
-                  </a>
-                </li>
-              </ul>
+              <el-tabs v-model="resourceParam.query.dataKind" class="data-type-tabs" @tab-click="handleClick">
+                <el-tab-pane label="全部" name=""/>
+                <div v-for="typeItem in resourceType">
+                  <el-tab-pane :label="typeItem.label" :name="typeItem.value" />
+                </div>
+              </el-tabs>
             </div>
           </div>
             
@@ -111,7 +119,7 @@ const downResourceClick = (resourceId, downUrl) => {
               <input
                 type="text"
                 class="form-control form-control-md"
-                v-model="resourceParam.query.resourceName"
+                v-model="resourceParam.query.title"
                 placeholder="请输入关键字搜索"
               />
             </div>
@@ -137,17 +145,17 @@ const downResourceClick = (resourceId, downUrl) => {
                   <div class="row">
                     <div class="col-lg-3 position-relative mx-auto">
                       <img
-                          :src="resource.resourceImg === null ? defaultImage : resource.resourceImg"
+                          :src="resource.img === null ? defaultImage : resource.img"
                           alt="图片去找笑小枫啦"
                           class="shadow border-radius-lg"
                           loading="lazy"
                           style="width: 100%; height: 120px;"
                       />
                     </div>
-                    <div class="position-relative mx-auto" :class="textDark ? 'col-lg-8' : 'col-lg-12'">
+                    <div class="position-relative mx-auto" :class="textDark ? 'col-lg-8' : 'col-lg-9'">
                       <div style="height: 85%;">
                         <h6 class="mb-0 more-omit-3">
-                          {{ resource.resourceName }}
+                          {{ resource.title }}
                         </h6>
                         <div class="row mt-2 mb-2 text-sm">
                           <div class="col-auto">
@@ -160,21 +168,20 @@ const downResourceClick = (resourceId, downUrl) => {
                           </div>
                         </div>
                         <p class="mb-0 more-omit-2 position-relative text-sm">
-                          {{ resource.resourceDesc === null ? '哎呀，没有介绍哎~要不先下载试试' :  resource.resourceDesc }}
+                          {{ resource.description === null ? '哎呀，没有介绍哎~要不先下载试试' :  resource.description }}
                           <br/>
                         </p>
                       </div>
                       <div>
-                        <a v-on:click="downResourceClick(resource.id, resource.downUrl)" class="text-success icon-move-left" style="cursor: pointer;">
-                            <i class="fa fa-arrow-circle-o-down text-sm ms-1"></i>
-                            <span v-if="resource.isDownload">点击下载(已下载)</span>
-                            <span v-else-if="resource.needPoints !== 0">点击下载({{ resource.needPoints }}🍁)</span>
-                            <span v-else>免费下载</span>
-                          </a>
-                          <a :href="'/resource/'+resource.id"  class="text-success icon-move-left mx-4">
-                            <i class="fa fa-search text-sm ms-1"></i>
-                            点击预览
-                          </a>
+                        <a v-on:click="downResourceClick(resource.id, resource.originalUrl)" class="text-success icon-move-left" style="cursor: pointer;">
+                          <span class="iconfont icon-xiazai"/>
+                          <span v-if="resource.isDownload">点击下载(已下载)</span>
+                          <span v-else>立即下载</span>
+                        </a>
+                        <a :href="'/resource/'+resource.id"  class="text-success icon-move-left mx-4">
+                          <span class="iconfont icon-yulan"/>
+                          点击预览
+                        </a>
                       </div>
                     </div>
                   </div>

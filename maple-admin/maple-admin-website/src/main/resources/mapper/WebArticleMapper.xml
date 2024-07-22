@@ -27,8 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="req.dataType != null">
                 and t1.data_type = #{req.dataType}
             </if>
-            <if test="req.dataClass != null">
-                and t1.data_class = #{req.dataClass}
+            <if test="req.dataKind != null">
+                and t1.data_kind = #{req.dataKind}
             </if>
             <if test="req.categoryIdList != null and req.categoryIdList.size > 0">
                 and t1.category_id in

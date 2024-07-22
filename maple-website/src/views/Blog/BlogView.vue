@@ -7,8 +7,6 @@ import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import Header from "@/examples/Header.vue";
 import DefaultFooter from "@/examples/footers/FooterDefault.vue";
 import BlogIndex from "./Sections/BlogIndex.vue";
-
-
 import { getWebMenuByPath } from "../../api/common";
 
 const route = useRoute();

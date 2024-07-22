@@ -8,9 +8,9 @@ import com.maple.common.model.ResultJson;
 import com.maple.common.util.JwtUtil;
 import com.maple.common.util.RedisUtil;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
@@ -75,15 +75,15 @@ public class WebsiteJwtFilter implements Filter {
             }
             BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
             RedisUtil redisService = (RedisUtil) factory.getBean("redisUtil");
-            String account;
+            Long userId;
             String authorization = httpServletRequest.getHeader(MapleConstants.TOKEN_NAME);
             // 判断token是否存在，不存在代表未登录
             if (StringUtils.isEmpty(authorization)) {
                 writeRsp(httpServletResponse, ErrorCode.NO_TOKEN);
                 return;
             } else {
-                account = JwtUtil.getAccount(authorization);
-                String token = (String) redisService.get(GlobalConfig.getRedisUserKey(account));
+                userId = JwtUtil.getUserId(authorization);
+                String token = (String) redisService.get(GlobalConfig.getWebRedisUserKey(userId));
                 // 判断token是否存在，不存在代表登陆超时
                 if (StringUtils.isEmpty(token)) {
                     writeRsp(httpServletResponse, ErrorCode.TOKEN_EXPIRE);
@@ -96,7 +96,7 @@ public class WebsiteJwtFilter implements Filter {
                     }
                 }
             }
-            redisService.set(GlobalConfig.getRedisUserKey(account), authorization, GlobalConfig.EXPIRE_TIME);
+            redisService.set(GlobalConfig.getWebRedisUserKey(userId), authorization, GlobalConfig.EXPIRE_TIME);
             chain.doFilter(httpServletRequest, httpServletResponse);
         }
     }

@@ -33,9 +33,8 @@ public class GlobalConfig {
      * @return token保存在redis的key
      */
     public static String getRedisUserKey(String account) {
-        return "MAPLE_ADMIN:" + account;
+        return "MAPLE_BOOT_ADMIN:" + account;
     }
-
 
     /**
      * 小程序用户登录token保存在redis的key值
@@ -55,7 +54,7 @@ public class GlobalConfig {
      * @return token保存在redis的key
      */
     public static String getWebRedisUserKey(Long account) {
-        return "MAPLE_WEB:" + account;
+        return "MAPLE_BOOT_WEB:" + account;
     }
 
     /**

@@ -31,7 +31,7 @@ public class WebArticle extends BaseEntity {
     private Integer dataType;
 
     @ApiModelProperty("数据分类")
-    private Integer dataClass;
+    private Integer dataKind;
 
     @ApiModelProperty(value = "标题")
     private String title;
@@ -50,6 +50,9 @@ public class WebArticle extends BaseEntity {
 
     @ApiModelProperty(value = "作者")
     private String author;
+
+    @ApiModelProperty(value = "链接类型")
+    private Integer urlType;
 
     @ApiModelProperty(value = "原文地址")
     private String originalUrl;

@@ -38,14 +38,15 @@
       </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column label="ID" prop="id" show-overflow-tooltip/>
         <el-table-column label="类型" prop="dataType" show-overflow-tooltip>
           <template #default="scope">
             <el-tag :type="web_data_type[scope.row.dataType].elTagType">{{ web_data_type[scope.row.dataType].label }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="数据id" prop="dataId" show-overflow-tooltip/>
+        <el-table-column label="数据名称" prop="dataName" show-overflow-tooltip/>
         <el-table-column label="用户id" prop="userId" show-overflow-tooltip/>
+        <el-table-column label="用户昵称" prop="nickName" show-overflow-tooltip/>
         <el-table-column label="是否阅读" prop="isRead" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isRead">是</el-tag>
@@ -61,6 +62,12 @@
         <el-table-column label="是否收藏" prop="isCollect" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.isCollect">是</el-tag>
+            <el-tag type="info" v-else>否</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否下载" prop="isDownload" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.isDownload">是</el-tag>
             <el-tag type="info" v-else>否</el-tag>
           </template>
         </el-table-column>

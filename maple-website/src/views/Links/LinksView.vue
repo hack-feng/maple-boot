@@ -5,7 +5,6 @@ import Header from "@/examples/Header.vue";
 import DefaultFooter from "@/examples/footers/FooterDefault.vue";
 import Meta from "@/examples/Meta.vue";
 import LinksIndex from "./Sections/LinksIndex.vue";
-
 import { getWebMenuByPath } from "../../api/common";
 
 const state = reactive({

@@ -4,8 +4,8 @@
       <div class="website-webCategory-search mb15">
         <el-form :inline="true" ref="webCategorySearchRef" :model="state.tableData.param" size="default">
           <el-row>
-            <el-form-item label="名称" class="ml10" size="default">
-              <el-input v-model="state.tableData.param.name" placeholder="请输入名称" clearable
+            <el-form-item label="名称" class="ml10" prop="name" size="default">
+              <el-input v-model="state.tableData.param.name" placeholder="名称筛选将打乱树结构" clearable
                         style="max-width: 180px"></el-input>
             </el-form-item>
             <el-button size="default" type="primary" class="ml10" @click="getTableData">
@@ -111,7 +111,7 @@ const onOpenEdit = (type: string, row) => {
 };
 // 删除当前行
 const onTableRowDel = (row) => {
-  ElMessageBox.confirm(`此操作将永久删除数据：${row.deptName}, 是否继续?`, '提示', {
+  ElMessageBox.confirm(`此操作将永久删除数据：${row.name}, 是否继续?`, '提示', {
     confirmButtonText: '删除',
     cancelButtonText: '取消',
     type: 'warning',

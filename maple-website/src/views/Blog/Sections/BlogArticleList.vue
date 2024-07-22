@@ -78,6 +78,7 @@
                 </div>
                 <div class="col-auto">
                   <a class="text-success icon-move-left" style="cursor: pointer;">
+                    <span class="iconfont icon-xiazai"/>
                     <span v-if="blogArticle.isDownload">点击下载(已下载)</span>
                     <span v-else>立即下载</span>
                   </a>

@@ -4,17 +4,23 @@
       <div class="website-webUser-search">
         <el-form :inline="true" ref="webUserSearchRef" :model="state.tableData.param.query" size="default">
           <el-row>
-            <el-form-item label="用户账号" class="ml20" size="default">
+            <el-form-item label="用户账号" class="ml20" prop="userNo" size="default">
               <el-input v-model="state.tableData.param.query.userNo" placeholder="请输入用户账号" clearable
                       style="max-width: 180px"></el-input>
             </el-form-item>
-            <el-form-item label="昵称" class="ml20" size="default">
+            <el-form-item label="昵称" class="ml20" prop="nickName" size="default">
               <el-input v-model="state.tableData.param.query.nickName" placeholder="请输入昵称" clearable
                       style="max-width: 180px"></el-input>
             </el-form-item>
-            <el-form-item label="版本号" class="ml20" size="default">
-              <el-input v-model="state.tableData.param.query.version" placeholder="请输入版本号" clearable
-                      style="max-width: 180px"></el-input>
+            <el-form-item label="用户状态" class="ml20" prop="status">
+              <el-select v-model="state.tableData.param.query.status" placeholder="请选择用户状态" clearable>
+                <el-option
+                    v-for="dict in sys_status"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                />
+              </el-select>
             </el-form-item>
             <el-button size="default" type="primary" class="ml20" @click="getTableData">
               <el-icon><ele-Search /></el-icon> 查询
@@ -31,20 +37,20 @@
           </el-button>
       </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
-        <el-table-column type="index" label="序号" width="60" />
         <el-table-column label="ID" prop="id" show-overflow-tooltip/>
         <el-table-column label="用户账号" prop="userNo" show-overflow-tooltip/>
         <el-table-column label="昵称" prop="nickName" show-overflow-tooltip/>
         <el-table-column label="性别" prop="sex" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag :type="sys_user_sex[scope.row.sex].elTagType">{{ sys_user_sex[scope.row.sex].label }}</el-tag>
+            <el-tag  v-if="scope.row.sex !== null" :type="sys_user_sex[scope.row.sex].elTagType">{{ sys_user_sex[scope.row.sex].label }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="用户状态" prop="status" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag v-if="scope.row.status !== null" :type="sys_status[scope.row.status].elTagType">{{ sys_status[scope.row.status].label }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="邮箱" prop="email" show-overflow-tooltip/>
-        <el-table-column label="用户描述" prop="userDesc" show-overflow-tooltip/>
-        <el-table-column label="邀请用户ID" prop="inviterUserId" show-overflow-tooltip/>
-        <el-table-column label="头像链接" prop="headPortraitLink" show-overflow-tooltip/>
-        <el-table-column label="版本号" prop="version" show-overflow-tooltip/>
         <el-table-column label="操作" width="100">
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>
@@ -78,7 +84,7 @@
   
   // 获取字典
   const { proxy } = getCurrentInstance();
-  const { sys_user_sex } = proxy.parseDict("sys_user_sex");
+  const { sys_user_sex, sys_status } = proxy.parseDict("sys_user_sex", "sys_status");
   
   // 引入组件
   const WebUserDialog = defineAsyncComponent(() => import('./dialog.vue'));
