@@ -37,14 +37,8 @@ public class ManageUserCommentController {
 
     @ApiOperation(value = "新增网站用户评论数据", notes="网站用户评论-新增数据", nickname = "www.xiaoxiaofeng.com")
     @PostMapping("/createWebUserComment")
-    public Long createWebUserComment(@RequestBody WebUserCommentModel model) {
+    public WebUserCommentModel createWebUserComment(@RequestBody WebUserCommentModel model) {
         return webUserCommentService.createWebUserComment(model);
-    }
-
-    @ApiOperation(value = "/修改网站用户评论数据", notes="网站用户评论-修改数据", nickname = "www.xiaoxiaofeng.com")
-    @PostMapping("/updateWebUserComment")
-    public void updateWebUserComment(@RequestBody WebUserCommentModel model) {
-        webUserCommentService.updateWebUserComment(model);
     }
 
     @ApiOperation(value = "删除网站用户评论", notes="网站用户评论-根据id删除数据信息", nickname = "www.xiaoxiaofeng.com")

@@ -31,11 +31,6 @@
           </el-row>
         </el-form>
       </div>
-      <el-row :gutter="35">
-          <el-button size="default" type="success" plain class="ml30" @click="onOpenAdd('add')">
-            <el-icon><ele-FolderAdd /></el-icon> 新增
-          </el-button>
-      </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
         <el-table-column label="类型" prop="dataType" show-overflow-tooltip>
@@ -73,7 +68,6 @@
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template #default="scope">
-            <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>
             <el-button size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>

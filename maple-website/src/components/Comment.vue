@@ -25,7 +25,6 @@ onMounted(() => {
 
 const userInfo = ref({});
 const commentInfo = ref({
-  toUserId: propsData.dataInfo.createId,
     dataId: propsData.dataInfo.id,
     parentId: 0,
     commentType: propsData.commentType,
@@ -49,7 +48,7 @@ const commentParam = ref({
     size: 10,
     total: 0
   },
-  model: {
+  query: {
     dataId: propsData.dataInfo.id,
     commentType: propsData.commentType,
     topId: 0,
@@ -77,7 +76,7 @@ const getReplyPageCommentClick = (item) => {
       size: 10,
       total: 100
     },
-    model: {
+    query: {
       dataId: propsData.dataInfo.id,
       commentType: propsData.commentType,
       topId: item.id,

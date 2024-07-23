@@ -8,16 +8,8 @@
               <el-input v-model="state.tableData.param.query.dataId" placeholder="请输入主数据ID" clearable
                       style="max-width: 180px"></el-input>
             </el-form-item>
-            <el-form-item label="祖评论ID" class="ml20" size="default">
-              <el-input v-model="state.tableData.param.query.topId" placeholder="请输入祖评论ID" clearable
-                      style="max-width: 180px"></el-input>
-            </el-form-item>
             <el-form-item label="发表用户id" class="ml20" size="default">
               <el-input v-model="state.tableData.param.query.userId" placeholder="请输入发表用户id" clearable
-                      style="max-width: 180px"></el-input>
-            </el-form-item>
-            <el-form-item label="回复用户id" class="ml20" size="default">
-              <el-input v-model="state.tableData.param.query.toUserId" placeholder="请输入回复用户id" clearable
                       style="max-width: 180px"></el-input>
             </el-form-item>
             <el-button size="default" type="primary" class="ml20" @click="getTableData">
@@ -36,11 +28,8 @@
       </el-row>
       <el-table :data="state.tableData.records" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column label="主键" prop="id" show-overflow-tooltip/>
-        <el-table-column label="主数据ID" prop="dataId" show-overflow-tooltip/>
-        <el-table-column label="祖评论ID" prop="topId" show-overflow-tooltip/>
-        <el-table-column label="发表用户id" prop="userId" show-overflow-tooltip/>
-        <el-table-column label="回复用户id" prop="toUserId" show-overflow-tooltip/>
+        <el-table-column label="数据名称" prop="dataName" show-overflow-tooltip/>
+        <el-table-column label="发表用户" prop="nickName" show-overflow-tooltip/>
         <el-table-column label="评论内容" prop="content" show-overflow-tooltip/>
         <el-table-column label="评论类型" prop="commentType" show-overflow-tooltip/>
         <el-table-column label="状态" prop="status" show-overflow-tooltip/>

@@ -51,6 +51,14 @@ public class WebUserServiceImpl extends ServiceImpl<WebUserMapper, WebUser> impl
         return webUserMapper.getPageList(query.getPage(), query.getQuery());
     }
 
+
+    @Override
+    public WebUserModel getUserInfo() {
+        WebUser user = webUserMapper.selectById(JwtUtil.getUserId());
+        return TransformUtils.map(user, WebUserModel.class);
+    }
+
+
     @Override
     public WebUserModel getWebUserById(Long id) {
         return TransformUtils.map(webUserMapper.selectById(id), WebUserModel.class);
@@ -67,8 +75,9 @@ public class WebUserServiceImpl extends ServiceImpl<WebUserMapper, WebUser> impl
     }
 
     @Override
-    public void updateWebUser(WebUserModel model) {
+    public WebUserModel updateWebUser(WebUserModel model) {
         webUserMapper.updateById(TransformUtils.map(model, WebUser.class));
+        return model;
     }
 
     @Override

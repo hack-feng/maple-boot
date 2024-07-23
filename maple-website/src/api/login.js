@@ -20,7 +20,7 @@ export function checkAppletAuth(data) {
 // 获取用户详细信息
 export function getUserInfo() {
   return request({
-    url: '/user/getUserInfo',
+    url: '/webUser/getUserInfo',
     method: 'post'
   })
 }

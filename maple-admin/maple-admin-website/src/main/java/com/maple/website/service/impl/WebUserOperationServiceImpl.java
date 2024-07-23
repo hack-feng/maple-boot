@@ -97,7 +97,7 @@ public class WebUserOperationServiceImpl extends ServiceImpl<WebUserOperationMap
                         ? blogArticle.getLikeNum() + 1 : blogArticle.getLikeNum() - 1);
                 articleMapper.updateById(blogArticle);
                 break;
-            case 4:
+            case 5:
                 WebUserComment comment = commentMapper.selectById(dataId);
                 comment.setLikeNum(Boolean.TRUE.equals(isLike)
                         ? comment.getLikeNum() + 1 : comment.getLikeNum() - 1);

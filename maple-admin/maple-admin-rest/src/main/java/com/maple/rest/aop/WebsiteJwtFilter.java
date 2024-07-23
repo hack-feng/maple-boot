@@ -40,10 +40,11 @@ public class WebsiteJwtFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         includedUrlList.addAll(Arrays.asList(
-                "/website/operation/*"
+                "/website/operation/*",
+                "/website/webUserComment/*"
         ));
         excludedUrlList.addAll(Arrays.asList(
-                
+                "/website/webUserComment/getPageList"
         ));
     }
 

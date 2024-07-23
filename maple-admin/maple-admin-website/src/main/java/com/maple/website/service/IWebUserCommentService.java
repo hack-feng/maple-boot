@@ -34,14 +34,7 @@ public interface IWebUserCommentService {
      * @param model 网站用户评论信息
      * @return 新增后的ID
      */
-    Long createWebUserComment(WebUserCommentModel model);
-    
-    /**
-     * 修改网站用户评论信息
-     *
-     * @param model 网站用户评论信息
-     */
-    void updateWebUserComment(WebUserCommentModel model);
+    WebUserCommentModel createWebUserComment(WebUserCommentModel model);
 
     /**
      * 删除网站用户评论信息

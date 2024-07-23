@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 分页获取评论列表
 export function getPageComment(data) {
   return request({
-    url: '/comment/getPageComment',
+    url: '/webUserComment/getPageList',
     method: 'post',
     data: data
   })
@@ -12,26 +12,25 @@ export function getPageComment(data) {
 // 用户评论
 export function createComment(data) {
   return request({
-    url: '/comment/createComment',
+    url: '/webUserComment/createWebUserComment',
     method: 'post',
     data: data
   })
 }
 
-// 用户评论
+// 删除评论
 export function deleteComment(commentId) {
   return request({
-    url: '/comment/deleteComment/' + commentId,
+    url: '/webUserComment/' + commentId,
     method: 'delete'
   })
 }
 
-// 用户评论
+// 点赞评论
 export function likeComment(data) {
   return request({
-    url: '/comment/likeComment',
+    url: '/webUserComment/likeComment',
     method: 'post',
     data: data
   })
 }
-  

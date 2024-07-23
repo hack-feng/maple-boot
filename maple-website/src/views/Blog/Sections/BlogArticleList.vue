@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-lg-3 position-relative mx-auto">
             <img
-                :src="blogArticle.img === null ? defaultImage : blogArticle.img"
+                :src="!blogArticle.img ? defaultImage : blogArticle.img"
                 alt="图片找不到了"
                 class="shadow border-radius-lg img-130"
                 loading="lazy"
@@ -44,7 +44,7 @@
         <div class="row">
           <div class="col-lg-3 position-relative mx-auto">
             <img
-                :src="blogArticle.img === null ? defaultImage : blogArticle.img"
+                :src="!blogArticle.img ? defaultImage : blogArticle.img"
                 alt="图片找不到了~"
                 class="shadow border-radius-lg img-130"
                 loading="lazy"
@@ -92,7 +92,7 @@
         <div class="row">
           <div class="col-lg-3 position-relative mx-auto">
             <img
-                :src="blogArticle.img === null ? defaultImage : blogArticle.img"
+                :src="!blogArticle.img ? defaultImage : blogArticle.img"
                 alt="图片去找笑小枫啦"
                 class="shadow border-radius-lg img-130"
                 loading="lazy"
