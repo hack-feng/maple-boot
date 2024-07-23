@@ -1,7 +1,6 @@
 <script setup>
 import {onMounted, reactive, watch} from "vue";
 import { useRoute } from 'vue-router';
-
 import Meta from "@/examples/Meta.vue";
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import Header from "@/examples/Header.vue";

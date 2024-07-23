@@ -6,9 +6,7 @@ import {useMeta} from "vue-meta";
 const props = defineProps({
   webMenuInfo: {
     type: Object,
-    default: () => {
-          
-    },
+    default: () => {},
   }
 });
 

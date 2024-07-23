@@ -42,7 +42,7 @@
         <el-table-column label="菜单名称" prop="title" show-overflow-tooltip width="260"/>
         <el-table-column label="菜单类型" prop="menuType" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag :type="website_menu_type[scope.row.menuType].elTagType">{{ website_menu_type[scope.row.menuType].label }}</el-tag>
+            <el-tag v-if="website_menu_type[scope.row.menuType]" :type="website_menu_type[scope.row.menuType].elTagType">{{ website_menu_type[scope.row.menuType].label }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="显示顺序" prop="sortNum" show-overflow-tooltip/>

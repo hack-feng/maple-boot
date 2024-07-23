@@ -1,8 +1,6 @@
 <script setup>
 import {computed, onMounted, reactive, ref} from "vue";
 import { useRoute } from 'vue-router'
-
-// Sections components
 import TransparentBlogCard from "@/examples/cards/blogCards/TransparentBlogCard.vue";
 import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
 import {getBlogCategory} from "@/api/website"
