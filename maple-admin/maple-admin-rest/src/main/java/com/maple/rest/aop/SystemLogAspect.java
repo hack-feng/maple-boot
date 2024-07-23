@@ -82,6 +82,9 @@ public class SystemLogAspect {
             if (mapleLog != null) {
                 operateLog.setBusinessType(mapleLog.businessType().ordinal());
                 operateLog.setOperateType(mapleLog.operateType().ordinal());
+                if (StringUtils.isNotBlank(mapleLog.value())) {
+                    operateLog.setTitle(mapleLog.value());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
