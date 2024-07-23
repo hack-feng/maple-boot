@@ -1,5 +1,8 @@
 package com.maple.rest.controller.manage;
 
+import com.maple.common.enums.BusinessTypeEnum;
+import com.maple.common.enums.OperateTypeEnum;
+import com.maple.common.model.MapleLog;
 import com.maple.common.util.JwtUtil;
 import com.maple.system.service.IMenuService;
 import com.maple.system.service.IUserService;
@@ -33,6 +36,7 @@ public class LoginController {
 
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
+    @MapleLog(operateType = OperateTypeEnum.ADMIN, businessType = BusinessTypeEnum.OTHER)
     public UserModel login(@RequestBody LoginQuery req) {
         return userService.login(req);
     }
