@@ -137,7 +137,7 @@ const checkAppletAuthClick = (type) => {
                     color="success"
                     fullWidth
                     @click.native.prevent="checkAppletAuthClick"
-                    >我已扫码</MaterialButton
+                    >我已授权</MaterialButton
                   >
                 </div>
                 <p class="mt-4 text-sm text-center">

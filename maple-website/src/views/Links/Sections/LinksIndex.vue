@@ -172,7 +172,7 @@ const jumpWebsite = (id, name, originalUrl) => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .data-type-tabs {
   height: 3rem !important
 }

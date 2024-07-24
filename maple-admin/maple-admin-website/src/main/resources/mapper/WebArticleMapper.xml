@@ -50,6 +50,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="req.isCollect != null">
                 and t3.is_collect = #{req.isCollect}
             </if>
+            <if test="req.isDownload != null">
+                and t3.is_download = #{req.isDownload}
+            </if>
             <if test="req.isRead != null">
                 and t3.is_read = #{req.isRead}
             </if>

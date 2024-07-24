@@ -32,7 +32,6 @@ const getUserInfoClick = () => {
                 style="background-color: rgb(175 150 130);"
             />
           </a>
-          <p>您当前拥有 <span style="color: rgb(227 101 15);">{{ userInfo.points }} 枫叶</span>，虽然还不知有什么用，但总归越多越好~</p>
           <span>账号：{{ userInfo.userNo }}</span>
           <span>昵称：{{ userInfo.nickName }}</span>
           <span>性别：{{ userInfo.sex === 1 ? "男" : userInfo.sex === 2 ? "女" : "保密" }}</span>
