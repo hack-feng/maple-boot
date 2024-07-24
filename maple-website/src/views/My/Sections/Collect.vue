@@ -108,7 +108,7 @@ const getDictByCodeClick = () => {
           </div>
           <div class="col-lg-2">
             <button class="btn bg-gradient-success" v-on:click="searchPageClick(undefined)">
-              <i class="fas fa-search"></i> 搜索
+              <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/> 搜索
             </button>
           </div>
         </div>

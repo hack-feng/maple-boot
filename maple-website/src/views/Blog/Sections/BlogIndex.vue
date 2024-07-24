@@ -165,7 +165,7 @@ const getHotTitleClick = () => {
             </div>
             <div class="col-lg-2">
               <button class="btn bg-gradient-success" v-on:click="getPageArticleClick(true)">
-                <i class="fas fa-search small"></i> 搜索
+                <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/> 搜索
               </button>
             </div>
           </div>
