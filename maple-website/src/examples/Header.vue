@@ -1,8 +1,10 @@
 <script setup>
+import defaultImg from "@/assets/img/bg/b2.jpg";
+
 defineProps({
   image: {
     type: String,
-    default: "",
+    default: defaultImg,
   },
   title: {
     type: [String, Object],
@@ -20,21 +22,21 @@ defineProps({
   },
   description: {
     type: [String, Object],
-    default: "",
+    default: { text:'', class:'' },
     text: String,
     class: String,
   },
   mask: {
     type: String,
-    default: "mask bg-gradient-success opacity-4",
+    default: "mask bg-gradient-dark opacity-1",
   },
   center: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   minHeight: {
     type: String,
-    default: " min-vh-75",
+    default: " min-height-400",
   },
   fullWidth: {
     type: Boolean,
@@ -47,7 +49,7 @@ defineProps({
     <div
       class="page-header"
       :class="minHeight"
-      :style="`background-image: url(${image})`"
+      :style="image ? `background-image: url(${image})`: `background-image: url(${defaultImg})`"
       loading="lazy"
       v-if="title"
     >
@@ -55,9 +57,7 @@ defineProps({
       <div :class="fullWidth ? 'w-100' : 'container'">
         <div class="row">
           <div
-            :class="`${$attrs.class ?? 'col-lg-7'} ${
-              center ? 'text-center mx-auto' : ''
-            }`"
+            :class="`${$attrs.class ?? 'col-lg-7'} ${center ? 'text-center mx-auto position-relative' : ''}`"
           >
             <component
               :is="title.variant ? title.variant : 'h1'"
@@ -66,9 +66,9 @@ defineProps({
             >
               {{ typeof title == "object" ? title.text : title }}
             </component>
-            <p class="lead text-white" :class="description.class">
+            <p class="lead text-white" :class="!description ? '': description.class">
               {{
-                typeof description == "object" ? description.text : description
+                description && typeof description == "object" ? description.text : description
               }}
             </p>
             <slot />

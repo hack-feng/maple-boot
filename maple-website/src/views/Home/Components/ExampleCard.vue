@@ -9,6 +9,10 @@ import { useAppStore } from "@/stores";
 const store = useAppStore();
 
 defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
   route: {
     type: String,
     required: true,
@@ -25,8 +29,8 @@ defineProps({
     type: String,
     default: "",
   },
-  pro: {
-    type: Boolean,
+  description: {
+    type: String,
     default: false,
   },
 });
@@ -41,13 +45,11 @@ export default {
 };
 </script>
 <template>
-  <RouterLink :to="{ name: route }">
+  <a :href="'/category/'+ id">
     <div
       class="card move-on-hover"
       v-bind="$attrs"
-      :data-bs-toggle="pro ? 'tooltip' : null"
-      :data-bs-placement="pro ? 'top' : null"
-      :title="pro ? '小枫精选' : null"
+      :title="description"
     >
       <img
         class="img-160"
@@ -62,5 +64,5 @@ export default {
         {{ subtitle }}
       </p>
     </div>
-  </RouterLink>
+  </a>
 </template>

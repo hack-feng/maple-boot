@@ -162,10 +162,14 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
                     }
                     List<HomeCategoryItem> items = new ArrayList<>();
                     for (WebCategory blogCategory : list) {
+                        if (Objects.isNull(categoryNumMap.get(blogCategory.getId()))) {
+                            continue;
+                        }
                         HomeCategoryItem item = new HomeCategoryItem();
+                        item.setId(blogCategory.getId());
                         item.setTitle(blogCategory.getName());
                         item.setImage(blogCategory.getIcon());
-                        item.setPro(blogCategory.getIsHot());
+                        item.setDescription(blogCategory.getDescription());
                         item.setSubtitle(categoryNumMap.get(blogCategory.getId()) + "篇");
                         item.setRoute(category.getUrl());
                         items.add(item);

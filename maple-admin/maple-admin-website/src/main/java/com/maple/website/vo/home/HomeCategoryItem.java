@@ -8,6 +8,8 @@ import lombok.Data;
  */
 @Data
 public class HomeCategoryItem {
+    
+    private Long id;
 
     private String image;
 
@@ -17,5 +19,5 @@ public class HomeCategoryItem {
 
     private String route;
 
-    private Boolean pro;
+    private String description;
 }

@@ -1,26 +1,7 @@
-<script setup>
-import { onMounted} from "vue";
-import {useMeta} from "vue-meta";
-
-// example components
-import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
-import CenteredFooter from "@/examples/footers/FooterCentered.vue";
-import Breadcrumbs from "@/examples/Breadcrumbs.vue";
-import MyIndex from "./Sections/MyIndex.vue";
-
-useMeta({
-  title: '个人中心 - 笑小枫',
-  meta: [
-    { name: 'keywords', content: '笑小枫,个人中心,程序员' },
-    { name: 'description', content: '个人中心，尽情的DIY自己吧，这里任你疯狂澎湃，给予你最大的自由。' }
-  ]
-});
-
-</script>
 <template>
-
+  <Meta v-if="state.isGetData" :webMenuInfo="state.webMenuInfo" :key="state.webMenuInfo.path"/>
   <el-affix>
-    <DefaultNavbar light />
+    <NavbarDefault light />
   </el-affix>
   <div class="container mt-5">
     <div class="row">
@@ -31,3 +12,27 @@ useMeta({
     </div>
   </div>
 </template>
+
+<script setup>
+import { onMounted, reactive } from "vue";
+import NavbarDefault from "@/examples/navbars/NavbarDefault.vue";
+import Meta from "@/examples/Meta.vue";
+import MyIndex from "./Sections/MyIndex.vue";
+import { getWebMenuByPath } from "../../api/common";
+
+const state = reactive({
+  webMenuInfo: {},
+  isGetData: false
+});
+
+onMounted(() => {
+  getWebMenuByPathClick("my");
+});
+
+const getWebMenuByPathClick = (menuPath) => {
+  getWebMenuByPath(menuPath).then(res => {
+    state.webMenuInfo = res;
+    state.isGetData = true;
+  });
+}
+</script>

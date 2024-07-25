@@ -35,7 +35,7 @@ let articleParam = ref({
     size: 10,
     total: 100
   },
-  model: {
+  query: {
     categoryId: route.params.id
   }
 });
