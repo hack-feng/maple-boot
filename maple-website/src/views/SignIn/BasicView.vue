@@ -1,93 +1,3 @@
-<script setup>
-import { onMounted, reactive, onUnmounted } from "vue";
-import {useMeta} from "vue-meta";
-import axios from 'axios'
-import { useRouter } from "vue-router";
-import { ElMessage } from 'element-plus';
-import { getToken, setToken } from '@/utils/auth'
-
-// example components
-import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
-import Header from "@/examples/Header.vue";
-
-//Maple Blog components
-import MaterialButton from "@/components/MaterialButton.vue";
-
-import {getUnlimitedQrCode, checkAppletAuth} from "@/api/login";
-
-const router = useRouter()
-
-let qrCodeResult = reactive({
-  uniCode: -1,
-  authToken: undefined,
-  qrCode: undefined
-})
-
-
-onMounted(() => {
-  
-  useMeta({
-    title: '登录 - 笑小枫',
-    meta: [
-      { name: 'keywords', content: '笑小枫,登录,程序员' },
-      { name: 'description', content: '欢迎来到笑小枫，请先登录吧~' }
-    ]
-  });
-  
-  if(getToken() !== undefined && getToken() !== null) {
-    if(router.options.history.state.back !== null && router.options.history.state.back !== 'login') {
-      router.go(-1);
-    } else {
-      router.push("/");
-    }
-  }
-  getUnlimitedQrCodeClick();
-});
-
-const getAuthResult = setInterval(() => {
-  checkAppletAuthClick(1);
-}, 10000);
-
-onUnmounted(() => {
-  clearInterval(getAuthResult);
-})
-
-const getUnlimitedQrCodeClick = () => {
-  
-  getUnlimitedQrCode().then(res => {
-    qrCodeResult.uniCode = res.uniCode
-    qrCodeResult.authToken = res.authToken
-    axios({
-      method: "POST",
-      withCredentials: false,
-      url: "/wx/wxa/getwxacodeunlimit?access_token=" + res.authToken,
-      data: {"scene": res.uniCode, "page": "pages/authPage/index", "check_path": false},
-      responseType: "blob"
-    }).then(res => {
-      qrCodeResult.qrCode = URL.createObjectURL(res.data);
-    })
-  });
-};
-
-const checkAppletAuthClick = (type) => {
-  checkAppletAuth({"uniCode":qrCodeResult.uniCode}).then(res => {
-    if(res.authResult) {
-      ElMessage.success("登录成功");
-      setToken(res.token);
-      if(router.options.history.state.back != null) {
-        router.go(-1);
-      } else {
-        router.push("/");
-      }
-    } else {
-      if(type !== 1) {
-        ElMessage.error('没有检测到授权信息哟')
-      }
-    }
-  });
-};
-
-</script>
 <template>
   <DefaultNavbar transparent />
   <Header>
@@ -170,3 +80,90 @@ const checkAppletAuthClick = (type) => {
     </div>
   </Header>
 </template>
+
+<script setup>
+import { onMounted, reactive, onUnmounted } from "vue";
+import {useMeta} from "vue-meta";
+import axios from 'axios'
+import { useRouter } from "vue-router";
+import { ElMessage } from 'element-plus';
+import { getToken, setToken } from '@/utils/auth'
+import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
+import Header from "@/examples/Header.vue";
+import MaterialButton from "@/components/MaterialButton.vue";
+
+import {getUnlimitedQrCode, checkAppletAuth} from "@/api/login";
+
+const router = useRouter()
+
+let qrCodeResult = reactive({
+  uniCode: -1,
+  authToken: undefined,
+  qrCode: undefined
+})
+
+
+onMounted(() => {
+
+  useMeta({
+    title: '登录 - 笑小枫',
+    meta: [
+      { name: 'keywords', content: '笑小枫,登录,程序员' },
+      { name: 'description', content: '欢迎来到笑小枫，请先登录吧~' }
+    ]
+  });
+
+  if(getToken() !== undefined && getToken() !== null) {
+    if(router.options.history.state.back !== null && router.options.history.state.back !== 'login') {
+      router.go(-1);
+    } else {
+      router.push("/");
+    }
+  }
+  getUnlimitedQrCodeClick();
+});
+
+const getAuthResult = setInterval(() => {
+  checkAppletAuthClick(1);
+}, 10000);
+
+onUnmounted(() => {
+  clearInterval(getAuthResult);
+})
+
+const getUnlimitedQrCodeClick = () => {
+
+  getUnlimitedQrCode().then(res => {
+    qrCodeResult.uniCode = res.uniCode
+    qrCodeResult.authToken = res.authToken
+    axios({
+      method: "POST",
+      withCredentials: false,
+      url: "/wx/wxa/getwxacodeunlimit?access_token=" + res.authToken,
+      data: {"scene": res.uniCode, "page": "pages/authPage/index", "check_path": false},
+      responseType: "blob"
+    }).then(res => {
+      qrCodeResult.qrCode = URL.createObjectURL(res.data);
+    })
+  });
+};
+
+const checkAppletAuthClick = (type) => {
+  checkAppletAuth({"uniCode":qrCodeResult.uniCode}).then(res => {
+    if(res.authResult) {
+      ElMessage.success("登录成功");
+      setToken(res.token);
+      if(router.options.history.state.back != null) {
+        router.go(-1);
+      } else {
+        router.push("/");
+      }
+    } else {
+      if(type !== 1) {
+        ElMessage.error('没有检测到授权信息哟')
+      }
+    }
+  });
+};
+
+</script>

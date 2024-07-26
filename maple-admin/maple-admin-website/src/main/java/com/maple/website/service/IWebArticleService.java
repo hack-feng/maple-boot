@@ -76,4 +76,6 @@ public interface IWebArticleService {
      * @param articleModel 下载数据
      */
     void downResource(HttpServletResponse response, WebArticleModel articleModel);
+
+    void initLuceneData();
 }

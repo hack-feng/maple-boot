@@ -17,6 +17,7 @@ import wxImage from "@/assets/img/wx.jpg";
 import wxgzh from "@/assets/img/wxgzh.png";
 import applet from "@/assets/img/applet.jpg";
 import { useMeta } from 'vue-meta'
+import router from "../../router";
 
 
 //获取参数
@@ -43,6 +44,10 @@ let articleParam = ref({
 
 const getCategoryByIdClick = () => {
   getCategoryById(route.params.id).then(res => {
+    if(!res) {
+      router.push("/404");
+      return;
+    }
     blogCategory.value = res
   });
 };

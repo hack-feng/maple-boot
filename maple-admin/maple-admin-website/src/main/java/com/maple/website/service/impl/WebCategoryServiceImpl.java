@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.maple.common.lucene.LuceneDataModel;
+import com.maple.common.lucene.LuceneUtils;
 import com.maple.common.model.IdNumList;
 import com.maple.common.util.TransformUtils;
 import com.maple.website.bean.WebCategory;
@@ -14,6 +16,7 @@ import com.maple.website.vo.model.WebCategoryModel;
 import com.maple.website.vo.query.WebCategoryPageQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -35,6 +38,8 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
     private final WebCategoryMapper webCategoryMapper;
 
     private final WebArticleMapper webArticleMapper;
+    
+    private final LuceneUtils luceneUtils;
 
     @Override
     public IPage<WebCategoryModel> getPageCategory(WebCategoryPageQuery query) {
@@ -70,20 +75,43 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long createWebCategory(WebCategoryModel model) {
         WebCategory webCategory = TransformUtils.map(model, WebCategory.class);
         webCategoryMapper.insert(webCategory);
+
+        luceneUtils.addLuceneData(LuceneDataModel.builder()
+                .id(webCategory.getId())
+                .type(0)
+                .title(webCategory.getName())
+                .description(webCategory.getDescription())
+                .imageUrl(webCategory.getIcon())
+                .build());
         return webCategory.getId();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateWebCategory(WebCategoryModel model) {
         webCategoryMapper.updateById(TransformUtils.map(model, WebCategory.class));
+        luceneUtils.updateLuceneData(LuceneDataModel.builder()
+                .id(model.getId())
+                .type(0)
+                .title(model.getName())
+                .description(model.getDescription())
+                .imageUrl(model.getIcon())
+                .build());
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer deleteWebCategory(Long id) {
-        return webCategoryMapper.deleteById(id);
+        int count = webCategoryMapper.deleteById(id);
+        luceneUtils.deleteLuceneData(LuceneDataModel.builder()
+                .id(id)
+                .type(0)
+                .build());
+        return count;
     }
 
     @Override

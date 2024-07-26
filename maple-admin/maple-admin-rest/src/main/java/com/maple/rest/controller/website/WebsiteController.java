@@ -1,6 +1,9 @@
 package com.maple.rest.controller.website;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.maple.common.lucene.LuceneDataModel;
+import com.maple.common.lucene.LuceneDataPageQuery;
+import com.maple.common.lucene.LuceneSearchUtils;
 import com.maple.common.util.JwtUtil;
 import com.maple.website.service.IWebArticleService;
 import com.maple.website.service.IWebCategoryService;
@@ -32,11 +35,19 @@ public class WebsiteController {
 
     private final IWebCategoryService webCategoryService;
 
+    private final LuceneSearchUtils luceneSearchUtils;
+
     @GetMapping("/getHomeData")
     public HomeData getHomeData() {
         return webArticleService.getHomeData();
     }
 
+    @ApiOperation(value = "全文搜索")
+    @PostMapping("/search")
+    public IPage<LuceneDataModel> search(@RequestBody LuceneDataPageQuery query) {
+        return luceneSearchUtils.searchPage(query);
+    }
+    
     @ApiOperation(value = "分页查询网站文章列表", notes = "网站文章-分页查询列表", nickname = "www.xiaoxiaofeng.com")
     @PostMapping("/webArticle/getPageArticle")
     public IPage<WebArticleModel> getPageArticle(@RequestBody WebArticlePageQuery query) {

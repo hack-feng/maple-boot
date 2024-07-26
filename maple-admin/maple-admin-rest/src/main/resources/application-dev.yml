@@ -89,6 +89,7 @@ file:
   imageFilePath: D:/upload/images/ #图片路径
   docFilePath: D:/upload/doc/ # 文档路径
   maxFileSize: 524288000 #文件大小限制，这里是500M
+  lucenePath: D:/data/lucene/indexDir #lucene数据存放目录
 
 knife4j:
   # 开启增强配置
@@ -113,3 +114,6 @@ wechat:
   unlimitedQRCodeUrl: https://api.weixin.qq.com/wxa/getwxacodeunlimit
   appId: xxxxxxx
   appSecret: xxxxxxxxxxxxxxxx
+run:
+  initLucene: true # 项目启动是否初始化Lucene数据
+  job: false # 是否启动调度任务

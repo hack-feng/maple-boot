@@ -19,6 +19,7 @@ import Meta from "./Meta.vue";
 import {onMounted, reactive, watch} from "vue";
 import {getWebMenuByPath} from "../api/common";
 import {useRoute} from "vue-router";
+import router from "../router";
 
 const props = defineProps({
   menuPath: {
@@ -32,7 +33,11 @@ const props = defineProps({
 });
 
 const state = reactive({
-  webMenuInfo: {},
+  webMenuInfo: {
+    image: '',
+    title: '笑小枫',
+    description: '数据找不到了~'
+  },
   isGetData: false
 });
 
@@ -42,6 +47,10 @@ onMounted(() => {
 
 const getWebMenuByPathClick = (menuPath) => {
   getWebMenuByPath(menuPath).then(res => {
+    if(!res) {
+      router.push("/404");
+      return;
+    }
     state.webMenuInfo = res;
     state.isGetData = true;
   });

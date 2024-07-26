@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maple.common.config.exception.ErrorCode;
 import com.maple.common.config.exception.MapleCommonException;
+import com.maple.common.lucene.LuceneDataModel;
+import com.maple.common.lucene.LuceneUtils;
 import com.maple.common.model.IdNumList;
 import com.maple.common.util.JwtUtil;
 import com.maple.common.util.LocalFileUtil;
@@ -27,6 +29,7 @@ import com.maple.website.vo.query.WebArticlePageQuery;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.cursor.Cursor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +70,8 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
     private final IWebUserOperationService userOperationService;
 
     private final LocalFileUtil localFileUtil;
+    
+    private final LuceneUtils luceneUtils;
 
     @Override
     public IPage<WebArticleModel> getPageList(WebArticlePageQuery query) {
@@ -111,6 +116,16 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
         WebContent content = TransformUtils.map(model.getContentModel(), WebContent.class);
         content.setArticleId(webArticle.getId());
         webContentMapper.insert(content);
+
+        luceneUtils.addLuceneData(LuceneDataModel.builder()
+                .id(webArticle.getId())
+                .type(webArticle.getDataType())
+                .title(webArticle.getTitle())
+                .description(webArticle.getDescription())
+                .imageUrl(webArticle.getImg())
+                .originalUrl(webArticle.getOriginalUrl())
+                .content(content.getOriginalContent())
+                .build());
         return webArticle.getId();
     }
 
@@ -119,12 +134,26 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
     public void updateWebArticle(WebArticleModel model) {
         webArticleMapper.updateById(TransformUtils.map(model, WebArticle.class));
         webContentMapper.updateById(TransformUtils.map(model.getContentModel(), WebContent.class));
+
+        luceneUtils.updateLuceneData(LuceneDataModel.builder()
+                .id(model.getId())
+                .type(model.getDataType())
+                .title(model.getTitle())
+                .description(model.getDescription())
+                .imageUrl(model.getImg())
+                .originalUrl(model.getOriginalUrl())
+                .content(model.getContentModel().getOriginalContent())
+                .build());
     }
 
     @Override
     public Integer deleteWebArticle(Long id) {
         WebArticle article = webArticleMapper.selectById(id);
         article.setStatus(4);
+        luceneUtils.deleteLuceneData(LuceneDataModel.builder()
+                .id(id)
+                .type(article.getDataType())
+                .build());
         return webArticleMapper.updateById(article);
     }
 
@@ -236,6 +265,26 @@ public class WebArticleServiceImpl extends ServiceImpl<WebArticleMapper, WebArti
                 throw new MapleCommonException(ErrorCode.COMMON_ERROR, "下载失败，请重试");
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void initLuceneData() {
+        List<LuceneDataModel> list = new ArrayList<>();
+        List<WebCategory> categories = categoryMapper.selectList(Wrappers.lambdaQuery(WebCategory.class).eq(WebCategory::getIsValid, true));
+        for (WebCategory blogCategory : categories) {
+            list.add(LuceneDataModel.builder()
+                    .id(blogCategory.getId())
+                    .type(0)
+                    .title(blogCategory.getName())
+                    .description(blogCategory.getDescription())
+                    .imageUrl(blogCategory.getUrl())
+                    .build());
+        }
+        luceneUtils.initLuceneData(list);
+        // 由于博文数据量过大，且包含文章内容处理。故这里使用游标方式进行追加，防止OOM
+        Cursor<LuceneDataModel> articleList = webArticleMapper.selectArticleList();
+        articleList.forEach(luceneUtils::addLuceneData);
     }
 
     public WebArticleModel getTitleInfoById(Long id, Boolean isWebUser) {

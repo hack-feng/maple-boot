@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>IKAnalyzer扩展配置</comment>
+    <!--用户的扩展字典 -->
+    <entry key="ext_dict">extend.dic</entry>
+    <!--用户扩展停止词字典 -->
+    <entry key="ext_stopwords">stop.dic</entry>
+</properties>

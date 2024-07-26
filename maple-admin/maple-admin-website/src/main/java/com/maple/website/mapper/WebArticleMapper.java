@@ -3,10 +3,12 @@ package com.maple.website.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.maple.common.lucene.LuceneDataModel;
 import com.maple.website.bean.WebArticle;
 import com.maple.website.vo.model.WebArticleModel;
 import com.maple.website.vo.model.WebCategoryModel;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.cursor.Cursor;
 
 /**
  * 网站文章Mapper接口
@@ -31,4 +33,6 @@ public interface WebArticleMapper extends BaseMapper<WebArticle>{
     WebArticleModel getNextTitle(@Param("req") WebArticleModel req);
 
     Long getMaxSortNum(@Param("categoryId") Long categoryId);
+
+    Cursor<LuceneDataModel> selectArticleList();
 }
