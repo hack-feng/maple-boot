@@ -79,11 +79,12 @@
 
       <!-- 赞赏我们 -->
       <el-col :span="24">
-        <el-card shadow="hover" class="mt15" header="我要赞赏">
+        <el-card shadow="hover" class="mt15" header="笑小枫周边">
           <el-row :gutter="15">
-            <el-col :sm="12" v-for="(v, k) in state.sponsorList" :key="k">
-              <div class="sponsor-img">
-                <img :src="v.img" />
+            <el-col :sm="6" v-for="(v, k) in state.sponsorList" :key="k">
+              <div class="sponsor">
+                <img class="sponsor-img" :src="v.img" /><br>
+                <span>{{v.title}}</span>
               </div>
             </el-col>
           </el-row>
@@ -142,11 +143,19 @@ const state = reactive({
   ],
   sponsorList: [
     {
-      title: '微信',
+      title: 'Java面试助手',
+      img: 'https://image.xiaoxiaofeng.site/blog/2024/07/26/xxf-20240726093828.jpeg?xxfjava',
+    },
+    {
+      title: '微信公众号',
+      img: 'https://image.xiaoxiaofeng.site/blog/2024/07/26/xxf-20240726093828.png?xxfjava',
+    },
+    {
+      title: '微信赞赏',
       img: 'https://image.xiaoxiaofeng.site/blog/2024/06/11/xxf-20240611134313.png?xxfjava',
     },
     {
-      title: '支付宝',
+      title: '支付宝赞赏',
       img: 'https://image.xiaoxiaofeng.site/blog/2024/06/11/xxf-20240611134311.png?xxfjava',
     },
   ],
@@ -163,8 +172,16 @@ const state = reactive({
 	} as any,
   newsInfoList:[
     {
-      title: '试运行，暂时没有公告哟~',
+      title: '笑小枫网站端即将上线，风格同《笑小枫》，点击抢先预览~',
+      link: 'https://xiaoxiaofeng.com'
+    },
+    {
+      title: '笑小枫Java面试助手微信小程序已上线，下方扫码即刻体验~',
       link: ''
+    },
+    {
+      title: '笑小枫基础管理端框架已上线，欢迎体验~',
+      link: 'https://maple.xiaoxiaofeng.com'
     }
   ]
 });
@@ -429,7 +446,11 @@ $homeNavLengh: 8;
   }
 }
 
-.sponsor-img {
-  text-align: center
+.sponsor {
+  text-align: center;
+  .sponsor-img{
+    height: 300px;
+    width: auto;
+  }
 }
 </style>
