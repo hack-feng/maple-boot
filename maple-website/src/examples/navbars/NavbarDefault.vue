@@ -197,7 +197,7 @@ onMounted(() => {
               maxlength="30"
               style="width: 300px"/>
             <button class="btn bg-gradient-success btn-sm mb-0 mx-1" v-on:click="searchClick(undefined)">
-              <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/>
+              <span class="iconfont icon-sousuo"/>
             </button>
           </div>
           </ul>

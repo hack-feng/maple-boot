@@ -94,7 +94,7 @@ onUpdated(() => {
 <template>
   <BaseLayout
       :breadcrumb="[
-      { label: '小枫博客录', route: '/blog' },
+      { label: '小枫博客录', route: '/blog/article' },
       { label: '全部类目', route: '/categoryList' },
       { label: '类目详情', route: '/category/' + blogCategory.id }
     ]"

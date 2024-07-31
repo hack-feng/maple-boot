@@ -1,79 +1,9 @@
-<script setup>
-import {onMounted, onUpdated, ref} from "vue";
-import { useRoute } from 'vue-router'
-
-import { getArticleById, downResource, collectArticle } from "@/api/website"
-
-import { MdPreview, MdCatalog } from 'md-editor-v3';
-// preview.css相比style.css少了编辑器那部分样式
-import 'md-editor-v3/lib/preview.css';
-import defaultImage from "@/assets/img/defaultImage.jpg";
-
-// Sections components
-import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
-import { isDesktop } from "@/assets/js/useWindowsWidth";
-import {useMeta} from "vue-meta";
-
-
-// set nav color on mobile && desktop
-const route = useRoute();
-const id = 'preview-only';
-const scrollElement = document.documentElement;
-const textDark = isDesktop();
-
-//获取参数
-const resourceInfo = ref({});
-
-const getArticleByIdClick = () => {
-  getArticleById(route.params.id).then(res => {
-    resourceInfo.value = res;
-  });
-}
-
-
-const downResourceClick = async (resourceId, downUrl) => {
-  await downResource({"id": resourceId}).then(res => {
-    if(downUrl !== null && res != undefined) {
-      window.open(downUrl, "_blank");
-    }
-  });
-}
-
-const collectArticleClick = () => {
-  const param = ref({
-    id: resourceInfo.value.id,
-    isCollect: resourceInfo.value.isCollect ? !resourceInfo.value.isCollect : true
-  });
-  collectArticle(param.value).then(res => {
-    resourceInfo.value.isCollect = param.value.isCollect
-  });
-}
-
-// hook
-onMounted(() => {
-  getArticleByIdClick();
-});
-
-onUpdated(() => {
-  useMeta({
-    title: resourceInfo.value.title ? resourceInfo.value.title + '- 笑小枫' : '资源详情 - 笑小枫',
-    meta: [
-      {name: 'keywords', content: '笑小枫,java,SpringBoot,程序员'},
-      {
-        name: 'description',
-        content: resourceInfo.value.description && resourceInfo.value.description !== ''
-            ? resourceInfo.value.description : '笑小枫拥有海量的资源，包括教程、案例、工具、代码库等，为您的学习和实践提供了全面的支持。'
-      }
-    ]
-  })
-})
-
-</script>
 <template>
+  <Meta v-if="state.isGetData" :webMenuInfo="resourceInfo" :key="route.params.id"/>
   <BaseLayout
       :breadcrumb="[
         { label: '小枫资源库', route: '/download' },
-        { label: '资源详情', route: '/resource/' + resourceInfo.id },
+        { label: '资源详情'},
     ]"
   >
     <div class="col-lg-10 mx-auto">
@@ -149,6 +79,62 @@ onUpdated(() => {
     </div>
   </BaseLayout>
 </template>
+
+<script setup>
+import {onMounted, reactive, ref} from "vue";
+import { useRoute } from 'vue-router'
+import { getArticleById, downResource, collectArticle } from "@/api/website"
+import { MdPreview, MdCatalog } from 'md-editor-v3';
+import 'md-editor-v3/lib/preview.css';
+import defaultImage from "@/assets/img/defaultImage.jpg";
+import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
+import Meta from "@/examples/Meta.vue";
+import { isDesktop } from "@/assets/js/useWindowsWidth";
+
+
+// set nav color on mobile && desktop
+const route = useRoute();
+const id = 'preview-only';
+const scrollElement = document.documentElement;
+const textDark = isDesktop();
+const state = reactive({
+  isGetData: false
+});
+
+//获取参数
+const resourceInfo = ref({});
+
+const getArticleByIdClick = () => {
+  getArticleById(route.params.id).then(res => {
+    resourceInfo.value = res;
+  });
+}
+
+
+const downResourceClick = async (resourceId, downUrl) => {
+  await downResource({"id": resourceId}).then(res => {
+    if(downUrl !== null && res != undefined) {
+      window.open(downUrl, "_blank");
+    }
+  });
+}
+
+const collectArticleClick = () => {
+  const param = ref({
+    id: resourceInfo.value.id,
+    isCollect: resourceInfo.value.isCollect ? !resourceInfo.value.isCollect : true
+  });
+  collectArticle(param.value).then(res => {
+    resourceInfo.value.isCollect = param.value.isCollect
+  });
+}
+
+// hook
+onMounted(() => {
+  getArticleByIdClick();
+});
+
+</script>
 
 <style>
 .md-editor-preview-wrapper {

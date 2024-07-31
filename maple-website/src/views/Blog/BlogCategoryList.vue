@@ -72,7 +72,7 @@ onMounted(() => {
 <template>
   <BaseLayout
       :breadcrumb="[
-      { label: '小枫博客录', route: '/blog' },
+      { label: '小枫博客录', route: '/blog/article' },
       { label: '全部类目' },
     ]"
   >
@@ -92,7 +92,7 @@ onMounted(() => {
       </div>
       <div class="col-lg-2">
         <button class="btn bg-gradient-success" v-on:click="getBlogCategoryClick(true)">
-          <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/> 搜索
+          <span class="iconfont icon-sousuo"/> 搜索
         </button>
       </div>
     </div>

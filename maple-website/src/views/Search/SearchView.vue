@@ -1,73 +1,3 @@
-<script setup>
-import {computed, onMounted, ref} from "vue";
-import { useRoute } from 'vue-router'
-import { search } from "@/api/website"
-import { isDesktop } from "@/assets/js/useWindowsWidth";
-import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
-import defaultImage from "@/assets/img/defaultImage.jpg";
-
-
-//获取参数
-const route = useRoute()
-const searchList = ref([]);
-const loading = ref(false);
-const noMore = ref(false);
-const disabled = computed(() => loading.value || noMore.value);
-
-const textDark = isDesktop();
-const searchResultParam = ref(route.query.title);
-
-
-let searchParam = ref({
-  page: {
-    current: 1,
-    size: 10,
-    total: 100
-  },
-  query: {
-    title: route.query.title
-  }
-});
-
-const handleInfiniteScroll = () => {
-  if (searchParam.value.page.current * searchParam.value.page.size <= searchParam.value.page.total) {
-    searchParam.value.page.current = searchParam.value.page.current + 1;
-    loading.value = true;
-    searchDataClick();
-  } else {
-    noMore.value = true;
-  }
-};
-
-const searchClick = () => {
-  loading.value = true;
-  searchParam.value.page.current = 1;
-  searchList.value = [];
-  searchDataClick();
-}
-
-
-const searchDataClick = () => {
-  if (!searchParam.value.query.title) {
-    ElMessage.error('请输入搜索数据');
-  }
-  search(searchParam.value).then(res => {
-    searchResultParam.value = searchParam.value.query.title;
-    searchParam.value.page.total = res.total;
-    let list = res.records;
-    for (let article of list) {
-      searchList.value.push(article);
-    }
-    loading.value = false;
-  });
-}
-
-// hook
-onMounted(() => {
-  searchDataClick();
-});
-
-</script>
 <template>
   <BaseLayout
       :breadcrumb="[
@@ -96,7 +26,7 @@ onMounted(() => {
               </div>
               <div class="col-lg-4">
                 <button class="btn bg-gradient-success" v-on:click="searchClick()">
-                  <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/>
+                  <span class="iconfont icon-sousuo"/>
                 </button>
               </div>
             </div>
@@ -166,7 +96,7 @@ onMounted(() => {
                 <div class="col-12 mx-auto" v-show="search.type === 3">
                   <div class="row">
                     <div class="col-lg-12 position-relative mx-auto">
-                      <a :href="search.url" target="_blank">
+                      <a v-on:click="jumpWebsite(search.id, search.title, search.originalUrl)">
                         <div class="d-flex">
                           <h6 class="mb-0 more-omit-2" v-html="search.title">
                           </h6>
@@ -191,3 +121,95 @@ onMounted(() => {
     </div>
   </BaseLayout>
 </template>
+
+<script setup>
+import {computed, onMounted, ref} from "vue";
+import { useRoute } from 'vue-router'
+import { search } from "@/api/website"
+import { isDesktop } from "@/assets/js/useWindowsWidth";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { getArticleById } from "../../api/website";
+import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
+
+
+//获取参数
+const route = useRoute()
+const searchList = ref([]);
+const loading = ref(false);
+const noMore = ref(false);
+const disabled = computed(() => loading.value || noMore.value);
+
+const textDark = isDesktop();
+const searchResultParam = ref(route.query.title);
+
+
+let searchParam = ref({
+  page: {
+    current: 1,
+    size: 10,
+    total: 100
+  },
+  query: {
+    title: route.query.title
+  }
+});
+
+const handleInfiniteScroll = () => {
+  if (searchParam.value.page.current * searchParam.value.page.size <= searchParam.value.page.total) {
+    searchParam.value.page.current = searchParam.value.page.current + 1;
+    loading.value = true;
+    searchDataClick();
+  } else {
+    noMore.value = true;
+  }
+};
+
+const searchClick = () => {
+  loading.value = true;
+  searchParam.value.page.current = 1;
+  searchList.value = [];
+  searchDataClick();
+}
+
+
+const searchDataClick = () => {
+  if (!searchParam.value.query.title) {
+    ElMessage.error('请输入搜索关键字');
+    return;
+  }
+  search(searchParam.value).then(res => {
+    searchResultParam.value = searchParam.value.query.title;
+    searchParam.value.page.total = res.total;
+    let list = res.records;
+    for (let article of list) {
+      searchList.value.push(article);
+    }
+    loading.value = false;
+  });
+}
+
+const jumpWebsite = (id, name, originalUrl) => {
+  ElMessageBox.confirm(
+      '您即将离开本站，前往：<span style="color: teal">' + originalUrl + '</span>',
+      '请注意您的账号和财产安全',
+      {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: '继续前往',
+        cancelButtonText: '取消前往',
+        type: 'warning',
+      }
+  ).then(() => {
+    getArticleById(id).then(() => {
+      window.open(originalUrl, '_blank')
+    })
+  }).catch(() => {
+
+  })
+}
+
+// hook
+onMounted(() => {
+  searchDataClick();
+});
+
+</script>

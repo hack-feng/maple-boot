@@ -1,104 +1,8 @@
-<script setup>
-import {onMounted, ref, getCurrentInstance, watch, onUpdated} from "vue";
-import { useRoute } from 'vue-router'
-import { getArticleById, collectArticle, likeArticle } from "@/api/website"
-import {formatDateYYYYMMDD} from '@/utils/maple'
-
-import { MdPreview, MdCatalog } from 'md-editor-v3';
-// preview.css相比style.css少了编辑器那部分样式
-import 'md-editor-v3/lib/preview.css';
-
-// Sections components
-import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
-import { isDesktop } from "@/assets/js/useWindowsWidth";
-import { useMeta } from 'vue-meta'
-
-import Comment from '@/components/Comment.vue'
-
-
-//获取参数
-const route = useRoute()
-const articleInfo = ref({
-  articleContent:{}, 
-  categoryVo: {
-    name: undefined
-  }
-});
-const commentData = ref([]);
-const drawer = ref(false)
-const articleContent = ref({});
-const categoryVo = ref({name: undefined});
-const nextArticle = ref({});
-const preArticle = ref({});
-const aboutArticleList = ref([]);
-const textDark = isDesktop();
-
-const id = 'preview-only';
-const scrollElement = document.documentElement;
-
-const getArticleByIdClick = () => {
-  getArticleById(route.params.id).then(res => {
-    articleInfo.value = res;
-    articleContent.value = res.contentModel ? res.contentModel : {};
-    categoryVo.value = res.categoryModel ? res.categoryModel : {};
-    nextArticle.value = res.nextTitle;
-    preArticle.value = res.preTitle;
-    aboutArticleList.value = res.aboutArticle;
-  });
-}
-
-const likeArticleClick = () => {
-  const param = ref({
-    id: articleInfo.value.id,
-    isLike: articleInfo.value.isLike ? !articleInfo.value.isLike : true
-  });
-  likeArticle(param.value).then(res => {
-    articleInfo.value.isLike = param.value.isLike
-    if(param.value.isLike === true) {
-      articleInfo.value.likeNum = articleInfo.value.likeNum ? articleInfo.value.likeNum + 1 : 1
-    } else {
-      articleInfo.value.likeNum = articleInfo.value.likeNum - 1
-    }
-  });
-}
-
-const collectArticleClick = () => {
-  const param = ref({
-    id: articleInfo.value.id,
-    isCollect: articleInfo.value.isCollect ? !articleInfo.value.isCollect : true
-  });
-  collectArticle(param.value).then(res => {
-    articleInfo.value.isCollect = param.value.isCollect
-    if(param.value.isCollect === true) {
-      articleInfo.value.collectNum = articleInfo.value.collectNum ? articleInfo.value.collectNum + 1:1
-    } else {
-      articleInfo.value.collectNum = articleInfo.value.collectNum - 1
-    }
-    
-  });
-}
-
-// hook
-onMounted(() => {
-  getArticleByIdClick();
-});
-
-onUpdated(() => {
-  useMeta({
-    title: articleInfo.value.title ? articleInfo.value.title + '_【' + categoryVo.value.name + '】' + '- 笑小枫' : '文章详情 - 笑小枫' ,
-    meta: [
-      { name: 'keywords', content: articleInfo.value.keywords ? articleInfo.value.keywords : '笑小枫,java,SpringBoot,程序员' },
-      { name: 'description', content: articleInfo.value.description && articleInfo.value.resourceDesc !== '' 
-            ? articleInfo.value.description : articleInfo.value.title }
-    ]
-  })
-})
-
-</script>
 <template>
+  <Meta v-if="state.isGetData" :webMenuInfo="articleInfo" :key="route.params.id"/>
   <BaseLayout
       :breadcrumb="[
-        { label: '小枫博客录', route: '/blog' },
+        { label: '小枫博客录', route: '/blog/article'},
         { label: '文章目录', route: '/category/'+articleInfo.categoryId },
         { label: '文章详情' },
     ]"
@@ -266,6 +170,92 @@ onUpdated(() => {
     </div>
   </BaseLayout>
 </template>
+
+<script setup>
+import {onMounted, reactive, ref} from "vue";
+import { useRoute } from 'vue-router'
+import { getArticleById, collectArticle, likeArticle } from "@/api/website"
+import { isDesktop } from "@/assets/js/useWindowsWidth";
+import {formatDateYYYYMMDD} from '@/utils/maple'
+import { MdPreview, MdCatalog } from 'md-editor-v3';
+import 'md-editor-v3/lib/preview.css';
+import BaseLayout from "@/layouts/sections/components/BaseLayout.vue";
+import Comment from '@/components/Comment.vue'
+import Meta from "@/examples/Meta.vue";
+
+//获取参数
+const route = useRoute()
+const articleInfo = ref({
+  articleContent:{},
+  categoryVo: {
+    name: undefined
+  }
+});
+const commentData = ref([]);
+const drawer = ref(false)
+const articleContent = ref({});
+const categoryVo = ref({name: undefined});
+const nextArticle = ref({});
+const preArticle = ref({});
+const aboutArticleList = ref([]);
+const textDark = isDesktop();
+
+const id = 'preview-only';
+const scrollElement = document.documentElement;
+
+const state = reactive({
+  isGetData: false
+});
+
+const getArticleByIdClick = () => {
+  getArticleById(route.params.id).then(res => {
+    articleInfo.value = res;
+    articleContent.value = res.contentModel ? res.contentModel : {};
+    categoryVo.value = res.categoryModel ? res.categoryModel : {};
+    nextArticle.value = res.nextTitle;
+    preArticle.value = res.preTitle;
+    aboutArticleList.value = res.aboutArticle;
+    state.isGetData = true;
+  });
+}
+
+const likeArticleClick = () => {
+  const param = ref({
+    id: articleInfo.value.id,
+    isLike: articleInfo.value.isLike ? !articleInfo.value.isLike : true
+  });
+  likeArticle(param.value).then(res => {
+    articleInfo.value.isLike = param.value.isLike
+    if(param.value.isLike === true) {
+      articleInfo.value.likeNum = articleInfo.value.likeNum ? articleInfo.value.likeNum + 1 : 1
+    } else {
+      articleInfo.value.likeNum = articleInfo.value.likeNum - 1
+    }
+  });
+}
+
+const collectArticleClick = () => {
+  const param = ref({
+    id: articleInfo.value.id,
+    isCollect: articleInfo.value.isCollect ? !articleInfo.value.isCollect : true
+  });
+  collectArticle(param.value).then(res => {
+    articleInfo.value.isCollect = param.value.isCollect
+    if(param.value.isCollect === true) {
+      articleInfo.value.collectNum = articleInfo.value.collectNum ? articleInfo.value.collectNum + 1:1
+    } else {
+      articleInfo.value.collectNum = articleInfo.value.collectNum - 1
+    }
+
+  });
+}
+
+// hook
+onMounted(() => {
+  getArticleByIdClick();
+});
+
+</script>
 
 <style>
 .md-editor-catalog-active>span {

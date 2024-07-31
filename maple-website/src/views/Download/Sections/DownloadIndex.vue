@@ -125,7 +125,7 @@ const getDictByCodeClick = () => {
           </div>
           <div class="col-lg-2">
             <button class="btn bg-gradient-success" v-on:click="searchResourceClick(undefined)">
-              <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/> 搜索
+              <span class="iconfont icon-sousuo"/> 搜索
             </button>
           </div>
         </div>

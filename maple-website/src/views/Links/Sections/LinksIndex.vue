@@ -1,3 +1,76 @@
+<template>
+  <div class="card card-body blur shadow-blur mx-md-4 mt-n6">
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 mt-2">
+            <h3>链接列表</h3>
+          </div>
+        </div>
+    
+        <div class="row mt-4">
+          <div class="col-lg-5">
+            <div class="nav-wrapper position-relative end-0">
+              <el-tabs v-model="linksParam.query.dataKind" class="data-type-tabs" @tab-click="handleClick">
+                <el-tab-pane label="全部" name=""/>
+                <div v-for="typeItem in linksType">
+                  <el-tab-pane :label="typeItem.label" :name="typeItem.value" />
+                </div>
+              </el-tabs>
+            </div>
+          </div>
+            
+          <div class="col-lg-5 mx-auto">
+            <div class="input-group input-group-dynamic">
+              <input
+                type="text"
+                class="form-control form-control-md"
+                v-model="linksParam.query.title"
+                placeholder="请输入关键字搜索"
+              />
+            </div>
+            
+          </div>
+          <div class="col-lg-2">
+            <button class="btn bg-gradient-success" v-on:click="searchClick(undefined)">
+              <span class="iconfont icon-sousuo"/> 搜索
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-2">
+      <div v-infinite-scroll="handleInfiniteScroll" :infinite-scroll-disabled="disabled">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-sm-6"  v-for="link in linksList">
+              <div class="card card-plain" style="height:62%">
+                <div class="px-1">
+                  <div class="row">
+                    <h6 class="mt-2 mb-1 more-omit-1">
+                    {{ link.title }} 
+                    <el-tag :type="linksType[link.dataKind].elTagType">{{linksType[link.dataKind].label}}</el-tag>
+                    </h6>
+                  </div>
+                  <p class="mb-0 more-omit-2 text-sm">
+                  {{ link.description }}
+                  </p>
+                </div>
+              </div>
+              <div class="mb-0">
+                <el-button type="success" size="small" plain v-on:click="jumpWebsite(link.id, link.title, link.originalUrl)"><i class="fa fa-paper-plane-o">立即前往</i></el-button>
+                <hr class="hr-3"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center" v-if="loading">加载中...</p>
+        <p class="text-center" v-if="noMore">已经到底啦</p>
+      </div>
+    </section>
+  </div>
+</template>
+
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import { getPageArticle, getArticleById } from "@/api/website"
@@ -99,78 +172,6 @@ const jumpWebsite = (id, name, originalUrl) => {
 }
 
 </script>
-<template>
-  <div class="card card-body blur shadow-blur mx-md-4 mt-n6">
-    <section>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 mt-2">
-            <h3>链接列表</h3>
-          </div>
-        </div>
-    
-        <div class="row mt-4">
-          <div class="col-lg-5">
-            <div class="nav-wrapper position-relative end-0">
-              <el-tabs v-model="linksParam.query.dataKind" class="data-type-tabs" @tab-click="handleClick">
-                <el-tab-pane label="全部" name=""/>
-                <div v-for="typeItem in linksType">
-                  <el-tab-pane :label="typeItem.label" :name="typeItem.value" />
-                </div>
-              </el-tabs>
-            </div>
-          </div>
-            
-          <div class="col-lg-5 mx-auto">
-            <div class="input-group input-group-dynamic">
-              <input
-                type="text"
-                class="form-control form-control-md"
-                v-model="linksParam.query.title"
-                placeholder="请输入关键字搜索"
-              />
-            </div>
-            
-          </div>
-          <div class="col-lg-2">
-            <button class="btn bg-gradient-success" v-on:click="searchClick(undefined)">
-              <span class="iconfont icon-sousuo" style="font-size: 0.7rem;"/> 搜索
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="py-2">
-      <div v-infinite-scroll="handleInfiniteScroll" :infinite-scroll-disabled="disabled">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-3 col-sm-6"  v-for="link in linksList">
-              <div class="card card-plain" style="height:62%">
-                <div class="px-1">
-                  <div class="row">
-                    <h6 class="mt-2 mb-1 more-omit-1">
-                    {{ link.title }} 
-                    <el-tag :type="linksType[link.dataKind].elTagType">{{linksType[link.dataKind].label}}</el-tag>
-                    </h6>
-                  </div>
-                  <p class="mb-0 more-omit-2 text-sm">
-                  {{ link.description }}
-                  </p>
-                </div>
-              </div>
-              <div class="mb-0">
-                <el-button type="success" size="small" plain v-on:click="jumpWebsite(link.id, link.title, link.originalUrl)"><i class="fa fa-paper-plane-o">立即前往</i></el-button>
-                <hr class="hr-3"/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="text-center" v-if="loading">加载中...</p>
-        <p class="text-center" v-if="noMore">已经到底啦</p>
-      </div>
-    </section>
-  </div>
-</template>
 
 <style scoped>
 .data-type-tabs {
