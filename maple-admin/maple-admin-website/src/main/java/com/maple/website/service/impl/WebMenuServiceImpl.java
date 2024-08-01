@@ -1,5 +1,6 @@
 package com.maple.website.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maple.common.config.exception.ErrorCode;
@@ -18,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +39,7 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
     @Override
     public List<WebMenuModel> getTreeList(WebMenuModel webMenu) {
         List<WebMenuModel> list = webMenuMapper.getTreeList(webMenu);
-        return getChildPerms(list, 0L);
+        return getChildPerms(list, Objects.isNull(webMenu.getParentId()) ? 0L : webMenu.getParentId());
     }
 
     @Override
@@ -53,13 +55,17 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createWebMenu(WebMenuModel model) {
-
-        Long count = webMenuMapper.selectCount(Wrappers.lambdaQuery(WebMenu.class).eq(WebMenu::getPath, model.getPath()));
+        Long count = webMenuMapper.selectCount(Wrappers.lambdaQuery(WebMenu.class)
+                .isNotNull(WebMenu::getPath)
+                .eq(WebMenu::getPath, model.getPath()));
         if (count > 0) {
             throw new MapleCheckException(ErrorCode.COMMON_ERROR, "路由地址已存在");
         }
 
         WebMenu webMenu = TransformUtils.map(model, WebMenu.class);
+        WebMenu parent = webMenuMapper.selectById(model.getParentId());
+        webMenu.setMenuType(parent.getMenuType());
+        checkLevel(webMenu.getMenuType(), webMenu.getAncestors());
         webMenuMapper.insert(webMenu);
 
         if (!CollectionUtils.isEmpty(model.getCategoryList())) {
@@ -78,11 +84,14 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
     public void updateWebMenu(WebMenuModel model) {
         Long count = webMenuMapper.selectCount(Wrappers.lambdaQuery(WebMenu.class)
                 .ne(WebMenu::getId, model.getId())
+                .isNotNull(WebMenu::getPath)
                 .eq(WebMenu::getPath, model.getPath()));
         if (count > 0) {
             throw new MapleCheckException(ErrorCode.COMMON_ERROR, "路由地址已存在");
         }
-
+        WebMenu parent = webMenuMapper.selectById(model.getParentId());
+        model.setMenuType(parent.getMenuType());
+        checkLevel(model.getMenuType(), model.getAncestors());
         webMenuMapper.updateById(TransformUtils.map(model, WebMenu.class));
 
         menuCategoryMapper.delete(Wrappers.lambdaUpdate(WebMenuCategory.class)
@@ -101,6 +110,9 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer deleteWebMenu(Long id) {
+        if (id == 1L || id == 2L || id == 3L) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "内置菜单不运行删除");
+        }
         menuCategoryMapper.delete(Wrappers.lambdaUpdate(WebMenuCategory.class)
                 .eq(WebMenuCategory::getWebMenuId, id));
         return webMenuMapper.deleteById(id);
@@ -159,5 +171,16 @@ public class WebMenuServiceImpl extends ServiceImpl<WebMenuMapper, WebMenu> impl
             }
         }
         return modelList;
+    }
+
+    private void checkLevel(String menuType, String ancestors) {
+        if (StringUtils.isBlank(ancestors)) {
+            return;
+        }
+        if ("H".equals(menuType) && ancestors.split(",").length > 3) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "顶部导航不支持超过3级");
+        } else if ("F".equals(menuType) && ancestors.split(",").length > 2) {
+            throw new MapleCheckException(ErrorCode.COMMON_ERROR, "尾部导航不支持超过2级");
+        }
     }
 }

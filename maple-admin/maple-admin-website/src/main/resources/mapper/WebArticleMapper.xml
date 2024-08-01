@@ -120,6 +120,7 @@
         select t1.id,
                t1.title,
                t1.description,
+               t1.original_url,
                t1.img              as imageUrl,
                t1.data_type         as type,
                t2.original_content as content

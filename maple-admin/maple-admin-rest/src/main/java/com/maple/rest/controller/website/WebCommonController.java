@@ -30,8 +30,8 @@ public class WebCommonController {
     private final IDictDataService dictDataService;
 
     @ApiOperation(value = "查询网站菜单树结构", notes = "网站菜单-查询树结构", nickname = "www.xiaoxiaofeng.com")
-    @PostMapping("/getHeaderMenuTreeList")
-    public List<WebMenuModel> getHeaderMenuTreeList(@RequestBody WebMenuModel model) {
+    @PostMapping("/getMenuTreeList")
+    public List<WebMenuModel> getMenuTreeList(@RequestBody WebMenuModel model) {
         return webMenuService.getTreeList(model);
     }
 

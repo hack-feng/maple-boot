@@ -29,21 +29,8 @@
           </el-col>
 
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="菜单类型" prop="menuType">
-              <el-select v-model="state.ruleForm.menuType" placeholder="请选择菜单类型" clearable class="w100">
-                <el-option
-                    v-for="dict in website_menu_type"
-                    :key="dict.value"
-                    :label="dict.label"
-                    :value="dict.value"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="展示模板" prop="uiTemplate">
-              <el-select v-model="state.ruleForm.uiTemplate" placeholder="请选择菜单类型" clearable class="w100">
+              <el-select v-model="state.ruleForm.uiTemplate" placeholder="请选择展示模板" clearable class="w100">
                 <el-option
                     v-for="dict in website_ui_template"
                     :key="dict.value"
@@ -173,7 +160,7 @@ const emit = defineEmits(['refresh']);
 
 // 获取字典
 const { proxy } = getCurrentInstance();
-const { website_menu_type,sys_status,website_ui_template } = proxy.parseDict("website_menu_type","sys_status","website_ui_template");
+const { sys_status,website_ui_template } = proxy.parseDict("website_ui_template","sys_status");
 
 
 // 定义变量内容
@@ -209,8 +196,8 @@ const state = reactive({
   },
   categoryData: [],
   rules: {
+    ancestorsArray: { required: true, message: '请选择父级节点', trigger: 'blur' },
     title: { required: true, message: '请输入菜单名称', trigger: 'blur' },
-    menuType: { required: true, message: '请选择菜单类型', trigger: 'blur' },
   },
 });
 

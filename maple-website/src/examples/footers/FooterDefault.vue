@@ -3,6 +3,7 @@ import logoDark from "@/assets/img/logos/logo.jpg";
 import upyun from "@/assets/img/upyun.svg";
 import { getSiteConfig } from '@/stores/website';
 import { onMounted, reactive } from "vue";
+import { getFooterMenu } from "../../api/common";
 
 defineProps({
   brand: {
@@ -42,43 +43,13 @@ defineProps({
         link: "https://www.zhihu.com/people/xiaofengJava"
       }
     ]
-  },
-  menus: {
-    type: Array,
-    name: String,
-    items: {
-      type: Array,
-      name: String,
-      href: String
-    },
-    default: () => [
-      {
-        name: "笑小枫",
-        href: "/"
-      },
-      {
-        name: "小枫博客录",
-        href: "/blog"
-      },
-      {
-        name: "小枫资源库",
-        href: "/download"
-      },
-      {
-        name: "小枫链接集",
-        href: "/links"
-      },
-      {
-        name: "关于笑小枫",
-        href: "/author"
-      }
-    ]
   }
 });
 
 const state = reactive({
   websiteName: '笑小枫',
-  icp: ''
+  icp: '',
+  footerList: [],
 });
 
 onMounted(() => {
@@ -88,7 +59,9 @@ onMounted(() => {
   getSiteConfig("ICP").then(res => {
     state.icp = res;
   });
-  
+  getFooterMenu().then(res => {
+    state.footerList = res;
+  });
 })
 </script>
 <template>
@@ -102,12 +75,27 @@ onMounted(() => {
         </div>
         <div
           class="col-md-2 col-sm-6 col-6"
-          v-for="{ name, href } of menus"
-          :key="name"
+          v-for="footer of state.footerList"
+          :key="footer.title"
         >
-          <a class="nav-link" :href="href" target="_blank">
-            <h6 class="text-sm">{{ name }}</h6>
-          </a>
+          <RouterLink v-if="!footer.isLink"
+                      :to="{ name: footer.uiTemplate ? footer.uiTemplate : footer.path, params: { menu: footer.path }  }"
+                      class="dropdown-item border-radius-md"
+                      tag="a" target="_blank"
+          >
+            <h6 class="text-sm">{{ footer.title }}</h6>
+          </RouterLink>
+          <ul class="flex-column ms-n3 nav" v-if="footer.children">
+            <li class="nav-item" v-for="item of footer.children" :key="item.name">
+              <RouterLink v-if="!footer.isLink"
+                          :to="{ name: item.uiTemplate ? item.uiTemplate : item.path, params: { menu: item.path }  }"
+                          class="dropdown-item border-radius-md"
+                          tag="a" target="_blank"
+              >
+                {{ item.title }}
+              </RouterLink>
+            </li>
+          </ul>
         </div>
         
         <div class="col-12">

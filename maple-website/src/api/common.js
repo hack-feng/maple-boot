@@ -4,11 +4,25 @@ import request from '@/utils/request'
 // 获取菜单信息
 export function getHeaderMenu() {
     return request({
-        url: '/common/getHeaderMenuTreeList',
+        url: '/common/getMenuTreeList',
         method: 'post',
         data: {
             menuType: "H",
-            status: 1
+            status: 1,
+            parentId: 1
+        }
+    })
+}
+
+// 获取菜单信息
+export function getFooterMenu() {
+    return request({
+        url: '/common/getMenuTreeList',
+        method: 'post',
+        data: {
+            menuType: "F",
+            status: 1,
+            parentId: 2
         }
     })
 }

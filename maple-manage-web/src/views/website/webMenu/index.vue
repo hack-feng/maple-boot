@@ -62,7 +62,7 @@
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onOpenAdd('add', scope.row)">新增</el-button>
             <el-button size="small" text type="primary" @click="onOpenEdit('edit', scope.row)">修改</el-button>
-            <el-button size="small" text type="primary" @click="onTableRowDel(scope.row)">删除</el-button>
+            <el-button v-if="scope.row.parentId !== 0" size="small" text type="primary" @click="onTableRowDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -121,7 +121,7 @@
   };
   // 删除当前行
   const onTableRowDel = (row) => {
-    ElMessageBox.confirm(`此操作将永久删除数据：${row.deptName}, 是否继续?`, '提示', {
+    ElMessageBox.confirm(`此操作将永久删除数据：${row.title}, 是否继续?`, '提示', {
       confirmButtonText: '删除',
       cancelButtonText: '取消',
       type: 'warning',

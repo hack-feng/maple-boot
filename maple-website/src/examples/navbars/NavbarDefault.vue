@@ -1,121 +1,3 @@
-<script setup>
-import { RouterLink } from "vue-router";
-import {onMounted, reactive, ref, watch} from "vue";
-import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
-import { getToken } from '@/utils/auth'
-import { useRouter } from "vue-router";
-import { getSiteConfig } from '@/stores/website';
-import { getHeaderMenu } from '../../api/common';
-import ArrDark from "@/assets/img/down-arrow-dark.svg";
-import downArrow from "@/assets/img/down-arrow.svg";
-import DownArrWhite from "@/assets/img/down-arrow-white.svg";
-
-const router = useRouter()
-
-const props = defineProps({
-  action: {
-    type: Object,
-    route: String,
-    color: String,
-    label: String,
-    default: () => ({
-      route: getToken() == undefined ? '/login' : '/my',
-      color: "bg-gradient-success",
-      label: getToken() == undefined ? '前往登录' : '个人中心'
-    })
-  },
-  transparent: {
-    type: Boolean,
-    default: false
-  },
-  light: {
-    type: Boolean,
-    default: false
-  },
-  dark: {
-    type: Boolean,
-    default: false
-  },
-  sticky: {
-    type: Boolean,
-    default: false
-  },
-  darkText: {
-    type: Boolean,
-    default: false
-  }
-});
-
-const state = reactive({
-  websiteName: '笑小枫',
-  navbarList: [],
-});
-
-// set arrow  color
-function getArrowColor() {
-  if (props.transparent && textDark.value) {
-    return ArrDark;
-  } else if (props.transparent) {
-    return DownArrWhite;
-  } else {
-    return ArrDark;
-  }
-}
-
-// set text color
-const getTextColor = () => {
-  let color;
-  if (props.transparent && textDark.value) {
-    color = "text-dark";
-  } else if (props.transparent) {
-    color = "text-white";
-  } else {
-    color = "text-dark";
-  }
-
-  return color;
-};
-
-// set nav color on mobile && desktop
-
-let textDark = ref(props.darkText);
-const { type } = useWindowsWidth();
-
-if (type.value === "mobile") {
-  textDark.value = true;
-} else if (type.value === "desktop" && textDark.value == false) {
-  textDark.value = false;
-}
-
-watch(
-  () => type.value,
-  (newValue) => {
-    if (newValue === "mobile") {
-      textDark.value = true;
-    } else {
-      textDark.value = false;
-    }
-  }
-);
-
-let searchParam = ref(undefined);
-
-const searchClick = () => {
-  if(searchParam.value !== undefined){
-    router.push("/search?title=" + searchParam.value);
-  }
-}
-
-onMounted(() => {
-  getSiteConfig("website_name").then(res => {
-    state.websiteName = res;
-  });
-
-  getHeaderMenu().then(res => {
-    state.navbarList = res;
-  });
-})
-</script>
 <template>
   <div class="container position-sticky z-index-sticky top-0 opacity-8">
     <nav
@@ -338,3 +220,121 @@ onMounted(() => {
   </div>
   <!-- End Navbar -->
 </template>
+
+<script setup>
+import { RouterLink } from "vue-router";
+import {onMounted, reactive, ref, watch} from "vue";
+import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import { getToken } from '@/utils/auth'
+import { useRouter } from "vue-router";
+import { getSiteConfig } from '@/stores/website';
+import { getHeaderMenu } from '../../api/common';
+import ArrDark from "@/assets/img/down-arrow-dark.svg";
+import DownArrWhite from "@/assets/img/down-arrow-white.svg";
+
+const router = useRouter()
+
+const props = defineProps({
+  action: {
+    type: Object,
+    route: String,
+    color: String,
+    label: String,
+    default: () => ({
+      route: getToken() == undefined ? '/login' : '/my',
+      color: "bg-gradient-success",
+      label: getToken() == undefined ? '前往登录' : '个人中心'
+    })
+  },
+  transparent: {
+    type: Boolean,
+    default: false
+  },
+  light: {
+    type: Boolean,
+    default: false
+  },
+  dark: {
+    type: Boolean,
+    default: false
+  },
+  sticky: {
+    type: Boolean,
+    default: false
+  },
+  darkText: {
+    type: Boolean,
+    default: false
+  }
+});
+
+const state = reactive({
+  websiteName: '笑小枫',
+  navbarList: [],
+});
+
+// set arrow  color
+function getArrowColor() {
+  if (props.transparent && textDark.value) {
+    return ArrDark;
+  } else if (props.transparent) {
+    return DownArrWhite;
+  } else {
+    return ArrDark;
+  }
+}
+
+// set text color
+const getTextColor = () => {
+  let color;
+  if (props.transparent && textDark.value) {
+    color = "text-dark";
+  } else if (props.transparent) {
+    color = "text-white";
+  } else {
+    color = "text-dark";
+  }
+
+  return color;
+};
+
+// set nav color on mobile && desktop
+
+let textDark = ref(props.darkText);
+const { type } = useWindowsWidth();
+
+if (type.value === "mobile") {
+  textDark.value = true;
+} else if (type.value === "desktop" && textDark.value == false) {
+  textDark.value = false;
+}
+
+watch(
+    () => type.value,
+    (newValue) => {
+      if (newValue === "mobile") {
+        textDark.value = true;
+      } else {
+        textDark.value = false;
+      }
+    }
+);
+
+let searchParam = ref(undefined);
+
+const searchClick = () => {
+  if(searchParam.value !== undefined){
+    router.push("/search?title=" + searchParam.value);
+  }
+}
+
+onMounted(() => {
+  getSiteConfig("website_name").then(res => {
+    state.websiteName = res;
+  });
+
+  getHeaderMenu().then(res => {
+    state.navbarList = res;
+  });
+})
+</script>
