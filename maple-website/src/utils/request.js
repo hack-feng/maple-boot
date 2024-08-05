@@ -8,10 +8,17 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_API_URL,
   // 超时
-  timeout: 100000
+  timeout: 100000,
+  headers: { 'Content-Type': 'application/json' },
+  paramsSerializer: {
+    serialize(params) {
+      return qs.stringify(params, { allowDots: true });
+    },
+  },
 })
+
 // request拦截器
 service.interceptors.request.use(config => {
   // 是否需要设置 token
