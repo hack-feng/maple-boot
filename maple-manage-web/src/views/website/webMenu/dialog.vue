@@ -208,12 +208,11 @@ const openDialog = (type: string, row) => {
     useWebMenu.getWebMenuById(row.id).then(res => {
       state.ruleForm = res;
       let checkedKeys = res.categoryList;
+      categoryRef.value.setCheckedKeys([]);
       if(checkedKeys && checkedKeys.length > 0) {
         checkedKeys.forEach((v) => {
           categoryRef.value.setChecked(v, true ,false);
         });
-      } else {
-        categoryRef.value.setCheckedKeys([]);
       }
 
       nextTick(()=> {
