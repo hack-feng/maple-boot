@@ -49,7 +49,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20" v-if="state.ruleForm.dataScope === '2' ">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20" v-show="state.ruleForm.dataScope === '2' ">
             <el-form-item label="自定义权限" prop="deptIds">
               <el-tree
                   :data="state.deptData"
@@ -161,13 +161,19 @@ const openDialog = (type: string, row) => {
     useRole.getRoleById(row.id).then(res => {
       state.ruleForm = res;
       let checkedKeys = res.menuIds
-      checkedKeys.forEach((v) => {
-        menuRef.value.setChecked(v, true ,false);
-      });
+      menuRef.value.setCheckedKeys([]);
+      if (checkedKeys && checkedKeys.length > 0) {
+        checkedKeys.forEach((v) => {
+          menuRef.value.setChecked(v, true ,false);
+        });
+      }
       let deptCheckedKeys = res.deptIds
-      deptCheckedKeys.forEach((v) => {
-        deptRef.value.setChecked(v, true ,false);
-      });
+      deptRef.value.setCheckedKeys([]);
+      if (deptCheckedKeys && deptCheckedKeys.length > 0) {
+        deptCheckedKeys.forEach((v) => {
+          deptRef.value.setChecked(v, true ,false);
+        });
+      }
       state.dialog.title = '修改用户中心-角色信息';
       state.dialog.submitTxt = '修 改';
     });
@@ -205,6 +211,14 @@ const onSubmit = () => {
       let halfCheckedKeys = menuRef.value.getHalfCheckedKeys();
       checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
       state.ruleForm.menuIds = checkedKeys;
+      
+      if (deptRef.value) {
+        let deptCheckedKeys = deptRef.value.getCheckedKeys();
+        let deptHalfCheckedKeys = deptRef.value.getHalfCheckedKeys();
+        deptCheckedKeys.unshift.apply(deptCheckedKeys, deptHalfCheckedKeys);
+        state.ruleForm.deptIds = deptCheckedKeys;
+      }
+      
       if(state.dialog.type == 'add'){
         useRole.createRole(state.ruleForm).then(() => {
           ElMessage.success('创建成功');
