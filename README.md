@@ -30,7 +30,9 @@
 
 度过严寒，终有春日；挺过酷暑，必有丰收。
 
-🚀🚀🚀 项目体验地址[https://maple.xiaoxiaofeng.com/](https://maple.xiaoxiaofeng.com/)
+🚀🚀🚀 管理端项目体验地址[https://maple.xiaoxiaofeng.com/](https://maple.xiaoxiaofeng.com/)
+
+🚀🚀🚀 网站端项目体验地址[https://maple-boot.xiaoxiaofeng.com/](https://maple-boot.xiaoxiaofeng.com/)
 
 ## 🚀项目架构
 
@@ -69,7 +71,8 @@
 | 字典管理 |                     一对多模式生成实验田                      |    ✔     |
 | 系统配置 |                        单表生成实验田                        |    ✔     |
 | 代码生成 | 生成SpringBoot+Vue代码。单表生成、树表结构生成、一对多模式生成   |    ✔     |
-| 后续规划 | 增加可配置化网站功能，网站展示，文章发布，类似于[笑小枫](https://www.xiaoxiaofeng.com)网站 |    进行中     |
+| 网站端   | 可配置化网站功能，网站展示，文章发布，类似于[笑小枫](https://www.xiaoxiaofeng.com)网站   |    ✔     |
+| 后续规划 | 网站功能优化跌代，样式可配置化 |    进行中     |
 | 更多功能 | 本项目只做最基础的功能，后续功能化集成会陆续开源其它项目，欢迎大家持续关注[笑小枫](https://www.xiaoxiaofeng.com) |    ❤     |
 
 ## 功能欣赏
@@ -148,10 +151,10 @@ maple-admin-rest                   ----------- 模块名称
 └─pom.xml                          ----------- Maven配置文件
 ~~~
 
-前端模块定义
+管理端前端模块定义
 
 ~~~ABAP
-maple-web
+maple-manage-web
 ├─public             ---------- 公开文件
 └─src                           
     ├─api            ---------- 接口地址
@@ -165,6 +168,24 @@ maple-web
     ├─stores         ---------- 应用程序的状态管理工具
     ├─theme          ---------- 应用程序的主题配置
     ├─types          ---------- 数据类型
+    ├─utils          ---------- 自己封装的一些全局性的js功能文件
+    └─views          ---------- 应用程序的页面
+~~~
+
+网站端前端模块定义
+
+~~~ABAP
+maple-website
+├─public             ---------- 公开文件
+└─src                           
+    ├─api            ---------- 接口地址
+    │  └─website     ---------- 网站相关接口
+    ├─assets         ---------- 应用程序使用的静态资源文件
+    ├─components     ---------- 应用程序的公共组件
+    ├─directive      ---------- Vue的自定义指令
+    ├─layouts        ---------- 项目的布局.vue模板
+    ├─router         ---------- 应用程序的路由配置
+    ├─stores         ---------- 应用程序的状态管理工具
     ├─utils          ---------- 自己封装的一些全局性的js功能文件
     └─views          ---------- 应用程序的页面
 ~~~
