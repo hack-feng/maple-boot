@@ -109,9 +109,17 @@ const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 const state = reactive({
   recommendList: [
     {
+      title: '网站体验',
+      msg: '笑小枫配套网站已上线，欢迎前往体验',
+      href: 'https://maple-boot.xiaoxiaofeng.com/',
+      icon: 'ele-AlarmClock',
+      bg: '#FEBB50',
+      iconColor: '#FDC566',
+    },
+    {
       title: '代码仓库',
       msg: 'Github、Gitee仓库同步更新，只需切换域名即可，点击立即前往',
-      href: 'https://github.com/hack-feng/maple-boot',
+      href: 'https://gitee.com/hack-feng/maple-boot',
       icon: 'ele-ShoppingCart',
       bg: '#F95959',
       iconColor: '#F86C6B',
@@ -123,14 +131,6 @@ const state = reactive({
       icon: 'ele-Food',
       bg: '#48D18D',
       iconColor: '#64d89d',
-    },
-    {
-      title: '更多体验',
-      msg: '前往笑小枫官网首页，更多项目体验',
-      href: 'https://www.xiaoxiaofeng.com/',
-      icon: 'ele-AlarmClock',
-      bg: '#FEBB50',
-      iconColor: '#FDC566',
     },
     {
       title: '联系我们',
@@ -172,8 +172,8 @@ const state = reactive({
 	} as any,
   newsInfoList:[
     {
-      title: '笑小枫网站端即将上线，风格同《笑小枫》，点击抢先预览~',
-      link: 'https://xiaoxiaofeng.com'
+      title: '笑小枫网站端已上线，点击抢先预览~',
+      link: 'https://maple-boot.xiaoxiaofeng.com'
     },
     {
       title: '笑小枫Java面试助手微信小程序已上线，下方扫码即刻体验~',

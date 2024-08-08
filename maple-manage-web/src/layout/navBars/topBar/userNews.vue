@@ -28,13 +28,13 @@ const state = reactive({
 	newsList: [
 		{
 			label: '关于版本发布的通知',
-			value: 'vue-next-admin，基于 vue3 + CompositionAPI + typescript + vite + element plus，正式发布时间：2021年02月28日！',
-			time: '2020-12-08',
+			value: 'MapleBoot管理端配套网站已上线，欢迎体验',
+			time: '2024-08-08',
 		},
 		{
 			label: '关于学习交流的通知',
-			value: 'QQ群号码 665452019，欢迎小伙伴入群学习交流探讨！',
-			time: '2020-12-08',
+			value: '有任何问题都可以联系笑小枫，微信：q1150640979',
+			time: '2024-08-08',
 		},
 	],
 });

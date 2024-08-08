@@ -95,7 +95,6 @@
                 <a
                     v-if="navbar.isLink"
                     :href="navbar.linkUrl"
-                    class="dropdown-item py-2 ps-3 border-radius-md"
                     target="_blank"
                 >{{ navbar.title }}
                 </a>

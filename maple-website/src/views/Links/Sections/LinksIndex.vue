@@ -49,7 +49,7 @@
                   <div class="row">
                     <h6 class="mt-2 mb-1 more-omit-1">
                     {{ link.title }} 
-                    <el-tag :type="linksType[link.dataKind].elTagType">{{linksType[link.dataKind].label}}</el-tag>
+                    <el-tag v-if="linksType[link.dataKind]" :type="linksType[link.dataKind].elTagType">{{linksType[link.dataKind].label}}</el-tag>
                     </h6>
                   </div>
                   <p class="mb-0 more-omit-2 text-sm">
@@ -140,6 +140,10 @@ const handleClick = (tab, event) => {
 
 const getDictByCodeClick = () => {
   getDictByCode("web_friendly_link_type").then(res => {
+    console.log(res)
+    if(!res) {
+      return;
+    }
     linksType.value = res.map(p => ({
       label: p.dictLabel,
       value: p.dictValue,
