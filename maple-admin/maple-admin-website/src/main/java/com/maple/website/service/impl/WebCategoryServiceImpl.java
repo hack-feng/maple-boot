@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.management.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +124,8 @@ public class WebCategoryServiceImpl extends ServiceImpl<WebCategoryMapper, WebCa
         List<WebCategory> list = webCategoryMapper.selectList(Wrappers.lambdaQuery(WebCategory.class)
                 .eq(Objects.nonNull(query.getParentId()), WebCategory::getParentId, query.getParentId())
                 .eq(WebCategory::getIsValid, true)
+                .eq(Objects.nonNull(query.getIsTop()), WebCategory::getIsTop, query.getIsTop())
+                .eq(Objects.nonNull(query.getIsHot()), WebCategory::getIsHot, query.getIsHot())
                 .orderByDesc(WebCategory::getIsTop)
                 .orderByAsc(WebCategory::getSortNum)
                 .orderByDesc(WebCategory::getId));
