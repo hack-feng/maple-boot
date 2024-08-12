@@ -14,7 +14,7 @@
     #else
         #set($comment=$column.columnComment)
     #end
-#if($column.htmlType == "input")
+#if($column.htmlType == "input" && $column.queryType != "BETWEEN")
             <el-form-item label="${comment}" class="ml20" size="default">
               <el-input v-model="state.tableData.param.query.${column.javaField}" placeholder="请输入${comment}" clearable
                       style="max-width: 180px"></el-input>
@@ -59,12 +59,22 @@
                   clearable
                   v-model="daterange${AttrName}"
                   style="width: 240px"
-                  value-format="yyyy-MM-dd"
                   type="daterange"
+                  :default-time="[new Date(2010, 9, 1, 0, 0, 0), new Date(2010, 10, 1, 23, 59, 59)]"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
+                  @change="handle${AttrName}Change"
               ></el-date-picker>
+            </el-form-item>
+#elseif($column.htmlType != "datetime" && $column.queryType == "BETWEEN")
+            <el-form-item label="${comment}-开始" class="ml20" size="default">
+              <el-input v-model="state.tableData.param.query.begin${AttrName}" placeholder="开始和结束均输入才生效" clearable
+                      style="max-width: 180px"></el-input>
+            </el-form-item>
+            <el-form-item label="${comment}-结束" class="ml20" size="default">
+              <el-input v-model="state.tableData.param.query.end${AttrName}" placeholder="开始和结束均输入才生效" clearable
+                      style="max-width: 180px"></el-input>
             </el-form-item>
 #end
 #end
@@ -188,13 +198,37 @@
         query: {
 #foreach($column in $columns)
   #if($column.isQuery)
-          $column.javaField: '',
+      #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+      #if($column.queryType == "BETWEEN")
+          begin$AttrName: '',
+          end$AttrName: '',
+      #else
+          $column.javaField: '',    
+      #end
   #end
 #end
         },
       },
     },
   });
+#foreach($column in $columns)
+#if($column.isQuery)
+    #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+    #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+  const daterange$AttrName = ref([]);
+
+  const handle${AttrName}Change = (value) => {
+    if (value && value.length === 2) {
+      state.tableData.param.query.begin$AttrName = value[0];
+      state.tableData.param.query.end$AttrName = value[1];
+    } else {
+      state.tableData.param.query.begin$AttrName = '';
+      state.tableData.param.query.end$AttrName = '';
+    }
+  };
+    #end
+#end
+#end
 
   // 初始化表格数据
   const getTableData = () => {

@@ -26,12 +26,21 @@ import java.util.List;
 public class ${ClassName}Model {
 
 #foreach ($column in $columns)
+    #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
     #if($column.logicDeleteField != -1 && $column.javaField == "isDelete")
     #else
     @ApiModelProperty(value = "$column.columnComment")
     private $column.javaType $column.javaField;
     #end
 
+    #if($column.isQuery && $column.queryType == "BETWEEN")
+    @ApiModelProperty(value = "$column.columnComment-开始")
+    private $column.javaType begin$AttrName;
+
+    @ApiModelProperty(value = "$column.columnComment-结束")
+    private $column.javaType end$AttrName;
+    
+    #end
 #end
 #if($table.sub)
     @ApiModelProperty(value = "$table.subTable.functionName")
