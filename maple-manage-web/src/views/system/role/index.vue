@@ -22,6 +22,19 @@
                 />
               </el-select>
             </el-form-item>
+            <el-form-item label="创建日期" class="ml20" >
+              <el-date-picker
+                  clearable
+                  v-model="daterangeCreateTime"
+                  style="width: 240px"
+                  type="daterange"
+                  range-separator="-"
+                  :default-time="[new Date(2010, 9, 1, 0, 0, 0), new Date(2010, 10, 1, 23, 59, 59)]"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  @change="handleCreateTimeChange"
+              ></el-date-picker>
+            </el-form-item>
             <el-button size="default" type="primary" class="ml20" @click="getTableData">
               <el-icon><ele-Search /></el-icon> 查询
             </el-button>
@@ -73,7 +86,7 @@
 </template>
 
 <script setup lang="ts" name="role">
-import { defineAsyncComponent, reactive, onMounted, ref, nextTick, getCurrentInstance } from 'vue';
+import {defineAsyncComponent, reactive, onMounted, ref, nextTick, getCurrentInstance, watch} from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useRoleApi } from '/@/api/system/role';
 import { parseDateTime } from '/@/utils/formatTime';
@@ -103,10 +116,23 @@ const state = reactive({
         roleName: '',
         roleKey: '',
         status: '',
+        beginCreateTime: '',
+        endCreateTime: '',
       },
     },
   },
 });
+const daterangeCreateTime = ref([]);
+
+const handleCreateTimeChange = (value) => {
+  if (value && value.length === 2) {
+    state.tableData.param.query.beginCreateTime = value[0];
+    state.tableData.param.query.endCreateTime = value[1];
+  } else {
+    state.tableData.param.query.beginCreateTime = '';
+    state.tableData.param.query.endCreateTime = '';
+  }
+};
 
 // 初始化表格数据
 const getTableData = () => {
