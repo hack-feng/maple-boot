@@ -23,9 +23,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 #if($table.sub)
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 #end
 #if($table.tree)
 import org.springframework.util.CollectionUtils;
