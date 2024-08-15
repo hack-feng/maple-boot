@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+#if($table.sub)
+import ${packageName}.vo.model.${subClassName}Model;
+#end
 
 import java.util.Date;
 #if($table.sub || $table.tree)
@@ -44,7 +47,7 @@ public class ${ClassName}Model {
 #end
 #if($table.sub)
     @ApiModelProperty(value = "$table.subTable.functionName")
-    private List<${subClassName}> ${subclassName}ModelList;
+    private List<${subClassName}Model> ${subclassName}ModelList;
 #end
 #if($table.tree)
     @ApiModelProperty(value = "子节点信息")

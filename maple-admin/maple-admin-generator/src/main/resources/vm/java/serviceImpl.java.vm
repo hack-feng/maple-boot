@@ -14,6 +14,7 @@ import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.service.I${ClassName}Service;
 #if($table.sub)
 import ${packageName}.bean.${subClassName};
+import ${packageName}.vo.model.${subClassName}Model;
 import ${packageName}.mapper.${subClassName}Mapper;
 import ${packageName}.service.I${subClassName}Service;
 #end
@@ -86,7 +87,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         ${ClassName} ${className} = TransformUtils.map(model, ${ClassName}.class);
         ${className}Mapper.insert(${className});
 #if($table.sub)
-        insert${subClassName}(${className}.get${subClassName}ModelList(), ${className}.get${PkJavaField}());
+        insert${subClassName}(model.get${subClassName}ModelList(), ${className}.get${PkJavaField}());
 #end
         return ${className}.get${PkJavaField}();
     }
@@ -100,7 +101,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
 #if($table.sub)
         ${subclassName}Mapper.delete(Wrappers.lambdaQuery(${subClassName}.class)
                 .eq(${subClassName}::get${subTableFkClassName}, model.get${PkJavaField}()));
-        insert${subClassName}(model.get${subClassName}ModelList(), ${className}.get${PkJavaField}());
+        insert${subClassName}(model.get${subClassName}ModelList(), model.get${PkJavaField}());
 #end
     }
     
@@ -120,7 +121,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     /**
      * 新增${subTable.functionName}信息
      *
-     * @param model ${functionName}对象
+     * @param models ${functionName}对象
      */
     public void insert${subClassName}(List<${subClassName}Model> models, ${pkColumn.javaType} ${pkColumn.javaField}) {
         if (CollectionUtils.isEmpty(models)) {
