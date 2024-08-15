@@ -70,6 +70,23 @@
             </el-form-item>
           </el-col>
 
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="图片" prop="icon">
+              <el-upload
+                  class="img-uploader"
+                  action="/manageApi/file/uploadImage"
+                  :headers="{Authorization: `${Session.get('token')}`}"
+                  :show-file-list="false"
+                  :on-success="handleImageSuccess"
+                  :before-upload="beforeImageUpload"
+              >
+                <img v-if="state.ruleForm.icon" :src="state.ruleForm.icon" class="img" />
+                <el-icon v-else class="img-uploader-icon"><ele-Plus /></el-icon>
+              </el-upload>
+              <span>建议尺寸宽*高：255*150</span>
+            </el-form-item>
+          </el-col>
+
         </el-row>
       </el-form>
 
@@ -84,8 +101,9 @@
 </template>
 
 <script setup lang="ts" name="dictDialog">
-import { defineAsyncComponent, nextTick, reactive, ref, getCurrentInstance, defineProps, defineEmits } from 'vue';
+import { reactive, ref, defineProps, defineEmits } from 'vue';
 import { useWebCategoryApi } from '/@/api/website/category';
+import { Session } from "/@/utils/storage";
 import { ElMessage } from "element-plus";
 
 // 定义父组件传过来的值
@@ -154,6 +172,26 @@ const openDialog = (type: string, row) => {
   state.dialog.type = type;
   state.dialog.isShowDialog = true;
 };
+
+const beforeImageUpload = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
+    ElMessage.error('图片只支持jpg或png格式')
+    return false
+  } else if(rawFile.size / 1024 / 1024 > 3) {
+    ElMessage.error("图片大小不能超过3MB");
+    return false;
+  }
+  return true;
+}
+
+const handleImageSuccess = (response) => {
+  if(response.code === '0000') {
+    state.ruleForm.icon = response.data;
+  } else {
+    ElMessage.error(response.msg);
+  }
+}
+
 // 关闭弹窗
 const closeDialog = () => {
   state.dialog.isShowDialog = false;
@@ -224,4 +262,35 @@ defineExpose({
   openDialog,
 });
 </script>
+
+<style scoped>
+.img-uploader .img {
+  width: 350px;
+  height: 160px;
+  display: block;
+}
+</style>
+
+<style>
+.img-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.img-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.img-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 350px;
+  height: 160px;
+  text-align: center;
+}
+</style>
 

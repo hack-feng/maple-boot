@@ -4,7 +4,7 @@
 INSERT INTO `usc_menu` (`name`, `title`, `menu_type`, `parent_id`, `ancestors`, `sort_num`, `path`, `component`, `redirect`, `link_url`, `is_iframe`, `is_link`, `is_keep_alive`, `is_hide`, `is_affix`, `status`, `perms`, `icon`, `remark`, `create_id`, `create_time`, `update_id`, `update_time`) VALUES
 ('', '网站管理', 'M', 0, '', 4, '', '', '', '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-diqiu1', '', 1, NOW(), 1, NOW()),
 ('webMenu', '网站菜单', 'C', 12, '12', 6, '/website/webMenu', 'website/webMenu/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-juxingkaobei', '', 1, NOW(), 1, NOW()),
-('config', '网站配置', 'C', 12, '12', 7, '/website/config', 'website/config/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-xitongshezhi', '', 1, NOW(), 1, NOW()),
+('webConfig', '网站配置', 'C', 12, '12', 7, '/website/config', 'website/config/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-xitongshezhi', '', 1, NOW(), 1, NOW()),
 ('userComment', '用户评论', 'C', 12, '12', 8, '/website/userComment', 'website/userComment/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'ele-ChatLineSquare', '', 1, NOW(), 1, NOW()),
 ('userOperation', '用户操作', 'C', 12, '12', 9, '/website/userOperation', 'website/userOperation/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-xuanzeqi', '', 1, NOW(), 1, NOW()),
 ('webUser', '网站用户', 'C', 12, '12', 1, '/website/webUser', 'website/webUser/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'ele-User', '', 1, NOW(), 1, NOW()),
