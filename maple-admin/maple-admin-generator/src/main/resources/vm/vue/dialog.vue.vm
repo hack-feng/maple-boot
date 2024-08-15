@@ -187,7 +187,7 @@
 #if($table.sub)
         </el-collapse-item>
         <el-collapse-item title="${functionName}明细信息" name="detail">
-          <Sub${subClassName}Dialog ref="sub${subClassName}DialogRef" :columns="state.ruleForm.${subclassName}ModelList"/>
+          <Sub${ClassName}Dialog ref="sub${ClassName}DialogRef" :columns="state.ruleForm.${subclassName}ModelList"/>
         </el-collapse-item>
       </el-collapse>
 #end
@@ -218,7 +218,7 @@
 #if($table.sub)
   
   // 引入组件
-  const Sub${subClassName}Dialog = defineAsyncComponent(() => import('./subDialog.vue'));
+  const Sub${ClassName}Dialog = defineAsyncComponent(() => import('./subDialog.vue'));
   
 #end
 #if($table.tree)
@@ -245,7 +245,7 @@
   const use${ClassName} = use${ClassName}Api();
   const ${className}DialogFormRef = ref();
 #if($table.sub)
-  const sub${subClassName}DialogRef = ref();
+  const sub${ClassName}DialogRef = ref();
   const activeNames = ref(['info'#if($table.sub), 'detail'#end]);
 #end
   const state = reactive({
@@ -331,7 +331,7 @@
     // 验证表单
     Promise.all([
 #if($table.sub)
-      formRulesValidate(sub${subClassName}DialogRef, 'sub${subClassName}DialogRef'),
+      formRulesValidate(sub${ClassName}DialogRef, 'sub${ClassName}DialogRef'),
 #end
       currentValidate(${className}DialogFormRef),
     ]).then(res => {
