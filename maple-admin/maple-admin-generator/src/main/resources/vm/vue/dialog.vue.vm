@@ -187,7 +187,7 @@
 #if($table.sub)
         </el-collapse-item>
         <el-collapse-item title="${functionName}明细信息" name="detail">
-          <SubDicDialog ref="sub${subClassName}DialogRef" :columns="state.ruleForm.${subclassName}ModelList"/>
+          <Sub${subClassName}Dialog ref="sub${subClassName}DialogRef" :columns="state.ruleForm.${subclassName}ModelList"/>
         </el-collapse-item>
       </el-collapse>
 #end
