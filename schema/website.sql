@@ -9,7 +9,7 @@ INSERT INTO `usc_menu` (`name`, `title`, `menu_type`, `parent_id`, `ancestors`, 
 ('userOperation', '用户操作', 'C', 12, '12', 9, '/website/userOperation', 'website/userOperation/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-xuanzeqi', '', 1, NOW(), 1, NOW()),
 ('webUser', '网站用户', 'C', 12, '12', 1, '/website/webUser', 'website/webUser/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'ele-User', '', 1, NOW(), 1, NOW()),
 ('article', '内容中心', 'C', 12, '12', 3, '/website/article', 'website/article/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'ele-Memo', '', 1, NOW(), 4, NOW()),
-('category', '网站类目', 'C', 12, '12', 2, '/website/category', 'website/category/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-shuxingtu', '', 1, NOW(), 1, NOW()),
+('category', '网站类目', 'C', 12, '12', 2, '/website/category', 'website/category/index', NULL, '', 0, 0, 1, 0, 0, 1, '', 'iconfont icon-shuxingtu', '', 1, NOW(), 1, NOW());
 
 -- ------------------------------------------------------------------------
 -- 网站端相关的表结构及模拟数据
