@@ -30,7 +30,37 @@
   </head>
 
   <body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-desc">
+            网站资源加载中，精彩马上呈现
+        </div>
+    </div>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
+
+<style>
+    .loading-screen {
+        width: 100%; /* 视窗宽度 */
+        height: 100vh; /* 视窗高度 */
+        background-size: cover;
+        background-repeat: no-repeat; /* 避免图片重复 */
+        background-attachment: fixed;
+        position: fixed; /* 定位元素，可选择性地使其全屏 */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1; /* 可选，将背景置于其他内容之后 */
+        background-image: url("https://image.xiaoxiaofeng.site/blog/2024/06/19/xxf-20240619141721.jpg?xxfjava");
+    }
+    .loading-desc {
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
+        height: 100%; /* 需要设置高度 */
+        font-size: 30px;
+        color: #ffffff;
+    }
+</style>

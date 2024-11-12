@@ -1,22 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/Home/HomeView.vue";
-import AuthorView from "../views/Author/AuthorView.vue";
-import SignInBasicView from "../views/SignIn/BasicView.vue";
 
-import BlogView from "../views/Blog/BlogView.vue";
-import BlogArticle from "../views/Blog/BlogArticleInfo.vue";
-import BlogCategory from "../views/Blog/BlogCategory.vue";
-import BlogCategoryList from "../views/Blog/BlogCategoryList.vue";
 
-import DownloadView from "../views/Download/DownloadView.vue";
-import ResourceInfo from "../views/Download/ResourceInfo.vue";
 
-import LinksView from "../views/Links/LinksView.vue";
-
-import MyView from "../views/My/MyView.vue";
-import SearchView from "../views/Search/SearchView.vue";
-
-import NotFound from "../components/error/404.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,72 +9,72 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: () => import('../views/Home/HomeView.vue'),
     },
     {
       path: "/author",
       name: "author",
-      component: AuthorView,
+      component: () => import('../views/Author/AuthorView.vue'),
     },
     {
       path: "/login",
       name: "signin-basic",
-      component: SignInBasicView,
+      component: () => import('../views/SignIn/BasicView.vue'),
     },
     {
       path: "/blog/:menu?",
       name: "blog",
-      component: BlogView,
+      component: () => import('../views/Blog/BlogView.vue'),
     },
     {
       path: "/categoryList",
       name: "categoryList",
-      component: BlogCategoryList,
+      component: () => import('../views/Blog/BlogCategoryList.vue'),
     },
     {
       path: "/category/:id",
       name: "category",
-      component: BlogCategory,
+      component: () => import('../views/Blog/BlogCategory.vue'),
     },
     {
       path: "/article/:id",
       name: "article",
-      component: BlogArticle,
+      component: () => import('../views/Blog/BlogArticleInfo.vue'),
     },
     {
       path: "/archives/:id",
       name: "archives",
-      component: BlogView,
+      component: () => import('../views/Blog/BlogView.vue'),
     },
     {
       path: "/download",
       name: "download",
-      component: DownloadView,
+      component: () => import('../views/Download/DownloadView.vue'),
     },
     {
       path: "/resource/:id",
       name: "resource",
-      component: ResourceInfo,
+      component: () => import('../views/Download/ResourceInfo.vue'),
     },
     {
       path: "/links",
       name: "links",
-      component: LinksView,
+      component: () => import('../views/Links/LinksView.vue'),
     },
     {
       path: "/my",
       name: "my",
-      component: MyView,
+      component: () => import('../views/My/MyView.vue'),
     },
     {
       path: "/search",
       name: "search",
-      component: SearchView,
+      component: () => import('../views/Search/SearchView.vue'),
     },
     {
       path: "/404",
       name: "404",
-      component: NotFound,
+      component: () => import('../components/error/404.vue'),
     },
     {
       path: "/:catchAll(.*)",

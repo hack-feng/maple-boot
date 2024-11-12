@@ -19,4 +19,9 @@ app.use(createMetaManager(false, {
         meta: { tag: 'meta', nameless: true }
     }))
 app.component('MyIcon', MyIcon);
-app.mount("#app");
+app.mount("#app").$nextTick(() => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+    }
+});
