@@ -34,6 +34,8 @@
 
 ## 🚀项目架构
 
+**JDK17版本戳链接** [https://gitee.com/hack-feng/maple-boot-17](https://gitee.com/hack-feng/maple-boot-17)
+
 **后端项目**
 
 项目主要使用SpringBoot + Mybatis Plus开发，代码生成模块参考[若依](https://gitee.com/y_project/RuoYi)框架进行改造。
